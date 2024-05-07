@@ -13,6 +13,13 @@
 </style>
 <script>
   var wv;
+  function switchTab(i){
+    wv.classList.remove('curWV');
+    try {
+      wv = document.body.children[i+1];
+    }catch(e){}
+    wv.classList.add('curWV');
+  }
   function getQ(){return document.forms[0].q.value;}
   function gs(t){var d=document;var q=getQ();var u=q;var a=q.indexOf('://');if((q.indexOf('.')>0||a>0)&&q.indexOf(' ')<0){if(a<0){u='http://'+q}}else{u=t+encodeURIComponent(q)}wv.src=u}
 </script>
