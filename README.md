@@ -1,0 +1,2 @@
+### Eweb browser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
+Electron web browser bases on electron (thus chromium) with the same designing principles for [uweb browser](https://gitlab.com/jamesfengcao/uweb).

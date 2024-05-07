@@ -20,6 +20,32 @@
     }catch(e){}
     wv.classList.add('curWV');
   }
+  function keyPress(e){
+    if(e.code === "Escape") {
+      window.focus();
+      return;
+    }
+    var key = e.key;
+    var inputE = document.forms[0].q;
+    if (e.ctrlKey || e.metaKey) {
+      if(key.toLowerCase() === 'l'){
+        inputE.focus();
+        inputE.select();
+      }
+      return;
+    }
+    switch (key) {
+    case "!":
+      if (inputE !== document.activeElement){
+        inputE.value = ":! ";
+        inputE.focus();
+      }
+      break;
+    case ":":
+      inputE.focus();
+      break;
+    }
+  }
   function getQ(){return document.forms[0].q.value;}
   function gs(t){var d=document;var q=getQ();var u=q;var a=q.indexOf('://');if((q.indexOf('.')>0||a>0)&&q.indexOf(' ')<0){if(a<0){u='http://'+q}}else{u=t+encodeURIComponent(q)}wv.src=u}
 </script>
@@ -30,5 +56,6 @@
   <webview class="curWV" style="width:100%"></webview>
   <script>
     wv = document.body.children[1];
+    document.addEventListener('keydown', keyPress);
   </script>
 </body></html>
