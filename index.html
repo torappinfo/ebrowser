@@ -8,7 +8,8 @@
     flex-direction: column;
     height: 100%;
   }
-  webview{flex-grow:1;}
+  webview{display: none;flex-grow:1;}
+  .curWV{display: inherit !important;}
 </style>
 <script>
   var wv;
@@ -19,7 +20,7 @@
 <body>
   <form action="javascript:gs('https://metaso.cn?q=')">
   <input type="text" name=q style="width:100%"></form>
-  <webview style="width:100%"></webview>
+  <webview class="curWV" style="width:100%"></webview>
   <script>
     wv = document.body.children[1];
   </script>
