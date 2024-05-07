@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  html{
+   height: 100%;
+  }
+  body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  webview{flex-grow:1;}
+</style>
+<script>
+  var wv;
+  function getQ(){return document.forms[0].q.value;}
+  function gs(t){var d=document;var q=getQ();var u=q;var a=q.indexOf('://');if((q.indexOf('.')>0||a>0)&&q.indexOf(' ')<0){if(a<0){u='http://'+q}}else{u=t+encodeURIComponent(q)}wv.src=u}
+</script>
+</head>
+<body>
+  <form action="javascript:gs('https://metaso.cn?q=')">
+  <input type="text" name=q style="width:100%"></form>
+  <webview style="width:100%"></webview>
+  <script>
+    wv = document.body.children[1];
+  </script>
+</body></html>

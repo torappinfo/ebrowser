@@ -1,0 +1,13 @@
+{
+  "name": "eweb",
+  "version": "1.0.0",
+  "description": "electron web browser",
+  "main": "eweb.js",
+  "scripts": {
+  },
+  "dependencies": {
+    "electron":""
+  },
+  "author": "",
+  "license": "ISC"
+}
