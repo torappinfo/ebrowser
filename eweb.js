@@ -1,23 +1,21 @@
-const { app, BrowserWindow } = require('electron')
-const url = require('url')
+const { app, BaseWindow, WebContentsView} = require('electron')
+const process = require('process')
 
 function createWindow () {
-  var win = new BrowserWindow({
-    width: 800, height: 600,
-    webPreferences: {
-      webviewTag: true,
-    }});
-
-  win.setMenuBarVisibility(false)
-  //win.webContents.openDevTools()
+  var win = new BaseWindow({width: 800, height: 600,autoHideMenuBar: true});
 
   win.on('closed', function () {
     win = null
   })
 
-  win.loadFile('index.html');
+  const view = new WebContentsView({autoResize: true,});
+  win.contentView.addChildView(view);
+  view.webContents.loadURL(process.argv[2])
 
-
+  win.on('resize', () => {
+    var wsize = win.getSize();
+    view.setBounds({x: 0, y: 0, width: wsize[0], height: wsize[1]});
+  })
 }
 
 app.on('ready', createWindow)
