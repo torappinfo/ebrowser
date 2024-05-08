@@ -1,4 +1,5 @@
 const { app, BrowserWindow, globalShortcut} = require('electron')
+const path = require('path')
 const process = require('process')
 let win;
 let view;
@@ -15,11 +16,15 @@ function createWindow () {
     win = null
   })
 
-  win.loadFile('index.html');
-  win.loadURL('#'+url)
-  
-  globalShortcut.register("CommandOrControl+W", ()=>{
-    app.quit();
+  let furl = `file://${path.join(__dirname, 'index.html')}#${url}`;
+  win.loadURL(furl)
+
+  globalShortcut.register("Ctrl+L", ()=>{
+    
+  });
+
+  globalShortcut.register("Esc", ()=>{
+    win.focus();
   });
 }
 
@@ -36,7 +41,8 @@ else {
       win.show()
       win.focus()
       url = args[3]
-      win.loadURL('#'+url)
+      let furl = `file://${path.join(__dirname, 'index.html')}#${url}`;
+      win.loadURL(furl)
     }else
       createWindow();
   })

@@ -20,6 +20,9 @@
     }catch(e){}
     wv.classList.add('curWV');
   }
+  function onHashChange(){
+    wv.src = location.hash.slice(1);
+  }
   function keyPress(e){
     if(e.code === "Escape") {
       window.focus();
@@ -56,6 +59,8 @@
   <webview class="curWV" style="width:100%"></webview>
   <script>
     wv = document.body.children[1];
+    wv.src = location.hash.slice(1);
+    window.addEventListener('hashchange',onHashChange);
     document.addEventListener('keydown', keyPress);
   </script>
 </body></html>
