@@ -1,4 +1,4 @@
-const { app, BaseWindow, WebContentsView} = require('electron')
+const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
 const process = require('process')
 let win;
 let view;
@@ -22,6 +22,10 @@ function createWindow () {
     var wsize = win.getSize();
     view.setBounds({x: 0, y: 0, width: wsize[0], height: wsize[1]});
   })
+
+  globalShortcut.register("CommandOrControl+W", ()=>{
+    app.quit();
+  });
 }
 
 if(!app.requestSingleInstanceLock())
@@ -51,4 +55,8 @@ app.on('activate', function () {
   if (win === null) {
     createWindow()
   }
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
 })
