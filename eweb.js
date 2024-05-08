@@ -1,28 +1,23 @@
-const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
+const { app, BrowserWindow, globalShortcut} = require('electron')
 const process = require('process')
 let win;
 let view;
 let url = process.argv[2];
 
 function createWindow () {
-  win = new BaseWindow({width: 800, height: 600,autoHideMenuBar: true});
+  win = new BrowserWindow(
+    {width: 800, height: 600,autoHideMenuBar: true,
+     webPreferences: {
+       webviewTag: true,
+     }});
 
   win.on('closed', function () {
     win = null
   })
 
-  view = new WebContentsView({
-    autoResize: true,
-    defaultEncoding: "utf-8",
-  });
-  win.contentView.addChildView(view);
-  view.webContents.loadURL(url)
-
-  win.on('resize', () => {
-    var wsize = win.getSize();
-    view.setBounds({x: 0, y: 0, width: wsize[0], height: wsize[1]});
-  })
-
+  win.loadFile('index.html');
+  win.loadURL('#'+url)
+  
   globalShortcut.register("CommandOrControl+W", ()=>{
     app.quit();
   });
@@ -41,7 +36,7 @@ else {
       win.show()
       win.focus()
       url = args[3]
-      view.webContents.loadURL(url)
+      win.loadURL('#'+url)
     }else
       createWindow();
   })
