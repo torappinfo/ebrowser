@@ -24,27 +24,16 @@
     wv.src = location.hash.slice(1);
   }
   function keyPress(e){
-    if(e.code === "Escape") {
-      window.focus();
-      return;
-    }
     var key = e.key;
     var inputE = document.forms[0].q;
-    if (e.ctrlKey || e.metaKey) {
-      if(key.toLowerCase() === 'l'){
-        inputE.focus();
-        inputE.select();
-      }
-      return;
-    }
+    if (inputE === document.activeElement) return;
     switch (key) {
     case "!":
-      if (inputE !== document.activeElement){
-        inputE.value = ":! ";
-        inputE.focus();
-      }
+      inputE.value = ":";
+      inputE.focus();
       break;
     case ":":
+      inputE.value = "";
       inputE.focus();
       break;
     }
@@ -54,7 +43,7 @@
 </script>
 </head>
 <body>
-  <form action="javascript:gs('https://metaso.cn?q=')">
+  <form action="javascript:gs('https://www.bing.com/search?q=')">
   <input type="text" name=q style="width:100%"></form>
   <webview class="curWV" style="width:100%"></webview>
   <script>

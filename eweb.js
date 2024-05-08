@@ -20,11 +20,11 @@ function createWindow () {
   win.loadURL(furl)
 
   globalShortcut.register("Ctrl+L", ()=>{
-    
+    win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
   });
 
   globalShortcut.register("Esc", ()=>{
-    win.focus();
+    win.webContents.executeJavaScript("document.activeElement.blur()",false);
   });
 }
 
