@@ -1,44 +1,31 @@
-const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
+const { app, BrowserWindow, globalShortcut} = require('electron')
 const path = require('path')
 const process = require('process')
 let win;
 let view;
 let url = process.argv[2];
-let addrBar;
-
-function resize(){
-  var wsize = win.getSize();
-  addrBar.setBounds({x: 0, y: 0, width: wsize[0], height: 30});
-  view.setBounds({x: 0, y: 30, width: wsize[0], height: wsize[1]-30});
-}
 
 function createWindow () {
-  win = new BaseWindow({width: 800, height: 600,autoHideMenuBar: true});
-  
+  win = new BrowserWindow(
+    {width: 800, height: 600,autoHideMenuBar: true,
+     webPreferences: {
+       webviewTag: true,
+     }});
+
   win.on('closed', function () {
     win = null
   })
 
-  addrBar = new WebContentsView({
-    autoResize: true,
-    defaultEncoding: "utf-8",
-  });
-  win.contentView.addChildView(addrBar);
-  addrBar.webContents.loadFile('addressbar.html');
-  
-  view = new WebContentsView({
-    autoResize: true,
-    defaultEncoding: "utf-8",
-  });
-  win.contentView.addChildView(view);
-  view.webContents.loadURL(url)
-
-  win.on('resize', resize)
+  let furl = `file://${path.join(__dirname, 'index.html')}#${url}`;
+  win.loadURL(furl)
 
   globalShortcut.register("Ctrl+L", ()=>{
-    addrBar.webContents.focus();
+    win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
   });
 
+  globalShortcut.register("Esc", ()=>{
+    win.webContents.executeJavaScript("document.activeElement.blur()",false);
+  });
 }
 
 if(!app.requestSingleInstanceLock())
@@ -54,7 +41,8 @@ else {
       win.show()
       win.focus()
       url = args[3]
-      view.webContents.loadURL(url)
+      let furl = `file://${path.join(__dirname, 'index.html')}#${url}`;
+      win.loadURL(furl)
     }else
       createWindow();
   })
