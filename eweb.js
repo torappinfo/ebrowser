@@ -1,4 +1,5 @@
 const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
+
 const path = require('path')
 const process = require('process')
 let win;
@@ -44,8 +45,9 @@ function createWindow () {
 
   addrBar = new WebContentsView({
     autoResize: true,
-    defaultEncoding: "utf-8",
-  });
+    webPreferences: {
+      defaultEncoding: "utf-8",
+    }});
   win.contentView.addChildView(addrBar);
   addrBar.webContents.loadFile('addressbar.html');
 
