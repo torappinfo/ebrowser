@@ -2,14 +2,29 @@ const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
 const path = require('path')
 const process = require('process')
 let win;
-let view;
+let iTab = 1;
 let url = process.argv[2];
 let addrBar;
 
 function resize(){
   var wsize = win.getSize();
   addrBar.setBounds({x: 0, y: 0, width: wsize[0], height: 30});
-  view.setBounds({x: 0, y: 30, width: wsize[0], height: wsize[1]-30});
+  win.contentView.children[iTab].setBounds({x: 0, y: 30, width: wsize[0], height: wsize[1]-30});
+}
+
+function switchTab(i){
+  win.contentView.children[iTab].setVisible(false);
+  iTab = i;
+  win.contentView.children[iTab].setVisible(true);
+  resize();
+}
+
+function newTab(){
+  let view = new WebContentsView({
+    defaultEncoding: "utf-8",
+  });
+  win.contentView.addChildView(view);
+  iTab = win.contentView.children.length -1;
 }
 
 function createWindow () {
@@ -25,18 +40,39 @@ function createWindow () {
   });
   win.contentView.addChildView(addrBar);
   addrBar.webContents.loadFile('addressbar.html');
-  
-  view = new WebContentsView({
-    autoResize: true,
-    defaultEncoding: "utf-8",
-  });
-  win.contentView.addChildView(view);
-  view.webContents.loadURL(url)
+
+  newTab();
+  win.contentView.children[iTab].webContents.loadURL(url)
 
   win.on('resize', resize)
 
+  globalShortcut.register("Ctrl+T", ()=>{
+    win.contentView.children[iTab].setVisible(false);
+    newTab();
+  });
+  
   globalShortcut.register("Ctrl+L", ()=>{
     addrBar.webContents.focus();
+  });
+
+  globalShortcut.register("Ctrl+W", ()=>{
+    let nTabs = win.contentView.children.length;
+    if(nTabs<=2) {
+      app.quit();
+      return;
+    }
+    win.contentView.removeChildView(win.contentView.children[iTab]);
+    if(iTab>=nTabs-1) iTab=iTab-1;
+    win.contentView.children[iTab].setVisible(true);
+    resize();
+  });
+
+  globalShortcut.register("Ctrl+Tab", ()=>{
+    let nTabs = win.contentView.children.length;
+    if(nTabs<=2) return;
+    let i = iTab +1;
+    if(i>=nTabs) i=1;
+    switchTab(i);
   });
 
 }
@@ -54,7 +90,7 @@ else {
       win.show()
       win.focus()
       url = args[3]
-      view.webContents.loadURL(url)
+      win.contentView.children[iTab].webContents.loadURL(url)
     }else
       createWindow();
   })
