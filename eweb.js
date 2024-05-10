@@ -21,10 +21,18 @@ function switchTab(i){
 
 function newTab(){
   let view = new WebContentsView({
+    webPreferences: {
     defaultEncoding: "utf-8",
-  });
+    }});
   win.contentView.addChildView(view);
   iTab = win.contentView.children.length -1;
+}
+
+function handleNewWindow(event, url){
+  event.preventDefault();
+  win.contentView.children[iTab].setVisible(false);
+  newTab();
+  win.contentView.children[iTab].webContents.loadURL(url);
 }
 
 function createWindow () {
