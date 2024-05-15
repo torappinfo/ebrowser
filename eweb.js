@@ -27,6 +27,7 @@ function newTab(){
     }});
   win.contentView.addChildView(view);
   iTab = win.contentView.children.length -1;
+  //view.webContents.on('before-input-event',onInputEvent);
 }
 
 function handleNewWindow(event, url){
@@ -66,9 +67,13 @@ function createWindow () {
   });
 
   globalShortcut.register("Ctrl+W", ()=>{
+    if(!win.isFocused()){
+      BaseWindow.getFocusedWindow().close();
+      return;
+    }
     let nTabs = win.contentView.children.length;
     if(nTabs<=2) {
-      app.quit();
+      win.close();
       return;
     }
     win.contentView.removeChildView(win.contentView.children[iTab]);
@@ -83,6 +88,14 @@ function createWindow () {
     let i = iTab +1;
     if(i>=nTabs) i=1;
     switchTab(i);
+  });
+
+  globalShortcut.register("Ctrl+Left", ()=>{
+    win.contentView.children[iTab].webContents.goBack();
+  });
+
+  globalShortcut.register("Ctrl+Right", ()=>{
+    win.contentView.children[iTab].webContents.goForward();
   });
 
 }
