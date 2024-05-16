@@ -1,11 +1,25 @@
 const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
-
+const fs = require('fs');
 const path = require('path')
 const process = require('process')
 let win;
 let iTab = 1;
 let url = process.argv[2];
 let addrBar;
+let engines;
+
+fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
+  if (err) {
+    console.error("search.json:", err);
+    return;
+  }
+
+  try {
+    engines = JSON.parse(jsonString);
+  } catch (parseError) {
+    console.error("Error parsing search.JSON:", parseError);
+  }
+});
 
 function resize(){
   var wsize = win.getSize();
@@ -37,14 +51,9 @@ function handleNewWindow(event, url){
 }
 
 function bang(query){
-  let es = {
-    "b":"https://www.bing.com/search?q=",
-    "ms":"https://metaso.cn?q=",
-    "gc":"https://gitcode.com/aisearch?q=",
-  };
   let iS = query.indexOf(' ');
   let name = query.slice(0,iS);
-  let engine = es[name];
+  let engine = engines[name];
   if(engine)
     return engine+query.substring(iS+1);
   return "https://www.bing.com/search?q="+query;
