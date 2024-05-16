@@ -4,7 +4,7 @@ const path = require('path')
 const process = require('process')
 let win;
 let iTab = 1;
-let url = process.argv[2];
+let url = process.argv.slice(2).join(" ");
 let addrBar;
 let engines = {};
 
@@ -90,15 +90,13 @@ function createWindow () {
   addrBar = new WebContentsView({
     webPreferences: {
       defaultEncoding: "utf-8",
-      javascript: false,
     }});
   win.contentView.addChildView(addrBar);
   addrBar.webContents.loadFile('addressbar.html');
   addrBar.webContents.on('before-input-event',addrInputEvent);
 
   newTab();
-  if(url)
-    win.contentView.children[iTab].webContents.loadURL(url)
+  if(url) handleQuery(url);
 
   win.on('resize', resize)
 
@@ -157,8 +155,8 @@ else {
       }
       win.show()
       win.focus()
-      url = args[3]
-      win.contentView.children[iTab].webContents.loadURL(url)
+      url = args.slice(3).join(" ")
+      handleQuery(url)
     }else
       createWindow();
   })
