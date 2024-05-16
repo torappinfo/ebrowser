@@ -32,6 +32,8 @@ function switchTab(i){
   iTab = i;
   win.contentView.children[iTab].setVisible(true);
   resize();
+  let title = win.contentView.children[i].webContents.getTitle();
+  win.setTitle(title);
 }
 
 function newTab(){
@@ -71,6 +73,7 @@ function handleQuery(q){
   else
     url = bang(q);
   win.contentView.children[iTab].webContents.loadURL(url);
+  win.setTitle(url);
 }
 
 function addrInputEvent(event, inputEvent){

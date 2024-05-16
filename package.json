@@ -4,10 +4,41 @@
   "description": "electron web browser",
   "main": "eweb.js",
   "scripts": {
+    "build": "node_modules/.bin/electron-builder"
+  },
+  "build": {
+    "appId": "torapp.eweb",
+    "productName": "eweb",
+    "files": [
+      "eweb.js",
+      "addressbar.html",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "dmg": {
+      "contents": [
+        { "x": 410, "y": 150, "type": "file", "path": "${appPath}" },
+        { "x": 130, "y": 150, "type": "link", "path": "/Applications" }
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": ["nsis"]
+    },
+    "linux": {
+      "deb": {},
+      "rpm": {}
+    }
   },
   "dependencies": {
     "electron":""
   },
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "electron-builder": "",
+    "electron-prebuilt-compile": ""
+  }
 }
