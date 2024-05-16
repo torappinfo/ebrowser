@@ -27,7 +27,6 @@ function newTab(){
     }});
   win.contentView.addChildView(view);
   iTab = win.contentView.children.length -1;
-  //view.webContents.on('before-input-event',onInputEvent);
 }
 
 function handleNewWindow(event, url){
@@ -35,6 +34,38 @@ function handleNewWindow(event, url){
   win.contentView.children[iTab].setVisible(false);
   newTab();
   win.contentView.children[iTab].webContents.loadURL(url);
+}
+
+function bang(query){
+  let es = {
+    "b":"https://www.bing.com/search?q=",
+    "ms":"https://metaso.cn?q=",
+    "gc":"https://gitcode.com/aisearch?q=",
+  };
+  let iS = query.indexOf(' ');
+  let name = query.slice(0,iS);
+  let engine = es[name];
+  if(engine)
+    return engine+query.substring(iS+1);
+  return "https://www.bing.com/search?q="+query;
+}
+
+function handleQuery(q){
+  var url=q;
+  var iColon=q.indexOf('://');
+  if(4==iColon||5==iColon){//http
+  }else if(q.indexOf('.')>0&&q.indexOf(' ')<0)
+    url = 'http://'+q;
+  else
+    url = bang(q);
+  win.contentView.children[iTab].webContents.loadURL(url);
+}
+
+function addrInputEvent(event, inputEvent){
+  if (inputEvent.key === 'Enter') {
+    event.preventDefault();
+    addrBar.webContents.executeJavaScript('document.body.firstElementChild.value',false).then((query) => handleQuery(query));
+  }
 }
 
 function createWindow () {
@@ -51,9 +82,11 @@ function createWindow () {
     }});
   win.contentView.addChildView(addrBar);
   addrBar.webContents.loadFile('addressbar.html');
+  addrBar.webContents.on('before-input-event',addrInputEvent);
 
   newTab();
-  win.contentView.children[iTab].webContents.loadURL(url)
+  if(url)
+    win.contentView.children[iTab].webContents.loadURL(url)
 
   win.on('resize', resize)
 
