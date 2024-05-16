@@ -45,11 +45,11 @@ function newTab(){
 }
 
 function handleNewWindow(urlInfo){
-  win.contentView.children[iTab].setVisible(false);
   newTab();
+  win.contentView.children[iTab].setVisible(false);
   let url = urlInfo["url"];
-  //console.log(url);
-  win.contentView.children[iTab].webContents.loadURL(url);
+  const options = { httpReferrer: urlInfo["referer"] };
+  win.contentView.children[iTab].webContents.loadURL(url,options);
   return { action: 'deny' }
 }
 
@@ -88,9 +88,9 @@ function createWindow () {
   })
 
   addrBar = new WebContentsView({
-    autoResize: true,
     webPreferences: {
       defaultEncoding: "utf-8",
+      javascript: false,
     }});
   win.contentView.addChildView(addrBar);
   addrBar.webContents.loadFile('addressbar.html');
