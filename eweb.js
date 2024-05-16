@@ -6,7 +6,7 @@ let win;
 let iTab = 1;
 let url = process.argv[2];
 let addrBar;
-let engines;
+let engines = {};
 
 fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   if (err) {
@@ -41,13 +41,16 @@ function newTab(){
     }});
   win.contentView.addChildView(view);
   iTab = win.contentView.children.length -1;
+  view.webContents.setWindowOpenHandler(handleNewWindow);
 }
 
-function handleNewWindow(event, url){
-  event.preventDefault();
+function handleNewWindow(urlInfo){
   win.contentView.children[iTab].setVisible(false);
   newTab();
+  let url = urlInfo["url"];
+  //console.log(url);
   win.contentView.children[iTab].webContents.loadURL(url);
+  return { action: 'deny' }
 }
 
 function bang(query){
