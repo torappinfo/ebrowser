@@ -75,13 +75,14 @@ function handleQuery(q){
   var url=q;
   do {
     if(q.length>9){
-      let i = 4;//"://" at index 4 or 5 for http/https/file urls
-      if(58==q.charCodeAt(i) && 47==q.charCodeAt(i+1) && 47==q.charCodeAt(i+2))
-        break;
-      i = 5;
-      if(58==q.charCodeAt(i) && 47==q.charCodeAt(i+1) && 47==q.charCodeAt(i+2))
-        break;
-      if(q.startsWith("javascript:")) break;
+      let c6 = q.charCodeAt(6);
+      if(47==c6){// '/'
+        let c5 = q.charCodeAt(5);
+        if(47==c5 && 58==q.charCodeAt(4))//http/file urls
+          break;
+        if(58==c5 && 47==q.charCodeAt(7))//https://
+          break;
+      }else if(q.startsWith("javascript:")) break;
     }
     let iS = q.indexOf(' ');
     if(iS<0 && q.indexOf('.')>0)
