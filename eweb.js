@@ -102,6 +102,12 @@ function showContextMenu(linkUrl){
         clipboard.writeText(linkUrl);
       }
     },
+    {
+      label: 'Download',
+      click: () => {
+        win.contentView.children[i].webContents.downloadURL(linkUrl);
+      }
+    },
   ];
 
   const contextMenu = Menu.buildFromTemplate(menuTemplate);
@@ -135,11 +141,18 @@ function createWindow () {
 
   win.on('resize', resize)
 
+  globalShortcut.register("Ctrl+G", ()=>{
+    let url = win.contentView.children[iTab].webContents.getURL();
+    addrBar.webContents.executeJavaScript(
+      'document.body.firstElementChild.value="'+url+'"',false);
+    addrBar.webContents.focus();
+  });
+
   globalShortcut.register("Ctrl+T", ()=>{
     win.contentView.children[iTab].setVisible(false);
     newTab();
   });
-  
+
   globalShortcut.register("Ctrl+L", ()=>{
     addrBar.webContents.focus();
   });
@@ -165,6 +178,14 @@ function createWindow () {
     if(nTabs<=2) return;
     let i = iTab +1;
     if(i>=nTabs) i=1;
+    switchTab(i);
+  });
+
+  globalShortcut.register("Ctrl+Shift+Tab", ()=>{
+    let nTabs = win.contentView.children.length;
+    if(nTabs<=2) return;
+    let i = iTab - 1;
+    if(i<1) i=nTabs-1;
     switchTab(i);
   });
 
