@@ -1,4 +1,4 @@
-const { app, BaseWindow, WebContentsView, globalShortcut} = require('electron')
+const { app, BaseWindow, WebContentsView, globalShortcut, Menu, shell, clipboard} = require('electron')
 const fs = require('fs');
 const path = require('path')
 const process = require('process')
@@ -44,13 +44,14 @@ function newTab(){
   win.contentView.addChildView(view);
   iTab = win.contentView.children.length -1;
   view.webContents.setWindowOpenHandler(handleNewWindow);
+  view.webContents.on('context-menu',onContextMenu);
 }
 
 function handleNewWindow(urlInfo){
   newTab();
   win.contentView.children[iTab].setVisible(false);
-  let url = urlInfo["url"];
-  const options = { httpReferrer: urlInfo["referer"] };
+  let url = urlInfo.url;
+  const options = { httpReferrer: urlInfo.referer };
   win.contentView.children[iTab].webContents.loadURL(url,options);
   return { action: 'deny' }
 }
@@ -80,6 +81,37 @@ function addrInputEvent(event, inputEvent){
   if (inputEvent.key === 'Enter') {
     event.preventDefault();
     addrBar.webContents.executeJavaScript('document.body.firstElementChild.value',false).then((query) => handleQuery(query));
+  }
+}
+
+function showContextMenu(linkUrl){
+  const titleItem = {
+    label: linkUrl,
+    enabled: false // Disable clicking on the title
+  };
+  const menuTemplate = [titleItem,
+    {
+      label: 'Open Link',
+      click: () => {
+        shell.openExternal(linkUrl);
+      }
+    },
+    {
+      label: 'Copy Link',
+      click: () => {
+        clipboard.writeText(linkUrl);
+      }
+    },
+  ];
+
+  const contextMenu = Menu.buildFromTemplate(menuTemplate);
+  contextMenu.popup();
+}
+
+function onContextMenu(event, params){
+  //console.log(params);
+  if (params.mediaType === 'none' && params.linkURL) {
+    showContextMenu(params.linkURL);
   }
 }
 

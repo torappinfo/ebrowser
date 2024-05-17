@@ -9,6 +9,7 @@
   "build": {
     "appId": "torapp.eweb",
     "productName": "eweb",
+    "publish": "github",
     "files": [
       "eweb.js",
       "addressbar.html",
@@ -19,19 +20,12 @@
     },
     "dmg": {
       "contents": [
-        { "x": 410, "y": 150, "type": "file", "path": "${appPath}" },
-        { "x": 130, "y": 150, "type": "link", "path": "/Applications" }
+        { "x": 110, "y": 150 },
+        { "x": 240, "y": 150, "type": "link", "path": "/Applications" }
       ]
     },
-    "mac": {
-      "category": "public.app-category.utilities"
-    },
-    "win": {
-      "target": ["nsis"]
-    },
-    "linux": {
-      "deb": {},
-      "rpm": {}
+    "nsis": {
+      "createDesktopShortcut": "always"
     }
   },
   "dependencies": {
