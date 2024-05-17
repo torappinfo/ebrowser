@@ -121,6 +121,22 @@ function onContextMenu(event, params){
   }
 }
 
+class RequestInterceptor {
+  async didReceiveNavigationRequest(details) {
+    // 根据需要决定是否阻止或替换请求
+    console.log(` Intercepted request: ${details.url}`);
+
+    // 可以选择取消请求
+    // return { cancel: true };
+
+    // 或者发送自定义响应
+    // 注意：实际实现可能更为复杂，涉及到创建并返回response对象
+    // return { response: new Response('Intercepted!', { status: 200 }) };
+  }
+}
+
+//webContents.session.setWebContentsDelegate(new RequestInterceptor());
+
 function createWindow () {
   win = new BaseWindow({width: 800, height: 600,autoHideMenuBar: true});
   

@@ -4,11 +4,12 @@
   "description": "electron web browser",
   "main": "eweb.js",
   "scripts": {
-    "build": "node_modules/.bin/electron-builder"
+    "release": "electron-builder",
+    "test": "echo success"
   },
+  "author": "Richard H. Cao",
   "build": {
     "appId": "torapp.eweb",
-    "productName": "eweb",
     "publish": "github",
     "files": [
       "eweb.js",
@@ -32,7 +33,6 @@
     "electron":""
   },
   "devDependencies": {
-    "electron-builder": "",
-    "electron-prebuilt-compile": ""
+    "electron-builder": ""
   }
 }
