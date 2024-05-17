@@ -4,7 +4,6 @@ const path = require('path')
 const process = require('process')
 let win;
 let iTab = 1;
-let url = process.argv.slice(2).join(" ");
 let addrBar;
 let engines = {};
 
@@ -23,8 +22,16 @@ fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
 
 function resize(){
   var wsize = win.getSize();
-  addrBar.setBounds({x: 0, y: 0, width: wsize[0], height: 30});
-  win.contentView.children[iTab].setBounds({x: 0, y: 30, width: wsize[0], height: wsize[1]-30});
+  addrBar.setBounds({x: 0, y: 0, width: wsize[0], height: 50});
+  win.contentView.children[iTab].setBounds({x: 0, y: 30, width: wsize[0], height: wsize[1]-50});
+}
+
+function callbackWithHTMLString(request){//"html:" scheme
+  const url = request.url;
+  const html = url.slice(5);
+  return new Response(html,
+    { status: 200,
+      headers: {'content-type': 'text/html' } }); 
 }
 
 function switchTab(i){
@@ -116,7 +123,7 @@ function showContextMenu(linkUrl){
 
 function onContextMenu(event, params){
   //console.log(params);
-  if (params.mediaType === 'none' && params.linkURL) {
+  if (params.linkURL) {
     showContextMenu(params.linkURL);
   }
 }
@@ -149,10 +156,30 @@ function createWindow () {
       defaultEncoding: "utf-8",
     }});
   win.contentView.addChildView(addrBar);
-  addrBar.webContents.loadFile('addressbar.html');
-  addrBar.webContents.on('before-input-event',addrInputEvent);
+  let addrWC = addrBar.webContents;
+  //addrBar.webContents.loadFile('addressbar.html');
+  addrWC.session.protocol.handle('html', callbackWithHTMLString);
+  fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
+    let strA = ['html:<input type="text" list="autoc" style="width:100%" autofocus><datalist id="autoc">'];
+    if(!err){
+      const lines = str.split('\n');
+      lines.forEach((line,index)=>{
+        if(line.length>0){
+          strA.push("<option value='");
+          strA.push(line);
+          strA.push("'>");
+        }
+      });
+    }
+    strA.push("</datalist>");
+    let url = strA.join("");
+    console.log(url);
+    addrWC.loadURL(url);
+  });
+  addrWC.on('before-input-event',addrInputEvent);
 
   newTab();
+  let url = process.argv.slice(2).join(" ");
   if(url) handleQuery(url);
 
   win.on('resize', resize)
@@ -227,7 +254,7 @@ else {
       }
       win.show()
       win.focus()
-      url = args.slice(3).join(" ")
+      let url = args.slice(3).join(" ")
       handleQuery(url)
     }else
       createWindow();

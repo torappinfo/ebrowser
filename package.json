@@ -13,7 +13,6 @@
     "publish": "github",
     "files": [
       "eweb.js",
-      "addressbar.html",
       "package.json"
     ],
     "directories": {
