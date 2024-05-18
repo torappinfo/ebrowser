@@ -1,4 +1,4 @@
-const { app, BaseWindow, WebContentsView, globalShortcut, Menu, shell, clipboard} = require('electron')
+const { app, BaseWindow, WebContentsView, globalShortcut, Menu, MenuItem, shell, clipboard} = require('electron')
 const fs = require('fs');
 const path = require('path')
 const process = require('process')
@@ -6,6 +6,14 @@ let win;
 let iTab = 1;
 let addrBar;
 let engines = {};
+let autocompleteStrA;
+const optionsTemplate = [
+  {
+    label: 'Redirect',
+    type: 'checkbox',
+  },
+];
+const optMenu = Menu.buildFromTemplate(optionsTemplate);
 
 fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   if (err) {
@@ -18,6 +26,11 @@ fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   } catch (parseError) {
     console.error("Error parsing search.JSON:", parseError);
   }
+});
+
+fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
+  if(err) return;
+  autocompleteStrA = str.split('\n');
 });
 
 function resize(){
@@ -95,9 +108,10 @@ function handleQuery(q){
 }
 
 function addrInputEvent(event, inputEvent){
+  const jsVal = 'document.body.firstElementChild.value';
   if (inputEvent.key === 'Enter') {
     event.preventDefault();
-    addrBar.webContents.executeJavaScript('document.body.firstElementChild.value',false).then((query) => handleQuery(query));
+    addrBar.webContents.executeJavaScript(jsVal,false).then((query) => handleQuery(query));
   }
 }
 
@@ -169,23 +183,7 @@ function createWindow () {
   let addrWC = addrBar.webContents;
   //addrBar.webContents.loadFile('addressbar.html');
   addrWC.session.protocol.handle('html', callbackWithHTMLString);
-  fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
-    let strA = ['html:<input type="text" list="autoc" style="width:100%" autofocus><datalist id="autoc">'];
-    if(!err){
-      const lines = str.split('\n');
-      lines.forEach((line,index)=>{
-        if(line.length>0){
-          strA.push("<option value='");
-          strA.push(line);
-          strA.push("'>");
-        }
-      });
-    }
-    strA.push("</datalist>");
-    let url = strA.join("");
-    console.log(url);
-    addrWC.loadURL(url);
-  });
+  addrWC.loadURL('html:<input type="text" list="autoc" style="width:100%" autofocus>');
   addrWC.on('before-input-event',addrInputEvent);
 
   newTab();
@@ -201,15 +199,19 @@ function createWindow () {
     addrBar.webContents.focus();
   });
 
-  globalShortcut.register("Ctrl+T", ()=>{
-    win.contentView.children[iTab].setVisible(false);
-    newTab();
-  });
-
   globalShortcut.register("Ctrl+L", ()=>{
     addrBar.webContents.focus();
   });
 
+  globalShortcut.register("Ctrl+O", ()=>{
+    optMenu.popup();
+  });
+  
+  globalShortcut.register("Ctrl+T", ()=>{
+    win.contentView.children[iTab].setVisible(false);
+    newTab();
+  });
+  
   globalShortcut.register("Ctrl+W", ()=>{
     if(!win.isFocused()){
       BaseWindow.getFocusedWindow().close();

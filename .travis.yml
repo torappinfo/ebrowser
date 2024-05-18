@@ -42,3 +42,7 @@ deploy:
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
+
+branches:
+  only:
+  - prod
