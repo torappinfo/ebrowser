@@ -108,11 +108,29 @@ function handleQuery(q){
 }
 
 function addrInputEvent(event, inputEvent){
+  if(inputEvent.control || inputEvent.alt || inputEvent.meta) return;
   const jsVal = 'document.body.firstElementChild.value';
+  const addrWC = addrBar.webContents;
   if (inputEvent.key === 'Enter') {
     event.preventDefault();
-    addrBar.webContents.executeJavaScript(jsVal,false).then((query) => handleQuery(query));
+    addrWC.executeJavaScript(jsVal,false).then((query) => handleQuery(query));
+    return;
   }
+  /*
+  if (inputEvent.type !== 'keyUp') return;
+  addrWC.executeJavaScript(jsVal,false).then((q) => {
+    let autocMenu = new Menu();
+    const filteredA = autocompleteStrA.filter(str => str.includes(q));
+    if( 0==filteredA.length) return;
+    for (let str of filteredA) {
+      let menuItem = new MenuItem({
+        label: str,
+      });
+      autocMenu.append(menuItem);
+    }
+    //autocMenu.popup();
+  });
+  */
 }
 
 function showContextMenu(linkUrl){
