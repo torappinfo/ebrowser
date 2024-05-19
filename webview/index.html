@@ -17,15 +17,17 @@
   .curWV{display: inherit !important;}
 </style>
 <script>
-  var wv;
-  var wvContainer;
+  var iTab = 0;
+  var tabs;
   var engines = {};
   function switchTab(i){
-    wv.classList.remove('curWV');
-    try {
-      wv = wvContainer[i];
-    }catch(e){}
-    wv.classList.add('curWV');
+    tabs.children[iTab].classList.remove('curWV');
+    iTab = i;
+    tabs.children[iTab].classList.add('curWV');
+  }
+  function newTab(){
+    var tab = document.createElement('webview');
+    tabs.appendChild(tab);
   }
   function keyPress(e){
     var key = e.key;
@@ -69,7 +71,7 @@
       else
         url = bang(q, iS);
     }while(false);
-    wv.src=url;
+    tabs.children[iTab].src=url;
   }
 </script>
 </head>
@@ -80,8 +82,7 @@
   <webview class="curWV"></webview>
   </div>
   <script>
-    wvContainer = document.body.children[1];
-    wv = wvContainer.firstElementChild;
+    tabs = document.body.children[1];
     handleQuery(location.hash.slice(1));
     document.addEventListener('keydown', keyPress);
   </script>
