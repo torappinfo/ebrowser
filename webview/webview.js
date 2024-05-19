@@ -91,6 +91,7 @@ app.on ('web-contents-created', (event, contents) => {
       win.webContents.executeJavaScript(js,false);
       return { action: "deny" };
     });
+    contents.on('context-menu',onContextMenu);
   }
 });
 
@@ -98,3 +99,40 @@ fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   if (err) return;
   win.webContents.executeJavaScript("engines=JSON.parse(`"+jsonString+"`)",false);
 });
+
+function showContextMenu(linkUrl){
+  const titleItem = {
+    label: linkUrl,
+    enabled: false // Disable clicking on the title
+  };
+  const menuTemplate = [titleItem,
+    {
+      label: 'Open Link',
+      click: () => {
+        shell.openExternal(linkUrl);
+      }
+    },
+    {
+      label: 'Copy Link',
+      click: () => {
+        clipboard.writeText(linkUrl);
+      }
+    },
+    {
+      label: 'Download',
+      click: () => {
+        win.contentView.children[i].webContents.downloadURL(linkUrl);
+      }
+    },
+  ];
+
+  const contextMenu = Menu.buildFromTemplate(menuTemplate);
+  contextMenu.popup();
+}
+
+function onContextMenu(event, params){
+  //console.log(params);
+  if (params.linkURL) {
+    showContextMenu(params.linkURL);
+  }
+}
