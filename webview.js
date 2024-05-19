@@ -55,6 +55,11 @@ function createWindow () {
     win.setTitle(url);
   }
 
+  globalShortcut.register("Ctrl+G", ()=>{
+    let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
+    win.webContents.executeJavaScript(js,false)
+  });
+
   globalShortcut.register("Ctrl+L", ()=>{
     win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
   });
