@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, Menu} = require('electron')
+const { app, BrowserWindow, globalShortcut, Menu, shell, clipboard} = require('electron')
 let win;
 
 if(!app.requestSingleInstanceLock())
@@ -15,6 +15,7 @@ else {
       win.focus()
       url = args.slice(3).join(" ");
       win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
+      win.setTitle(url);
     }else
       createWindow();
   })
@@ -37,9 +38,21 @@ function createWindow () {
   })
 
   win.loadFile('index.html');
+  fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
+    if (err) return;
+    win.webContents.executeJavaScript("engines=JSON.parse(`"+jsonString+"`)",false);
+  });
+
+  fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
+    if(err) return;
+    let js = "appendAutoc(`"+str+"`)";
+    win.webContents.executeJavaScript(js,false);
+  });
+
   if(process.argv.length>2){
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
+    win.setTitle(url);
   }
 
   globalShortcut.register("Ctrl+L", ()=>{
@@ -57,13 +70,29 @@ function createWindow () {
   });
   
   globalShortcut.register("Ctrl+Tab", ()=>{
-    win.webContents.executeJavaScript("tabInc(1)",false);
+    let js="tabInc(1);tabs.children[iTab].getTitle()";
+    win.webContents.executeJavaScript(js,false).then((r)=>{
+      win.setTitle(r);
+    });
   });
 
   globalShortcut.register("Ctrl+Shift+Tab", ()=>{
-    win.webContents.executeJavaScript("tabDec(-1)",false);
+    let js="tabDec(-1);tabs.children[iTab].getTitle()";
+    win.webContents.executeJavaScript(js,false).then((r)=>{
+      win.setTitle(r);
+    });
   });
 
+  globalShortcut.register("Ctrl+Left", ()=>{
+    let js="tabs.children[iTab].goBack()";
+    win.webContents.executeJavaScript(js,false);
+  });
+
+  globalShortcut.register("Ctrl+Right", ()=>{
+    let js="tabs.children[iTab].goForward()";
+    win.webContents.executeJavaScript(js,false);
+  });
+  
   globalShortcut.register("Esc", ()=>{
     win.webContents.executeJavaScript("document.activeElement.blur()",false);
   });
@@ -92,18 +121,10 @@ app.on ('web-contents-created', (event, contents) => {
       return { action: "deny" };
     });
     contents.on('context-menu',onContextMenu);
+    contents.on('page-title-updated',(event,title)=>{
+      win.setTitle(title);
+    });
   }
-});
-
-fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
-  if (err) return;
-  win.webContents.executeJavaScript("engines=JSON.parse(`"+jsonString+"`)",false);
-});
-
-fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
-  if(err) return;
-  let js = "appendAutoc(`"+str+"`)";
-  win.webContents.executeJavaScript(js,false);
 });
 
 function showContextMenu(linkUrl){
