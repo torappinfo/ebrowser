@@ -100,6 +100,12 @@ fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   win.webContents.executeJavaScript("engines=JSON.parse(`"+jsonString+"`)",false);
 });
 
+fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
+  if(err) return;
+  let js = "appendAutoc(`"+str+"`)";
+  win.webContents.executeJavaScript(js,false);
+});
+
 function showContextMenu(linkUrl){
   const titleItem = {
     label: linkUrl,

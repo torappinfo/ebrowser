@@ -52,6 +52,15 @@
     tabs.children[iTab].classList.add('curWV');
     return nTabs;
   }
+  function appendAutoc(str){
+    let dl = document.forms[0].children[0];
+    let lines = str.split('\n');
+    for(let line of lines){
+      let opt = document.createElement('option');
+      opt.value = line;
+      dl.appendChild(opt);
+    }
+  }
   function keyPress(e){
     var key = e.key;
     var inputE = document.forms[0].q;
@@ -100,7 +109,8 @@
 </head>
 <body>
   <form action="javascript:handleQuery(getQ())">
-  <input type="text" name=q style="width:100%"></form>
+  <datalist id="autoc"></datalist>
+  <input type="text" list="autoc" name=q style="width:100%"></form>
   <div class="webviews">
   <webview class="curWV"></webview>
   </div>
