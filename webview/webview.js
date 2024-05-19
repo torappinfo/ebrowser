@@ -45,6 +45,24 @@ function createWindow () {
     win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
   });
 
+  globalShortcut.register("Ctrl+T", ()=>{
+    win.webContents.executeJavaScript("newTab();switchTab(tabs.children.length-1)",false);
+  });
+
+  globalShortcut.register("Ctrl+W", ()=>{
+    win.webContents.executeJavaScript("tabClose()",false).then((r)=>{
+      if(""===r) win.close();
+    });
+  });
+  
+  globalShortcut.register("Ctrl+Tab", ()=>{
+    win.webContents.executeJavaScript("tabInc(1)",false);
+  });
+
+  globalShortcut.register("Ctrl+Shift+Tab", ()=>{
+    win.webContents.executeJavaScript("tabDec(-1)",false);
+  });
+
   globalShortcut.register("Esc", ()=>{
     win.webContents.executeJavaScript("document.activeElement.blur()",false);
   });

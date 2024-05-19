@@ -29,6 +29,29 @@
     var tab = document.createElement('webview');
     tabs.appendChild(tab);
   }
+  function tabInc(num){
+    let nTabs = tabs.children.length;
+    if(nTabs<2) return;
+    let i = iTab +num;
+    if(i>=nTabs) i=0;
+    switchTab(i);
+  }
+  function tabDec(num){
+    let nTabs = tabs.children.length;
+    if(nTabs<2) return;
+    let i = iTab +num;
+    if(i<0) i=nTabs-1;
+    switchTab(i);
+  }
+  function tabClose(){
+    let nTabs = tabs.children.length;
+    if(nTabs<2) return "";//no remain tab
+    tabs.removeChild(tabs.children[iTab]);
+    nTabs--;
+    if(iTab>=nTabs) iTab=iTab-1;
+    tabs.children[iTab].classList.add('curWV');
+    return nTabs;
+  }
   function keyPress(e){
     var key = e.key;
     var inputE = document.forms[0].q;
