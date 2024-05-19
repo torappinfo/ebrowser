@@ -42,13 +42,6 @@ function createWindow () {
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
   }
 
-  win.webContents.setWindowOpenHandler((urlInfo)=>{
-    let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
-        urlInfo.url+"'";
-    win.webContents.executeJavaScript(js,false);
-    return { action: 'deny' }
-  });
-
   globalShortcut.register("Ctrl+L", ()=>{
     win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
   });
@@ -89,6 +82,17 @@ app.on('activate', function () {
 app.on('will-quit', () => {
   globalShortcut.unregisterAll()
 })
+
+app.on ('web-contents-created', (event, contents) => {
+  if (contents.getType () === 'webview') {
+    contents.setWindowOpenHandler(({ url }) => {
+      let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
+          url+"'";
+      win.webContents.executeJavaScript(js,false);
+      return { action: "deny" };
+    });
+  }
+});
 
 fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   if (err) return;
