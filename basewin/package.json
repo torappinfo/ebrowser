@@ -2,7 +2,7 @@
   "name": "eweb",
   "version": "1.0.0",
   "description": "electron web browser",
-  "main": "webview.js",
+  "main": "eweb.js",
   "scripts": {
     "release": "electron-builder",
     "test": "echo success"
@@ -12,8 +12,7 @@
     "appId": "torapp.eweb",
     "publish": "github",
     "files": [
-      "webview.js",
-      "index.html",
+      "eweb.js",
       "package.json"
     ],
     "directories": {
