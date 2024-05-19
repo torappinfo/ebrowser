@@ -8,16 +8,22 @@
     flex-direction: column;
     height: 100%;
   }
-  webview{display: none;flex-grow:1;}
+  div.webviews{
+    display: flex;
+    flex-direction: column;
+    flex-grow:1;
+  }
+  webview{display: none;width:100%;height:100%}
   .curWV{display: inherit !important;}
 </style>
 <script>
   var wv;
+  var wvContainer;
   var engines = {};
   function switchTab(i){
     wv.classList.remove('curWV');
     try {
-      wv = document.body.children[i+1];
+      wv = wvContainer[i];
     }catch(e){}
     wv.classList.add('curWV');
   }
@@ -65,15 +71,18 @@
     }while(false);
     wv.src=url;
   }
-  window.onload = function(){
-    wv = document.body.children[1];
-    handleQuery(location.hash.slice(1));
-    document.addEventListener('keydown', keyPress);
-  }
 </script>
 </head>
 <body>
   <form action="javascript:handleQuery(getQ())">
   <input type="text" name=q style="width:100%"></form>
-  <webview class="curWV" style="width:100%"></webview>
+  <div class="webviews">
+  <webview class="curWV"></webview>
+  </div>
+  <script>
+    wvContainer = document.body.children[1];
+    wv = wvContainer.firstElementChild;
+    handleQuery(location.hash.slice(1));
+    document.addEventListener('keydown', keyPress);
+  </script>
 </body></html>
