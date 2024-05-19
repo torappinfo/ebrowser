@@ -37,7 +37,7 @@ function createWindow () {
   })
 
   win.loadFile('index.html');
-  {
+  if(process.argv.length>2){
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
   }
