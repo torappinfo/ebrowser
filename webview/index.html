@@ -65,15 +65,15 @@
     }while(false);
     wv.src=url;
   }
+  window.onload = function(){
+    wv = document.body.children[1];
+    handleQuery(location.hash.slice(1));
+    document.addEventListener('keydown', keyPress);
+  }
 </script>
 </head>
 <body>
   <form action="javascript:handleQuery(getQ())">
   <input type="text" name=q style="width:100%"></form>
   <webview class="curWV" style="width:100%"></webview>
-  <script>
-    wv = document.body.children[1];
-    handleQuery(location.hash.slice(1));
-    document.addEventListener('keydown', keyPress);
-  </script>
 </body></html>
