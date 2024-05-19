@@ -1,30 +1,5 @@
 const { app, BrowserWindow, globalShortcut} = require('electron')
-const path = require('path')
-const process = require('process')
 let win;
-let view;
-
-function createWindow () {
-  win = new BrowserWindow(
-    {width: 800, height: 600,autoHideMenuBar: true,
-     webPreferences: {
-       webviewTag: true,
-     }});
-
-  win.on('closed', function () {
-    win = null
-  })
-
-  win.loadFile('index.html',{hash:process.argv.slice(2).join(" ")})
-
-  globalShortcut.register("Ctrl+L", ()=>{
-    win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
-  });
-
-  globalShortcut.register("Esc", ()=>{
-    win.webContents.executeJavaScript("document.activeElement.blur()",false);
-  });
-}
 
 if(!app.requestSingleInstanceLock())
   app.quit()
@@ -45,6 +20,36 @@ else {
   })
 }
 
+const fs = require('fs');
+const path = require('path')
+const process = require('process')
+
+function createWindow () {
+  win = new BrowserWindow(
+    {width: 800, height: 600,autoHideMenuBar: true,
+     webPreferences: {
+       webviewTag: true,
+     }});
+
+  win.on('closed', function () {
+    win = null
+  })
+
+  win.loadFile('index.html');
+  {
+    let url=process.argv.slice(2).join(" ");
+    win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
+  }
+
+  globalShortcut.register("Ctrl+L", ()=>{
+    win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
+  });
+
+  globalShortcut.register("Esc", ()=>{
+    win.webContents.executeJavaScript("document.activeElement.blur()",false);
+  });
+}
+
 app.on('window-all-closed', function () {
   app.quit()
 })
@@ -58,3 +63,8 @@ app.on('activate', function () {
 app.on('will-quit', () => {
   globalShortcut.unregisterAll()
 })
+
+fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
+  if (err) return;
+  win.webContents.executeJavaScript("engines=JSON.parse(`"+jsonString+"`)",false);
+});

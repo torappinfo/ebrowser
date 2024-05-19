@@ -21,11 +21,6 @@
     }catch(e){}
     wv.classList.add('curWV');
   }
-  function onHashChange(){
-    let q=location.hash.slice(1);
-    console.log(q);
-    handleQuery(q);
-  }
   function keyPress(e){
     var key = e.key;
     var inputE = document.forms[0].q;
@@ -78,8 +73,7 @@
   <webview class="curWV" style="width:100%"></webview>
   <script>
     wv = document.body.children[1];
-    wv.src = location.hash.slice(1);
-    window.addEventListener('hashchange',onHashChange);
+    handleQuery(location.hash.slice(1));
     document.addEventListener('keydown', keyPress);
   </script>
 </body></html>

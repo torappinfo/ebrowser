@@ -1,8 +1,27 @@
 const { app, BaseWindow, WebContentsView, globalShortcut, Menu, MenuItem, shell, clipboard} = require('electron')
+let win;
+if(!app.requestSingleInstanceLock())
+  app.quit()
+else {
+  app.on('ready', createWindow);
+  app.on('second-instance', (event, args) => {
+    // 当已经有运行的实例时，我们激活窗口而不是创建新的窗口
+    if (win) {
+      if (win.isMinimized()) {
+        win.restore()
+      }
+      win.show()
+      win.focus()
+      let url = args.slice(3).join(" ")
+      handleQuery(url)
+    }else
+      createWindow();
+  })
+}
+
 const fs = require('fs');
 const path = require('path')
 const process = require('process')
-let win;
 let iTab = 1;
 let addrBar;
 let engines = {};
@@ -271,25 +290,6 @@ function createWindow () {
     win.contentView.children[iTab].webContents.goForward();
   });
 
-}
-
-if(!app.requestSingleInstanceLock())
-  app.quit()
-else {
-  app.on('ready', createWindow);
-  app.on('second-instance', (event, args) => {
-    // 当已经有运行的实例时，我们激活窗口而不是创建新的窗口
-    if (win) {
-      if (win.isMinimized()) {
-        win.restore()
-      }
-      win.show()
-      win.focus()
-      let url = args.slice(3).join(" ")
-      handleQuery(url)
-    }else
-      createWindow();
-  })
 }
 
 app.on('window-all-closed', function () {
