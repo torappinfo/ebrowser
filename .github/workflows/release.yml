@@ -1,0 +1,36 @@
+# Action 名称，可自定义
+name: Build/release
+
+# 触发事件：提交名称以 v 开头的 tag 时触发
+on:
+  push:
+    tags:
+      - 'v*.*
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        # 运行环境：这里配置了 macos 和 windows，最终会在这两个环境打包
+        os: [macos-latest, windows-latest]
+
+    # 执行步骤
+    steps:
+      # 检出代码
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      # 安装环境
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 21
+
+      - name: Build/release Electron app
+        uses: classfang/action-electron-builder@v1.0.0
+        with:
+          # GitHub token, automatically provided to the action
+          github_token: ${{ secrets.github_token }}
+          release: true
