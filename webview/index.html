@@ -28,6 +28,7 @@
   function newTab(){
     var tab = document.createElement('webview');
     tabs.appendChild(tab);
+    tab.addEventListener('new-window',onNewWin);
   }
   function tabInc(num){
     let nTabs = tabs.children.length;
@@ -51,6 +52,13 @@
     if(iTab>=nTabs) iTab=iTab-1;
     tabs.children[iTab].classList.add('curWV');
     return nTabs;
+  }
+  function onNewWin(event){
+    event.preventDefault();
+    const url = event.url;
+    newTab();
+    switchTab(tabs.children.length-1);
+    tabs.children[iTab].src=url;
   }
   function keyPress(e){
     var key = e.key;
@@ -107,6 +115,7 @@
   <script>
     tabs = document.body.children[1];
     handleQuery(location.hash.slice(1));
+    tabs.children[0].addEventListener('new-window',onNewWin);
     document.addEventListener('keydown', keyPress);
   </script>
 </body></html>

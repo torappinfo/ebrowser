@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut} = require('electron')
+const { app, BrowserWindow, globalShortcut, Menu} = require('electron')
 let win;
 
 if(!app.requestSingleInstanceLock())
@@ -19,6 +19,7 @@ else {
       createWindow();
   })
 }
+Menu.setApplicationMenu(null);
 
 const fs = require('fs');
 const path = require('path')
@@ -40,6 +41,13 @@ function createWindow () {
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
   }
+
+  win.webContents.setWindowOpenHandler((urlInfo)=>{
+    let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
+        urlInfo.url+"'";
+    win.webContents.executeJavaScript(js,false);
+    return { action: 'deny' }
+  });
 
   globalShortcut.register("Ctrl+L", ()=>{
     win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
