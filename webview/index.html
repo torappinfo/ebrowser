@@ -13,6 +13,7 @@
 </style>
 <script>
   var wv;
+  var engines = {};
   function switchTab(i){
     wv.classList.remove('curWV');
     try {
@@ -21,7 +22,9 @@
     wv.classList.add('curWV');
   }
   function onHashChange(){
-    wv.src = location.hash.slice(1);
+    let q=location.hash.slice(1);
+    console.log(q);
+    handleQuery(q);
   }
   function keyPress(e){
     var key = e.key;
@@ -39,11 +42,38 @@
     }
   }
   function getQ(){return document.forms[0].q.value;}
-  function gs(t){var d=document;var q=getQ();var u=q;var a=q.indexOf('://');if((q.indexOf('.')>0||a>0)&&q.indexOf(' ')<0){if(a<0){u='http://'+q}}else{u=t+encodeURIComponent(q)}wv.src=u}
+  function bang(query, iSpace){
+    let name = query.slice(0,iSpace);
+    let engine = engines[name];
+    if(engine)
+      return engine+query.substring(iSpace+1);
+    return "https://www.bing.com/search?q="+query;
+  }
+  function handleQuery(q){
+    var url=q;
+    do {
+      if(q.length>9){
+        let c6 = q.charCodeAt(6);
+        if(47==c6){// '/'
+          let c5 = q.charCodeAt(5);
+          if(47==c5 && 58==q.charCodeAt(4))//http/file urls
+            break;
+          if(58==c5 && 47==q.charCodeAt(7))//https://
+            break;
+        }else if(q.startsWith("javascript:")) break;
+      }
+      let iS = q.indexOf(' ');
+      if(iS<0 && q.indexOf('.')>0)
+        url = 'http://'+q;
+      else
+        url = bang(q, iS);
+    }while(false);
+    wv.src=url;
+  }
 </script>
 </head>
 <body>
-  <form action="javascript:gs('https://www.bing.com/search?q=')">
+  <form action="javascript:handleQuery(getQ())">
   <input type="text" name=q style="width:100%"></form>
   <webview class="curWV" style="width:100%"></webview>
   <script>

@@ -1,0 +1,38 @@
+{
+  "name": "eweb",
+  "version": "1.0.0",
+  "description": "electron web browser",
+  "main": "webview.js",
+  "scripts": {
+    "release": "electron-builder",
+    "test": "echo success"
+  },
+  "author": "Richard H. Cao",
+  "build": {
+    "appId": "torapp.eweb",
+    "publish": "github",
+    "files": [
+      "webview.js",
+      "index.html",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "dmg": {
+      "contents": [
+        { "x": 110, "y": 150 },
+        { "x": 240, "y": 150, "type": "link", "path": "/Applications" }
+      ]
+    },
+    "nsis": {
+      "createDesktopShortcut": "always"
+    }
+  },
+  "dependencies": {
+    "electron":""
+  },
+  "devDependencies": {
+    "electron-builder": ""
+  }
+}

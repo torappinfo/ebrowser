@@ -14,6 +14,7 @@ const optionsTemplate = [
   },
 ];
 const optMenu = Menu.buildFromTemplate(optionsTemplate);
+Menu.setApplicationMenu(null);
 
 fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
   if (err) {

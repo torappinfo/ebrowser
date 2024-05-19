@@ -3,7 +3,6 @@ const path = require('path')
 const process = require('process')
 let win;
 let view;
-let url = process.argv[2];
 
 function createWindow () {
   win = new BrowserWindow(
@@ -16,8 +15,7 @@ function createWindow () {
     win = null
   })
 
-  let furl = `file://${path.join(__dirname, 'index.html')}#${url}`;
-  win.loadURL(furl)
+  win.loadFile('index.html',{hash:process.argv.slice(2).join(" ")})
 
   globalShortcut.register("Ctrl+L", ()=>{
     win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
@@ -40,9 +38,8 @@ else {
       }
       win.show()
       win.focus()
-      url = args[3]
-      let furl = `file://${path.join(__dirname, 'index.html')}#${url}`;
-      win.loadURL(furl)
+      url = args.slice(3).join(" ");
+      win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
     }else
       createWindow();
   })
