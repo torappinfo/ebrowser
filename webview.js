@@ -99,7 +99,8 @@ function createWindow () {
   });
   
   globalShortcut.register("Esc", ()=>{
-    win.webContents.executeJavaScript("document.activeElement.blur()",false);
+    let js = "document.activeElement.blur();tabs.children[iTab].stopFindInPage('clearSelection')";
+    win.webContents.executeJavaScript(js,false);
   });
 
   globalShortcut.register("F5", ()=>{
