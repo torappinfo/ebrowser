@@ -75,14 +75,14 @@ function createWindow () {
   });
   
   globalShortcut.register("Ctrl+Tab", ()=>{
-    let js="tabInc(1);tabs.children[iTab].getTitle()";
+    let js="tabInc(1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
     win.webContents.executeJavaScript(js,false).then((r)=>{
       win.setTitle(r);
     });
   });
 
   globalShortcut.register("Ctrl+Shift+Tab", ()=>{
-    let js="tabDec(-1);tabs.children[iTab].getTitle()";
+    let js="tabDec(-1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
     win.webContents.executeJavaScript(js,false).then((r)=>{
       win.setTitle(r);
     });
@@ -119,19 +119,21 @@ app.on('will-quit', () => {
 
 app.on ('web-contents-created', (event, contents) => {
   if (contents.getType () === 'webview') {
-    contents.setWindowOpenHandler(({ url }) => {
-      let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
-          url+"'";
-      win.webContents.executeJavaScript(js,false);
-      return { action: "deny" };
-    });
+    contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
-    contents.on('page-title-updated',(event,title)=>{
-      win.setTitle(title);
-    });
+    contents.on('page-title-updated',cbTitleUpdate);
+    //contents.on('did-finish-load',)
   }
 });
-
+function cbWindowOpenHandler({url}){
+  let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
+      url+"'";
+  win.webContents.executeJavaScript(js,false);
+  return { action: "deny" }; 
+}
+function cbTitleUpdate(event,title){
+  win.setTitle(title);
+}
 function showContextMenu(linkUrl){
   const titleItem = {
     label: linkUrl,

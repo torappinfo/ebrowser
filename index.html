@@ -71,6 +71,7 @@
       inputE.value = ":";
       inputE.focus();
       break;
+    case "/":
     case ":":
       inputE.value = "";
       inputE.focus();
@@ -86,9 +87,18 @@
     return "https://www.bing.com/search?q="+query;
   }
   function handleQuery(q){
+    if(q.length>1){
+      let c0=q.charCodeAt(0);
+      switch(c0){
+      case 47://"/"
+        tabs.children[iTab].findInPage(q.substring(1));
+        document.forms[0].q.blur();
+        return;
+      }
+    }
     var url=q;
     do {
-      if(q.length>9){
+      if(q.length>7){
         let c6 = q.charCodeAt(6);
         if(47==c6){// '/'
           let c5 = q.charCodeAt(5);
