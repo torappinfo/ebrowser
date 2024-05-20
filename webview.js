@@ -61,7 +61,7 @@ function createWindow () {
   });
 
   globalShortcut.register("Ctrl+L", ()=>{
-    win.webContents.executeJavaScript("document.forms[0].q.focus()",false);
+    win.webContents.executeJavaScript("document.forms[0].q.select()",false);
   });
 
   globalShortcut.register("Ctrl+T", ()=>{
