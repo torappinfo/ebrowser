@@ -101,6 +101,10 @@ function createWindow () {
   globalShortcut.register("Esc", ()=>{
     win.webContents.executeJavaScript("document.activeElement.blur()",false);
   });
+
+  globalShortcut.register("F5", ()=>{
+    win.webContents.executeJavaScript("tabs.children[iTab].reload()",false);
+  });
 }
 
 app.on('window-all-closed', function () {
