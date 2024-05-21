@@ -29,7 +29,6 @@
   }
   function newTab(){
     var tab = document.createElement('webview');
-    tab.partition = "wv";
     tab.allowpopups = true;
     tabs.appendChild(tab);
   }
@@ -131,7 +130,7 @@
   <datalist id="autoc"></datalist>
   <input type="text" list="autoc" name=q style="width:100%" autofocus></form>
   <div class="webviews">
-  <webview class="curWV" partition="wv" allowpopups></webview>
+  <webview class="curWV" allowpopups></webview>
   </div>
   <script>
     tabs = document.body.children[1];

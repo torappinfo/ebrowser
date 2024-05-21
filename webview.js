@@ -1,6 +1,5 @@
 const { app, BrowserWindow, globalShortcut, Menu, shell, clipboard,session, protocol, net} = require('electron')
 let win;
-let wvSession;
 
 if(!app.requestSingleInstanceLock())
   app.quit()
@@ -30,7 +29,6 @@ var gredirects = [];
 var gredirect;
 
 function createWindow () {
-  wvSession = session.fromPartition("wv");
   win = new BrowserWindow(
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
@@ -126,6 +124,7 @@ function createWindow () {
   globalShortcut.register("F5", ()=>{
     win.webContents.executeJavaScript("tabs.children[iTab].reload()",false);
   });
+  protocol.handle("https",cbScheme_https);
 }
 
 app.on('window-all-closed', function () {
@@ -147,22 +146,17 @@ app.on ('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
-    contents.session.webRequest.onBeforeRequest(interceptRequest);
+    //contents.session.webRequest.onBeforeRequest(interceptRequest);
     //contents.on('did-finish-load',)
   }
 });
 
-/*
-function cbScheme_https(request){
-  let url;
-  if(!gredirect)
-    url= request.url;
-  else
-    url = gredirect+request.url;
-  console.log(url)
-  return net.fetch(url);
+function cbScheme_https(req){
+  if(!gredirect){
+  }else
+    req.url = gredirect+req.url;
+  return net.fetch(req,{bypassCustomProtocolHandlers: true });
 }
-*/
 
 function interceptRequest(details, callback){
   do {
@@ -171,7 +165,7 @@ function interceptRequest(details, callback){
       let wc = details.webContents;
       let url = details.url;
       if(wc){
-        fetch(gredirect+url).then(res=>{
+        net.fetch(gredirect+url).then(res=>{
           if(res.ok) return res.arrayBuffer();
           throw new Error(`Err: ${res.status} - ${res.statusText}`);
         }).then(buffer=>{
