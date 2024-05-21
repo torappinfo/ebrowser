@@ -152,10 +152,18 @@ app.on ('web-contents-created', (event, contents) => {
 });
 
 function cbScheme_https(req){
+  let newReq = req;
   if(!gredirect){
-  }else
-    req.url = gredirect+req.url;
-  return net.fetch(req,{bypassCustomProtocolHandlers: true });
+  }else{
+    let newurl = gredirect+req.url;
+    newReq = new Request(newurl, {
+      credentials:req.credentials,
+      headers:req.headers,
+      method:req.method,
+      referer:req.referer
+    });
+  }
+  return net.fetch(newReq,{bypassCustomProtocolHandlers: true });
 }
 
 function interceptRequest(details, callback){
