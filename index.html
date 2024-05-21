@@ -20,6 +20,7 @@
   var iTab = 0;
   var tabs;
   var engines = {};
+  var gredirect;
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
   function switchTab(i){
@@ -95,6 +96,13 @@
       return engine+query.substring(iSpace+1);
     return "https://www.bing.com/search?q="+query;
   }
+  function loadUrl(url){
+    if(!gredirect){
+      tabs.children[iTab].src=url;
+      return;
+    }
+    
+  }
   function handleQuery(q){
     if(q.length>1){
       let c0=q.charCodeAt(0);
@@ -122,7 +130,7 @@
       else
         url = bang(q, iS);
     }while(false);
-    tabs.children[iTab].src=url;
+    loadUrl(url);
   }
 </script>
 </head>

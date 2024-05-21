@@ -80,11 +80,14 @@ function createWindow () {
   });
 
   globalShortcut.register("Ctrl+R", ()=>{
+    gredirect=null;
+    win.webContents.executeJavaScript("gredirect=null",false);
+  });
+
+  globalShortcut.register("Ctrl+Shift+R", ()=>{
     if(0==gredirects.length) return;
-    if(!gredirect)
-      gredirect=gredirects[0];
-    else
-      gredirect=null;
+    gredirect=gredirects[0];
+    win.webContents.executeJavaScript("gredirect='"+gredirect+"'",false);
   });
 
   globalShortcut.register("Ctrl+W", ()=>{
@@ -92,7 +95,7 @@ function createWindow () {
       if(""===r) win.close();
     });
   });
-  
+
   globalShortcut.register("Ctrl+Tab", ()=>{
     let js="tabInc(1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
     win.webContents.executeJavaScript(js,false).then((r)=>{
