@@ -157,15 +157,16 @@ function cbScheme_https(req){
   }else{
     let newurl = gredirect+req.url;
     newReq = new Request(newurl, {
-      credentials:req.credentials,
-      headers:req.headers,
-      method:req.method,
-      referer:req.referer
+      body:       req.body,
+      headers:    req.headers,
+      method:     req.method,
+      referer:    req.referer
     });
   }
   return net.fetch(newReq,{bypassCustomProtocolHandlers: true });
 }
 
+/*
 function interceptRequest(details, callback){
   do {
     if(!gredirect) break;  
@@ -196,6 +197,7 @@ function interceptRequest(details, callback){
   }while(false);
   callback({ cancel: false });
 }
+*/
 
 function cbWindowOpenHandler({url}){
   let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
