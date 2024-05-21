@@ -152,18 +152,20 @@ app.on ('web-contents-created', (event, contents) => {
 });
 
 function cbScheme_https(req){
-  let newReq = req;
   if(!gredirect){
-  }else{
-    let newurl = gredirect+req.url;
-    newReq = new Request(newurl, {
-      body:       req.body,
-      headers:    req.headers,
-      method:     req.method,
-      referer:    req.referer
-    });
+    return net.fetch(req,{bypassCustomProtocolHandlers: true });
   }
-  return net.fetch(newReq,{bypassCustomProtocolHandlers: true });
+  let newurl = gredirect+req.url;
+  const options = {
+    body:       req.body,
+    headers:    req.headers,
+    method:     req.method,
+    referer:    req.referer,
+    duplex: "half",
+    bypassCustomProtocolHandlers: true
+  };
+  
+  return net.fetch(newurl, options);
 }
 
 /*
