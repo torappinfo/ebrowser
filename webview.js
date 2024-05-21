@@ -81,13 +81,11 @@ function createWindow () {
 
   globalShortcut.register("Ctrl+R", ()=>{
     gredirect=null;
-    win.webContents.executeJavaScript("gredirect=null",false);
   });
 
   globalShortcut.register("Ctrl+Shift+R", ()=>{
     if(0==gredirects.length) return;
     gredirect=gredirects[0];
-    win.webContents.executeJavaScript("gredirect='"+gredirect+"'",false);
   });
 
   globalShortcut.register("Ctrl+W", ()=>{

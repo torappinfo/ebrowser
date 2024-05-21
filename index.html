@@ -20,7 +20,6 @@
   var iTab = 0;
   var tabs;
   var engines = {};
-  var gredirect;
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
   function switchTab(i){
@@ -96,25 +95,6 @@
       return engine+query.substring(iSpace+1);
     return "https://www.bing.com/search?q="+query;
   }
-  function loadUrl(url){
-    if(!gredirect){
-      tabs.children[iTab].src=url;
-      return;
-    }
-    fetch(gredirect+url).then(res=>{
-      if(res.ok) return res.blob();
-      throw new Error(`Err: ${response.status} - ${response.statusText}`);
-    }).then(blob=>{
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result;
-        tabs.children[iTab].loadURL(dataUrl,{baseURLForDataURL:url});
-      };
-      reader.readAsDataURL(blob);
-    }).catch(e=>{
-      console.log(gredirect+" err:",e);
-    });
-  }
   function handleQuery(q){
     if(q.length>1){
       let c0=q.charCodeAt(0);
@@ -142,7 +122,7 @@
       else
         url = bang(q, iS);
     }while(false);
-    loadUrl(url);
+    tabs.children[iTab].src=url;
   }
 </script>
 </head>
