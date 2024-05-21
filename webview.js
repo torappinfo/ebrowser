@@ -57,7 +57,6 @@ function createWindow () {
     if (err) return;
     try {
       gredirects = JSON.parse(jsonString);
-      //wvSession.protocol.handle('https',cbScheme_https);
     } catch (e){}
   });
 
@@ -147,11 +146,16 @@ app.on ('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
-    //contents.session.webRequest.onBeforeRequest(interceptRequest);
+    /*
+    contents.session.webRequest.onBeforeRequest(
+      {types: ['script', 'image', 'stylesheet', 'font', 'xhr','media','webSocket']},
+      interceptRequest);
+    */
     //contents.on('did-finish-load',)
   }
 });
 
+/*
 function cbScheme_https(request){
   let url;
   if(!gredirect)
@@ -162,7 +166,6 @@ function cbScheme_https(request){
   return net.fetch(url);
 }
 
-/*
 function interceptRequest(details, callback){
   if(gredirect){
     if(!details.url.startsWith(gredirect)){
