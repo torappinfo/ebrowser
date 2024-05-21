@@ -25,6 +25,8 @@ Menu.setApplicationMenu(null);
 const fs = require('fs');
 const path = require('path')
 const process = require('process')
+var gredirects = [];
+var gredirect;
 
 function createWindow () {
   win = new BrowserWindow(
@@ -49,6 +51,13 @@ function createWindow () {
     win.webContents.executeJavaScript(js,false);
   });
 
+  fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
+    if (err) return;
+    try {
+      gredirects = JSON.parse(jsonString);
+    } catch (e){}
+  });
+
   if(process.argv.length>2){
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
@@ -66,6 +75,14 @@ function createWindow () {
 
   globalShortcut.register("Ctrl+T", ()=>{
     win.webContents.executeJavaScript("newTab();switchTab(tabs.children.length-1)",false);
+  });
+
+  globalShortcut.register("Ctrl+R", ()=>{
+    if(0==gredirects.length) return;
+    if(!gredirect)
+      gredirect=gredirects[0];
+    else
+      gredirect=null;
   });
 
   globalShortcut.register("Ctrl+W", ()=>{
@@ -127,9 +144,22 @@ app.on ('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
+    contents.session.webRequest.onBeforeRequest(interceptRequest);
     //contents.on('did-finish-load',)
   }
 });
+
+function interceptRequest(details, callback){
+  if(gredirect){
+    if(!details.url.startsWith(gredirect)){
+      let newUrl = gredirect + details.url;
+      callback({ cancel: false, redirectURL: newUrl });
+      return;
+    }
+  }
+  callback({ cancel: false });
+}
+
 function cbWindowOpenHandler({url}){
   let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
       url+"'";
