@@ -20,6 +20,8 @@
   var iTab = 0;
   var tabs;
   var engines = {};
+  let lastKeyPressed;
+  let lastKeyPressed_millis = 0;
   function switchTab(i){
     tabs.children[iTab].classList.remove('curWV');
     iTab = i;
@@ -64,9 +66,15 @@
     }
   }
   function keyPress(e){
-    var key = e.key;
     var inputE = document.forms[0].q;
-    if (inputE === document.activeElement) return;
+    if (inputE === document.activeElement){
+      return;
+    }
+    var curMillis = Date.now();
+    if(curMillis-lastKeyPressed_millis>1000)
+      lastKeyPressed = null;
+    lastKeyPressed_millis = curMillis;
+    var key = e.key;
     switch (key) {
     case "!":
       inputE.value = ":";
