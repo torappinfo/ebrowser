@@ -1,5 +1,6 @@
-const { app, BrowserWindow, globalShortcut, Menu, shell, clipboard} = require('electron')
+const { app, BrowserWindow, globalShortcut, Menu, shell, clipboard,session, protocol, net} = require('electron')
 let win;
+let wvSession;
 
 if(!app.requestSingleInstanceLock())
   app.quit()
@@ -29,6 +30,7 @@ var gredirects = [];
 var gredirect;
 
 function createWindow () {
+  wvSession = session.fromPartition("wv");
   win = new BrowserWindow(
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
@@ -55,6 +57,7 @@ function createWindow () {
     if (err) return;
     try {
       gredirects = JSON.parse(jsonString);
+      //wvSession.protocol.handle('https',cbScheme_https);
     } catch (e){}
   });
 
@@ -144,11 +147,22 @@ app.on ('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
-    contents.session.webRequest.onBeforeRequest(interceptRequest);
+    //contents.session.webRequest.onBeforeRequest(interceptRequest);
     //contents.on('did-finish-load',)
   }
 });
 
+function cbScheme_https(request){
+  let url;
+  if(!gredirect)
+    url= request.url;
+  else
+    url = gredirect+request.url;
+  console.log(url)
+  return net.fetch(url);
+}
+
+/*
 function interceptRequest(details, callback){
   if(gredirect){
     if(!details.url.startsWith(gredirect)){
@@ -159,6 +173,7 @@ function interceptRequest(details, callback){
   }
   callback({ cancel: false });
 }
+*/
 
 function cbWindowOpenHandler({url}){
   let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+

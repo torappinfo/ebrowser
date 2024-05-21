@@ -27,6 +27,7 @@
   }
   function newTab(){
     var tab = document.createElement('webview');
+    tab.partition = "wv";
     tab.allowpopups = true;
     tabs.appendChild(tab);
   }
@@ -109,7 +110,7 @@
       }
       let iS = q.indexOf(' ');
       if(iS<0 && q.indexOf('.')>0)
-        url = 'http://'+q;
+        url = 'https://'+q;
       else
         url = bang(q, iS);
     }while(false);
@@ -122,7 +123,7 @@
   <datalist id="autoc"></datalist>
   <input type="text" list="autoc" name=q style="width:100%" autofocus></form>
   <div class="webviews">
-  <webview class="curWV" allowpopups></webview>
+  <webview class="curWV" partition="wv" allowpopups></webview>
   </div>
   <script>
     tabs = document.body.children[1];
