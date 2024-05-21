@@ -101,7 +101,19 @@
       tabs.children[iTab].src=url;
       return;
     }
-    
+    fetch(gredirect+url).then(res=>{
+      if(res.ok) return res.blob();
+      throw new Error(`Err: ${response.status} - ${response.statusText}`);
+    }).then(blob=>{
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        tabs.children[iTab].loadURL(dataUrl,{baseURLForDataURL:url});
+      };
+      reader.readAsDataURL(blob);
+    }).catch(e=>{
+      console.log(gredirect+" err:",e);
+    });
   }
   function handleQuery(q){
     if(q.length>1){
