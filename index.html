@@ -66,24 +66,35 @@
   }
   function keyPress(e){
     var inputE = document.forms[0].q;
-    if (inputE === document.activeElement){
+    if (e.ctrlKey||e.altKey||e.metaKey)
+      return;
+    var key = e.key;
+    switch(key){
+    case "PageDown":
+    case "PageUp":
+      tabs.children[iTab].focus();
       return;
     }
+    if(inputE === document.activeElement) return;
     var curMillis = Date.now();
     if(curMillis-lastKeyPressed_millis>1000)
       lastKeyPressed = null;
     lastKeyPressed_millis = curMillis;
-    var key = e.key;
+
     switch (key) {
     case "!":
       inputE.value = ":";
       inputE.focus();
-      break;
+      lastKeyPressed = null;
+      return;
     case "/":
     case ":":
       inputE.value = "";
       inputE.focus();
-      break;
+      lastKeyPressed = null;
+      return;
+    }
+    if("u"===lastKeyPressed){
     }
   }
   function getQ(){return document.forms[0].q.value;}
