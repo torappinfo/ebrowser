@@ -64,6 +64,8 @@ function createWindow () {
     win.setTitle(url);
   }
 
+  app.commandLine.appendSwitch ('trace-warnings');
+
   globalShortcut.register("Ctrl+G", ()=>{
     let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
     win.webContents.executeJavaScript(js,false)
@@ -246,3 +248,15 @@ function onContextMenu(event, params){
     showContextMenu(params.linkURL);
   }
 }
+/*
+function setProxy(){
+  net.setGlobalProxy ({
+    scheme: 'https',
+    proxy: {
+      host: '127.0.0.1',
+      port: 1080,
+      bypass: 'localhost'
+    }
+  });
+}
+*/
