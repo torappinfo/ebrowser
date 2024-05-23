@@ -1,7 +1,8 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8">
 <style>
   html{
-   height: 100%;
+    height: 100%;
+    overflow: hidden;
   }
   body{
     display: flex;
@@ -72,6 +73,8 @@
     switch(key){
     case "PageDown":
     case "PageUp":
+	//let js ="javascript:alert('hi');{let e=new KeyboardEvent('keydown',{key:'"+key+
+	  //"'});document.dispatchEvent(e)}";
       tabs.children[iTab].focus();
       return;
     }
