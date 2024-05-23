@@ -66,6 +66,10 @@ function createWindow () {
 
   app.commandLine.appendSwitch ('trace-warnings');
 
+  win.webContents.on('page-title-updated',(event,title)=>{
+    console.log(title);
+  });
+
   globalShortcut.register("Ctrl+G", ()=>{
     let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
     win.webContents.executeJavaScript(js,false)
