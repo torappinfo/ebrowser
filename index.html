@@ -21,6 +21,7 @@
   var iTab = 0;
   var tabs;
   var engines = {};
+  var focusMesg;
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
   function switchTab(i){
@@ -73,8 +74,8 @@
     switch(key){
     case "PageDown":
     case "PageUp":
-	//let js ="javascript:alert('hi');{let e=new KeyboardEvent('keydown',{key:'"+key+
-	  //"'});document.dispatchEvent(e)}";
+      focusMesg ="javascript:alert('hi');{let e=new KeyboardEvent('keydown',{key:'"+key+
+	  "'});document.dispatchEvent(e)}";
       tabs.children[iTab].focus();
       return;
     }

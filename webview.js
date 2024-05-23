@@ -148,10 +148,20 @@ app.on ('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
+    //contents.on('focus', ()=>{cbFocus(contents)});
     //contents.session.webRequest.onBeforeRequest(interceptRequest);
     //contents.on('did-finish-load',)
   }
 });
+
+function cbFocus(webContents){
+  let js = "if(focusMesg){let m=focusMesg;focusMesg=null;m}";
+  win.webContents.executeJavaScript(js,false).then((r)=>{
+    //focusMesg as js code
+    console.log(r);
+    if(r) webContents.executeJavaScript(r,false);
+  });
+}
 
 function cbScheme_https(req){
   if(!gredirect){
