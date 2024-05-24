@@ -27,6 +27,7 @@ const path = require('path')
 const process = require('process')
 var gredirects = [];
 var gredirect;
+var bJS = true;
 
 function createWindow () {
   win = new BrowserWindow(
@@ -66,8 +67,24 @@ function createWindow () {
 
   app.commandLine.appendSwitch ('trace-warnings');
 
-  win.webContents.on('page-title-updated',(event,title)=>{
-    console.log(title);
+  win.webContents.on('page-title-updated',(event,cmd)=>{
+    console.log(cmd);
+    if(cmd.length<3) return;
+    let c0 = cmd.charCodeAt(0);
+    let c1 = cmd.charCodeAt(1);
+    let c2 = cmd.charCodeAt(2);
+    switch(c0){
+    case 58: //':'
+      switch(c1){
+      case 110://'n' no to disable
+      case 117://'u' use to enable
+        let bV = !(117-c1);//boolean
+        switch(c2){
+        case 106: //'j' for js
+          bJS = bV;
+        }
+      }
+    }
   });
 
   globalShortcut.register("Ctrl+G", ()=>{
@@ -168,6 +185,8 @@ function cbFocus(webContents){
 }
 
 function cbScheme_https(req){
+  if(!bJS && req.url.endsWith(".js"))
+    return new Response('',{});
   if(!gredirect){
     return net.fetch(req,{bypassCustomProtocolHandlers: true });
   }

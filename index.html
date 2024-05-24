@@ -109,12 +109,18 @@
       return engine+query.substring(iSpace+1);
     return "https://www.bing.com/search?q="+query;
   }
+  function coloncommand(q){
+    document.title = q;
+  }
   function handleQuery(q){
     if(q.length>1){
       let c0=q.charCodeAt(0);
       switch(c0){
       case 47://"/"
         tabs.children[iTab].findInPage(q.substring(1));
+        return;
+      case 58://':'
+        coloncommand(q);
         return;
       }
     }
