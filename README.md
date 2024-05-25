@@ -1,6 +1,13 @@
 ### Eweb browser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
 Electron WEB browser bases on electron (thus chromium) with the philosophy for [uweb browser](https://gitlab.com/jamesfengcao/uweb).
 
+- lightweight (less than 10k) without bundled electron.
+- highly performant.
+- keyboard (command line) friendly.
+- customizable.
+
+Note: Usually electron apps are heavyweight as they use browsers for simple things. Eweb uses core chromium effectively and very lightweight. Recommend to install electron and eweb separately.
+
 #### Key shortcuts
 - CTRL+G: address bar to show page url
 - CTRL+L: focus to address bar
