@@ -28,6 +28,8 @@ const process = require('process')
 var gredirects = [];
 var gredirect;
 var bJS = true;
+var proxies = {};
+var proxy;
 
 function createWindow () {
   win = new BrowserWindow(
@@ -59,30 +61,47 @@ function createWindow () {
     } catch (e){}
   });
 
+  fs.readFile(path.join(__dirname,'proxy.json'), 'utf8', (err, jsonString) => {
+    if (err) return;
+    try {
+      let key1st;
+      proxies = JSON.parse(jsonString,(key,value)=>{
+        if(!key1st) key1st=key;
+        return value;
+      });
+      proxy = proxies[key1st];
+    } catch (e){}
+  });
+
   if(process.argv.length>2){
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
     win.setTitle(url);
   }
 
-  app.commandLine.appendSwitch ('trace-warnings');
+  //app.commandLine.appendSwitch ('trace-warnings');
 
   win.webContents.on('page-title-updated',(event,cmd)=>{
     console.log(cmd);
     if(cmd.length<3) return;
     let c0 = cmd.charCodeAt(0);
-    let c1 = cmd.charCodeAt(1);
-    let c2 = cmd.charCodeAt(2);
     switch(c0){
     case 58: //':'
-      switch(c1){
-      case 110://'n' no to disable
-      case 117://'u' use to enable
-        let bV = !(117-c1);//boolean
-        switch(c2){
-        case 106: //'j' for js
-          bJS = bV;
-        }
+      args = cmd.substring(1).split(/\s+/);
+      switch(args[0]){
+      case "nj":
+        bJS = false; return;
+      case "uj":
+        bJS = true; return;
+      case "np":
+        session.defaultSession.setProxy ({mode:"direct"});
+        return;
+      case "up":
+        if(args.length>1)
+          proxy = proxies[args[1]]; //retrieve proxy
+        if(proxy)
+          session.defaultSession.setProxy(proxy);
+        return;
       }
     }
   });
@@ -281,15 +300,3 @@ function onContextMenu(event, params){
     showContextMenu(params.linkURL);
   }
 }
-/*
-function setProxy(){
-  net.setGlobalProxy ({
-    scheme: 'https',
-    proxy: {
-      host: '127.0.0.1',
-      port: 1080,
-      bypass: 'localhost'
-    }
-  });
-}
-*/

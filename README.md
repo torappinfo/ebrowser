@@ -19,9 +19,13 @@ Electron WEB browser bases on electron (thus chromium) with the philosophy for [
 #### Address bar
 - "/" for find-in-page
 - ":" for address bar commands
+  - nj/uj for No/Use external Javascript files
+  - np : no proxy
+  - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName]
 - ":!" address bar commands
 
 #### Configuration files
-- "search.json": search engines
-- "default.autoc": predefined strings for address bar auto completion
-- "redirect.json": global redirection urls
+- "search.json": search engines as shortcut-queryUrl pairs.
+- "default.autoc": predefined strings for address bar auto completion.
+- "redirect.json": global redirection urls as array of urls
+- "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
