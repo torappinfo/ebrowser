@@ -26,9 +26,11 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 #### Address bar
 - "/" for find-in-page
 - ":" for address bar commands
+  - anycert : allow invalid certificates w/o arguments, restore to default
   - nj/uj for No/Use external Javascript files
   - np : no proxy
-  - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName]
+  - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName].
+  - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
 - ":!" address bar commands
 
 #### Configuration files
@@ -36,3 +38,4 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - "default.autoc": predefined strings for address bar auto completion.
 - "redirect.json": global redirection urls as array of urls
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
+- "uas.json" : name-useragent pairs

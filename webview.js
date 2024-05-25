@@ -30,8 +30,11 @@ var gredirect;
 var bJS = true;
 var proxies = {};
 var proxy;
+var useragents = {};
+var defaultUA;
 
 function createWindow () {
+  defaultUA = session.defaultSession.getUserAgent();
   win = new BrowserWindow(
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
@@ -73,6 +76,13 @@ function createWindow () {
     } catch (e){}
   });
 
+  fs.readFile(path.join(__dirname,'uas.json'), 'utf8', (err, jsonString) => {
+    if (err) return;
+    try {
+      useragents = JSON.parse(jsonString);
+    } catch (e){}
+  });
+
   if(process.argv.length>2){
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
@@ -83,27 +93,7 @@ function createWindow () {
 
   win.webContents.on('page-title-updated',(event,cmd)=>{
     console.log(cmd);
-    if(cmd.length<3) return;
-    let c0 = cmd.charCodeAt(0);
-    switch(c0){
-    case 58: //':'
-      args = cmd.substring(1).split(/\s+/);
-      switch(args[0]){
-      case "nj":
-        bJS = false; return;
-      case "uj":
-        bJS = true; return;
-      case "np":
-        session.defaultSession.setProxy ({mode:"direct"});
-        return;
-      case "up":
-        if(args.length>1)
-          proxy = proxies[args[1]]; //retrieve proxy
-        if(proxy)
-          session.defaultSession.setProxy(proxy);
-        return;
-      }
-    }
+    addrCommand(cmd);
   });
 
   globalShortcut.register("Ctrl+G", ()=>{
@@ -193,6 +183,56 @@ app.on ('web-contents-created', (event, contents) => {
     //contents.on('did-finish-load',)
   }
 });
+
+function addrCommand(cmd){
+  if(cmd.length<3) return;
+  let c0 = cmd.charCodeAt(0);
+  switch(c0){
+  case 58: //':'
+    args = cmd.substring(1).split(/\s+/);
+    switch(args[0]){
+    case "anycert":
+      if(args.length==1)
+        session.defaultSession.setCertificateVerifyProc((request, callback) => {
+          callback(0);
+        });
+      else
+        session.defaultSession.setCertificateVerifyProc(null);
+      return;      
+    case "clearcache":
+      session.defaultSession.clearCache();
+      return;
+    case "cleardns":
+      session.defaultSession.clearHostResolverCache();
+      return;
+    case "clearstorage":
+      session.defaultSession.clearStorageData();
+      return;
+    case "ext":
+      session.defaultSession.loadExtension(args[1]);
+      return;
+    case "nj":
+      bJS = false; return;
+    case "uj":
+      bJS = true; return;
+    case "np":
+      session.defaultSession.setProxy ({mode:"direct"});
+      return;
+    case "up":
+      if(args.length>1)
+        proxy = proxies[args[1]]; //retrieve proxy
+      if(proxy)
+        session.defaultSession.setProxy(proxy);
+      return;
+    case "ua":
+      if(args.length==2)
+        session.defaultSession.setUserAgent(useragents[args[1]]);
+      else
+        session.defaultSession.setUserAgent(defaultUA);
+      return;
+    }
+  }
+}
 
 function cbFocus(webContents){
   let js = "if(focusMesg){let m=focusMesg;focusMesg=null;m}";
