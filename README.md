@@ -27,6 +27,11 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - "/" for find-in-page
 - ":" for address bar commands
   - anycert : allow invalid certificates w/o arguments, restore to default
+  - clear : the arguments could be
+    - cache : clear cache
+    - dns : clear dns cache
+    - storage: clear site storage data.
+  - ext [extension path]: load unpacked Chrome extension.
   - nj/uj for No/Use external Javascript files
   - np : no proxy
   - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName].

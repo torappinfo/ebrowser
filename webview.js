@@ -198,15 +198,22 @@ function addrCommand(cmd){
         });
       else
         session.defaultSession.setCertificateVerifyProc(null);
-      return;      
-    case "clearcache":
-      session.defaultSession.clearCache();
       return;
-    case "cleardns":
-      session.defaultSession.clearHostResolverCache();
-      return;
-    case "clearstorage":
-      session.defaultSession.clearStorageData();
+    case "clear":
+      if(args.length==1){
+        return;
+      }
+      switch(args[1]){
+      case "cache":
+        session.defaultSession.clearCache();
+        return;
+      case "dns":
+        session.defaultSession.clearHostResolverCache();
+        return;
+      case "storage":
+        session.defaultSession.clearStorageData();
+        return;
+      }
       return;
     case "ext":
       session.defaultSession.loadExtension(args[1]);
