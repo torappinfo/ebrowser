@@ -23,6 +23,7 @@ else {
 Menu.setApplicationMenu(null);
 
 const fs = require('fs');
+const readline = require('readline');
 const path = require('path')
 const process = require('process')
 var gredirects = [];
@@ -45,6 +46,17 @@ fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
   } catch (e){}
 });
 
+(async ()=>{
+  try{
+    const readInterface = readline.createInterface ({
+      input: fs.createReadStream (path.join(__dirname,'config'), 'utf8'),
+    });
+
+    for await (const line of readInterface) {
+      addrCommand(line);
+    }
+  }catch(e){return;}
+})();
 
 function createWindow () {
   win = new BrowserWindow(

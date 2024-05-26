@@ -40,6 +40,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - ":!" address bar commands
 
 #### Configuration files
+- "config": lines of address bar ":" commands.
 - "search.json": search engines as shortcut-queryUrl pairs.
 - "default.autoc": predefined strings for address bar auto completion.
 - "gredirect.json": global redirection urls as array of urls
