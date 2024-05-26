@@ -31,6 +31,7 @@ var gredirect;
 var redirects;
 var bRedirect = true;
 var bJS = true;
+var bHistory = true;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -38,6 +39,7 @@ var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
 app.userAgentFallback = defaultUA;//no effect
+var historyFile = path.join(__dirname,'history.txt');
 
 fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
   if (err) return;
@@ -205,7 +207,7 @@ app.on ('web-contents-created', (event, contents) => {
     //contents.on('focus', ()=>{cbFocus(contents)});
     if(redirects)
       contents.session.webRequest.onBeforeRequest(interceptRequest);
-    //contents.on('did-finish-load',)
+    contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
   }
 });
 
@@ -268,6 +270,12 @@ function addrCommand(cmd){
       return;
     }
   }
+}
+
+function cbFinishLoad(webContents){
+  if(!bHistory) return;
+  let histItem = webContents.getTitle()+" "+webContents.getURL()+"\n";
+  fs.appendFile(historyFile, histItem, (err) => {});
 }
 
 function cbFocus(webContents){
