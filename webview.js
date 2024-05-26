@@ -27,6 +27,8 @@ const path = require('path')
 const process = require('process')
 var gredirects = [];
 var gredirect;
+var redirects;
+var bRedirect = true;
 var bJS = true;
 var proxies = {};
 var proxy;
@@ -35,6 +37,14 @@ var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
 app.userAgentFallback = defaultUA;//no effect
+
+fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
+  if (err) return;
+  try {
+    redirects = JSON.parse(jsonString);
+  } catch (e){}
+});
+
 
 function createWindow () {
   win = new BrowserWindow(
@@ -59,7 +69,7 @@ function createWindow () {
     win.webContents.executeJavaScript(js,false);
   });
 
-  fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
+  fs.readFile(path.join(__dirname,'gredirect.json'), 'utf8', (err, jsonString) => {
     if (err) return;
     try {
       gredirects = JSON.parse(jsonString);
@@ -181,7 +191,8 @@ app.on ('web-contents-created', (event, contents) => {
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
     //contents.on('focus', ()=>{cbFocus(contents)});
-    //contents.session.webRequest.onBeforeRequest(interceptRequest);
+    if(redirects)
+      contents.session.webRequest.onBeforeRequest(interceptRequest);
     //contents.on('did-finish-load',)
   }
 });
@@ -271,38 +282,23 @@ function cbScheme_https(req){
   return net.fetch(newurl, options);
 }
 
-/*
 function interceptRequest(details, callback){
   do {
-    if(!gredirect) break;  
-    if(details.resourceType === 'mainFrame'){
-      let wc = details.webContents;
-      let url = details.url;
-      if(wc){
-        net.fetch(gredirect+url).then(res=>{
-          if(res.ok) return res.arrayBuffer();
-          throw new Error(`Err: ${res.status} - ${res.statusText}`);
-        }).then(buffer=>{
-          const base64String = buffer.toString('base64');
-          const dataUrl = `data:text/html;base64,${base64String}`;
-          wc.loadURL(dataUrl,{baseURLForDataURL:url});
-        }).catch(e=>{
-          console.log(gredirect+" err:",e);
-        });
-        callback({ cancel: true });
-        return;
-      }
-      break;
-    }
-    if(!details.url.startsWith(gredirect)){
-      let newUrl = gredirect + details.url;
-      callback({ cancel: false, redirectURL: newUrl });
-      return;
-    }
+    if(!bRedirect ||(details.resourceType !== 'mainFrame' &&
+                     details.resourceType !== 'subFrame')) break;
+    let oURL = new URL(details.url);
+    let domain = oURL.hostname;
+    let newUrl;
+    try{
+      let newDomain = redirects[domain];
+      if(!newDomain) break;
+      newUrl = "https://"+newDomain+oURL.pathname+oURL.search+oURL.hash;
+    }catch(e){break;}
+    callback({ cancel: false, redirectURL: newUrl });
+    return;
   }while(false);
   callback({ cancel: false });
 }
-*/
 
 function cbWindowOpenHandler({url}){
   let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+

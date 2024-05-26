@@ -41,6 +41,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 #### Configuration files
 - "search.json": search engines as shortcut-queryUrl pairs.
 - "default.autoc": predefined strings for address bar auto completion.
-- "redirect.json": global redirection urls as array of urls
+- "gredirect.json": global redirection urls as array of urls
+- "redirect.json": domain-replacedDomain pairs, default to be applied.
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-useragent pairs
