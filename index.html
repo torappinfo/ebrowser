@@ -110,6 +110,11 @@
     return "https://www.bing.com/search?q="+query;
   }
   function coloncommand(q){
+    if(98==q.charCodeAt(1) &&
+       (2==q.length || 32==q.charCodeAt(2))){ //":b [filename]" for bookmark
+      let tab = tabs.children[iTab];
+      q= q+ " " + tab.getURL() + " " + tab.getTitle();
+    }
     document.title = q;
   }
   function handleQuery(q){

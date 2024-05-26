@@ -27,6 +27,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - "/" for find-in-page
 - ":" for address bar commands
   - anycert : allow invalid certificates w/o arguments, restore to default
+  - b [bookmarkfilename w/o ext] : bookmark current page in file
   - clear : the arguments could be
     - cache : clear cache
     - dns : clear dns cache

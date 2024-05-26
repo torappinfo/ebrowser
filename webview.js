@@ -215,8 +215,25 @@ app.on ('web-contents-created', (event, contents) => {
   }
 });
 
+function bookmark(args){//b [filenamestem] url title :bookmark
+  let bmFileName = "bookmark.rec";
+  let url = args[1];
+  let iTitle = 2;
+  if(url.length>11 && (58==url.charCodeAt(4) ||
+                       58==url.charCodeAt(5) ||
+                       58==url.charCodeAt(11))){
+  }else{
+    bmFileName = url+".rec";
+    url = args[2];
+    iTitle = 3;
+  }
+  let title = args.slice(iTitle).join(" ");
+  let bookmark = title + " " + url + "\n";
+  fs.appendFile(path.join(__dirname,bmFileName), bookmark, (err)=>{});
+}
+
 function addrCommand(cmd){
-  if(cmd.length<2) return;
+  if(cmd.length<3) return;
   let c0 = cmd.charCodeAt(0);
   switch(c0){
   case 58: //':'
@@ -230,7 +247,8 @@ function addrCommand(cmd){
       else
         session.defaultSession.setCertificateVerifyProc(null);
       return;
-    case "b"://bookmark
+    case "b"://b [filenamestem] url title :bookmark
+      bookmark(args);
       return;
     case "clear":
       if(args.length==1){
