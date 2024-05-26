@@ -244,6 +244,10 @@ function addrCommand(cmd){
       if(proxy)
         session.defaultSession.setProxy(proxy);
       return;
+    case "nr":
+      bRedirect = false; return;
+    case "ur":
+      bRedirect = true; return;
     case "ua":
       if(args.length==2)
         session.defaultSession.setUserAgent(useragents[args[1]]);

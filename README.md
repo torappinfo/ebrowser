@@ -32,7 +32,8 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
     - dns : clear dns cache
     - storage: clear site storage data.
   - ext [extension path]: load unpacked Chrome extension.
-  - nj/uj for No/Use external Javascript files
+  - nj/uj for No/Use external Javascript files.
+  - nr/ur for No/Use "redirect.json" for domain redirection.
   - np : no proxy
   - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName].
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
@@ -42,6 +43,6 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - "search.json": search engines as shortcut-queryUrl pairs.
 - "default.autoc": predefined strings for address bar auto completion.
 - "gredirect.json": global redirection urls as array of urls
-- "redirect.json": domain-replacedDomain pairs, default to be applied.
+- "redirect.json": domain-replacementDomain pairs, default to be applied.
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-useragent pairs
