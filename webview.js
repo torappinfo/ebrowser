@@ -1,4 +1,6 @@
-const { app, BrowserWindow, globalShortcut, Menu, shell, clipboard,session, protocol, net} = require('electron')
+const {
+  app, BrowserWindow, globalShortcut, Menu, shell, clipboard,
+  session, protocol, net} = require('electron')
 let win;
 
 if(!app.requestSingleInstanceLock())
@@ -32,6 +34,7 @@ var redirects;
 var bRedirect = true;
 var bJS = true;
 var bHistory = true;
+var bDebug = true;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -39,7 +42,7 @@ var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
 app.userAgentFallback = defaultUA;//no effect
-var historyFile = path.join(__dirname,'history.txt');
+var historyFile = path.join(__dirname,'history.rec');
 
 fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
   if (err) return;
@@ -74,7 +77,7 @@ function createWindow () {
   win.loadFile('index.html');
   fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
     if (err) return;
-    win.webContents.executeJavaScript("engines=JSON.parse(`"+jsonString+"`)",false);
+    win.webContents.executeJavaScript("try{engines=JSON.parse(`"+jsonString+"`)}catch(e){}",false);
   });
 
   fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
@@ -201,6 +204,7 @@ app.on('will-quit', () => {
 
 app.on ('web-contents-created', (event, contents) => {
   if (contents.getType () === 'webview') {
+    //if(bDebug) contents.openDevTools({mode:'bottom',activate:true});
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
@@ -212,7 +216,7 @@ app.on ('web-contents-created', (event, contents) => {
 });
 
 function addrCommand(cmd){
-  if(cmd.length<3) return;
+  if(cmd.length<2) return;
   let c0 = cmd.charCodeAt(0);
   switch(c0){
   case 58: //':'
@@ -225,6 +229,8 @@ function addrCommand(cmd){
         });
       else
         session.defaultSession.setCertificateVerifyProc(null);
+      return;
+    case "b"://bookmark
       return;
     case "clear":
       if(args.length==1){
