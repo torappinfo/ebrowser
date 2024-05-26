@@ -31,10 +31,12 @@ var bJS = true;
 var proxies = {};
 var proxy;
 var useragents = {};
-var defaultUA;
+var defaultUA =
+    "Mozilla/5.0 (X11; Linux x86_64; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
+    process.versions.chrome +" Safari/537.36";
+app.userAgentFallback = defaultUA;//no effect
 
 function createWindow () {
-  defaultUA = session.defaultSession.getUserAgent();
   win = new BrowserWindow(
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
