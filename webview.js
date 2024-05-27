@@ -352,7 +352,7 @@ function interceptRequest(details, callback){
 }
 
 function cbWindowOpenHandler({url}){
-  let js = "newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src='"+
+  let js = "newTab();tabs.children[tabs.children.length-1].src='"+
       url+"'";
   win.webContents.executeJavaScript(js,false);
   return { action: "deny" }; 
