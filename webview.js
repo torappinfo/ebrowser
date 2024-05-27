@@ -33,8 +33,7 @@ var gredirect;
 var redirects;
 var bRedirect = true;
 var bJS = true;
-var bHistory = true;
-var bDebug = true;
+var bHistory = false;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -269,6 +268,10 @@ function addrCommand(cmd){
     case "ext":
       session.defaultSession.loadExtension(args[1]);
       return;
+    case "nh":
+      bHistory = false; return;
+    case "uh":
+      bHistory = true; return;
     case "nj":
       bJS = false; return;
     case "uj":
