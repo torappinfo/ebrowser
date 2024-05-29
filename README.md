@@ -17,7 +17,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - CTRL+W: close Tab
 - CTRL+<-: go backward
 - CTRL+->: go forward
-- CTRL+SHIFT+R: enable global redirection ("redirect.json")
+- CTRL+SHIFT+R: enable global redirection ("gredirect.json")
 - CTRL+R: disable global redirection
 - ESC
 - ":" for address bar commands
@@ -26,7 +26,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 #### Address bar
 - "/" for find-in-page
 - ":" for address bar commands
-  - anycert : allow invalid certificates w/o arguments, restore to default
+  - anycert : allow invalid certificates w/o arguments, otherwise restore to default
   - b [bookmarkfilename w/o ext] : bookmark current page in file
   - clear : the arguments could be
     - cache : clear cache

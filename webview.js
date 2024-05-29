@@ -1,5 +1,5 @@
 const {
-  app, BrowserWindow, globalShortcut, Menu, shell, clipboard,
+  app, BrowserWindow, Menu, shell, clipboard,
   session, protocol, net} = require('electron')
 let win;
 
@@ -22,7 +22,7 @@ else {
       createWindow();
   })
 }
-Menu.setApplicationMenu(null);
+topMenu();
 
 const fs = require('fs');
 const readline = require('readline');
@@ -68,7 +68,7 @@ function createWindow () {
      webPreferences: {
        webviewTag: true,
      }});
-
+  win.setMenuBarVisibility(false);
   win.on('closed', function () {
     win = null
   })
@@ -124,66 +124,6 @@ function createWindow () {
     addrCommand(cmd);
   });
 
-  globalShortcut.register("Ctrl+G", ()=>{
-    let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
-    win.webContents.executeJavaScript(js,false)
-  });
-
-  globalShortcut.register("Ctrl+L", ()=>{
-    win.webContents.executeJavaScript("document.forms[0].q.select()",false);
-  });
-
-  globalShortcut.register("Ctrl+T", ()=>{
-    win.webContents.executeJavaScript("newTab();switchTab(tabs.children.length-1)",false);
-  });
-
-  globalShortcut.register("Ctrl+R", ()=>{
-    gredirect=null;
-  });
-
-  globalShortcut.register("Ctrl+Shift+R", ()=>{
-    if(0==gredirects.length) return;
-    gredirect=gredirects[0];
-  });
-
-  globalShortcut.register("Ctrl+W", ()=>{
-    win.webContents.executeJavaScript("tabClose()",false).then((r)=>{
-      if(""===r) win.close();
-    });
-  });
-
-  globalShortcut.register("Ctrl+Tab", ()=>{
-    let js="tabInc(1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
-    win.webContents.executeJavaScript(js,false).then((r)=>{
-      win.setTitle(r);
-    });
-  });
-
-  globalShortcut.register("Ctrl+Shift+Tab", ()=>{
-    let js="tabDec(-1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
-    win.webContents.executeJavaScript(js,false).then((r)=>{
-      win.setTitle(r);
-    });
-  });
-
-  globalShortcut.register("Ctrl+Left", ()=>{
-    let js="tabs.children[iTab].goBack()";
-    win.webContents.executeJavaScript(js,false);
-  });
-
-  globalShortcut.register("Ctrl+Right", ()=>{
-    let js="tabs.children[iTab].goForward()";
-    win.webContents.executeJavaScript(js,false);
-  });
-  
-  globalShortcut.register("Esc", ()=>{
-    let js = "document.activeElement.blur();tabs.children[iTab].stopFindInPage('clearSelection')";
-    win.webContents.executeJavaScript(js,false);
-  });
-
-  globalShortcut.register("F5", ()=>{
-    win.webContents.executeJavaScript("tabs.children[iTab].reload()",false);
-  });
   protocol.handle("https",cbScheme_https);
 }
 
@@ -198,7 +138,6 @@ app.on('activate', function () {
 })
 
 app.on('will-quit', () => {
-  globalShortcut.unregisterAll()
 })
 
 app.on ('web-contents-created', (event, contents) => {
@@ -395,4 +334,66 @@ function onContextMenu(event, params){
   if (params.linkURL) {
     showContextMenu(params.linkURL);
   }
+}
+
+function topMenu(){
+  const menuTemplate = [
+    {
+      label: '',
+      submenu: [
+        { label: '', accelerator: 'Ctrl+G', click: ()=>{
+          let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
+          win.webContents.executeJavaScript(js,false)
+        }},
+        { label: '', accelerator: 'Ctrl+L', click:()=>{
+          win.webContents.executeJavaScript("document.forms[0].q.select()",false);
+        }},
+        { label: '', accelerator: 'Ctrl+T', click:()=>{
+    win.webContents.executeJavaScript("newTab();switchTab(tabs.children.length-1)",false);
+        }},
+        { label: '', accelerator: 'Ctrl+R', click: ()=>{
+          gredirect=null;
+        }},
+        { label: '', accelerator: 'Ctrl+Shift+R', click: ()=>{
+          if(0==gredirects.length) return;
+          gredirect=gredirects[0];
+        }},
+        { label: '', accelerator: 'Ctrl+W', click: ()=>{
+          win.webContents.executeJavaScript("tabClose()",false).then((r)=>{
+            if(""===r) win.close();
+          });
+        }},
+        { label: '', accelerator: 'Ctrl+Tab', click: ()=>{
+          let js="tabInc(1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
+          win.webContents.executeJavaScript(js,false).then((r)=>{
+            win.setTitle(r);
+          });
+        }},
+        { label: '', accelerator: 'Ctrl+Shift+Tab', click: ()=>{
+          let js="tabDec(-1);{let tab=tabs.children[iTab];let t=tab.getTitle();if(t)t;else tab.getURL()}";
+          win.webContents.executeJavaScript(js,false).then((r)=>{
+            win.setTitle(r);
+          });
+        }},
+        { label: '', accelerator: 'Ctrl+Left', click: ()=>{
+          let js="tabs.children[iTab].goBack()";
+          win.webContents.executeJavaScript(js,false);
+        }},
+        { label: '', accelerator: 'Ctrl+Right', click: ()=>{
+          let js="tabs.children[iTab].goForward()";
+          win.webContents.executeJavaScript(js,false);
+        }},
+        { label: '', accelerator: 'Esc', click: ()=>{
+          let js = "document.activeElement.blur();tabs.children[iTab].stopFindInPage('clearSelection')";
+          win.webContents.executeJavaScript(js,false);
+        }},
+        { label: '', accelerator: 'F5', click: ()=>{
+          win.webContents.executeJavaScript("tabs.children[iTab].reload()",false);
+        }},
+
+      ],
+    },
+  ];
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
 }
