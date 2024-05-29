@@ -21,7 +21,6 @@
   var iTab = 0;
   var tabs;
   var engines = {};
-  var focusMesg;
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
   function switchTab(i){
@@ -83,10 +82,11 @@
     var key = e.key;
     switch(key){
     case "PageDown":
+      tabs.children[iTab].src =
+        "javascript:window.scrollBy(0,document.documentElement.clientHeight)";
+      return;
     case "PageUp":
-      focusMesg ="javascript:alert('hi');{let e=new KeyboardEvent('keydown',{key:'"+key+
-	  "'});document.dispatchEvent(e)}";
-      tabs.children[iTab].focus();
+      tabs.children[iTab].src = "javascript:window.scrollBy(0,-document.documentElement.clientHeight)";
       return;
     }
     if(inputE === document.activeElement) return;
@@ -107,8 +107,6 @@
       inputE.focus();
       lastKeyPressed = null;
       return;
-    }
-    if("u"===lastKeyPressed){
     }
   }
   function getQ(){return document.forms[0].q.value;}

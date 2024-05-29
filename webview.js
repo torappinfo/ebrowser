@@ -291,9 +291,15 @@ function interceptRequest(details, callback){
   callback({ cancel: false });
 }
 
-function cbWindowOpenHandler({url}){
+function cbWindowOpenHandler(details){
+  let url = details.url;
   let js = "newTab();tabs.children[tabs.children.length-1].src='"+
-      url+"'";
+      url+"';";
+  switch(details.disposition){
+  case "foreground-tab":
+  case "new-window":
+    js = js + "switchTab(tabs.children.length-1)";
+  }
   win.webContents.executeJavaScript(js,false);
   return { action: "deny" };
 }
