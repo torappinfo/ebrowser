@@ -76,7 +76,7 @@ function createWindow () {
   win.loadFile('index.html');
   fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
     if (err) return;
-    win.webContents.executeJavaScript("try{engines=JSON.parse(`"+jsonString+"`)}catch(e){}",false);
+    win.webContents.executeJavaScript("initSearchEngines(`"+jsonString+"`)",false);
   });
 
   fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {

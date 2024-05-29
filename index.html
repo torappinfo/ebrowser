@@ -21,8 +21,21 @@
   var iTab = 0;
   var tabs;
   var engines = {};
+  var defaultSE = "https://www.bing.com/search?q=";
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
+  function initSearchEngines(jsonStr){
+    try{
+      let val1st;
+      alert(jsonStr);
+      engines=JSON.parse(jsonStr, (key, value)=>{
+        if(!val1st) val1st=value;
+        return value;
+      });
+      if(val1st) defaultSE=val1st;
+      alert(defaultSE);
+    }catch(e){}
+  }
   function switchTab(i){
     let tab = tabs.children[iTab];
     if(document.activeElement == tab) tab.blur();
@@ -111,11 +124,13 @@
   }
   function getQ(){return document.forms[0].q.value;}
   function bang(query, iSpace){
-    let name = query.slice(0,iSpace);
-    let engine = engines[name];
-    if(engine)
-      return engine+query.substring(iSpace+1);
-    return "https://www.bing.com/search?q="+query;
+    if(iSpace>0){
+      let name = query.slice(0,iSpace);
+      let engine = engines[name];
+      if(engine)
+        return engine+query.substring(iSpace+1);
+    }
+    return defaultSE+query;
   }
   function coloncommand(q){
     if(98==q.charCodeAt(1) &&
