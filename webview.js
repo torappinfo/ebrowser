@@ -295,7 +295,7 @@ function cbWindowOpenHandler({url}){
   let js = "newTab();tabs.children[tabs.children.length-1].src='"+
       url+"'";
   win.webContents.executeJavaScript(js,false);
-  return { action: "deny" }; 
+  return { action: "deny" };
 }
 function cbTitleUpdate(event,title){
   win.setTitle(title);
@@ -363,16 +363,17 @@ function topMenu(){
         { label: '', accelerator: 'Ctrl+W', click: ()=>{
           win.webContents.executeJavaScript("tabClose()",false).then((r)=>{
             if(""===r) win.close();
+            else win.setTitle(r);
           });
         }},
         { label: '', accelerator: 'Ctrl+Tab', click: ()=>{
-          let js="tabInc(1);{let t=tabs.children[iTab];t.getTitle()+' '+t.getURL()}";
+          let js="tabInc(1);getWinTitle()";
           win.webContents.executeJavaScript(js,false).then((r)=>{
             win.setTitle(r);
           });
         }},
         { label: '', accelerator: 'Ctrl+Shift+Tab', click: ()=>{
-          let js="tabDec(-1);{let t=tabs.children[iTab];t.getTitle()+' '+t.getURL()}";
+          let js="tabDec(-1);getWinTitle()";
           win.webContents.executeJavaScript(js,false).then((r)=>{
             win.setTitle(r);
           });

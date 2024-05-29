@@ -59,7 +59,13 @@
     nTabs--;
     if(iTab>=nTabs) iTab=iTab-1;
     tabs.children[iTab].classList.add('curWV');
-    return nTabs;
+    return getWinTitle();
+  }
+  function getWinTitle(){
+    let t=tabs.children[iTab];
+    let title = (iTab+1) + '/' + tabs.children.length;
+    try{title=title+' '+t.getTitle()+' '+t.getURL()}catch(e){}
+    return title
   }
   function appendAutoc(str){
     let dl = document.forms[0].children[0];
