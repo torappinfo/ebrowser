@@ -95,12 +95,7 @@ function createWindow () {
   fs.readFile(path.join(__dirname,'proxy.json'), 'utf8', (err, jsonString) => {
     if (err) return;
     try {
-      let key1st;
-      proxies = JSON.parse(jsonString,(key,value)=>{
-        if(!key1st) key1st=key;
-        return value;
-      });
-      proxy = proxies[key1st];
+      proxies = JSON.parse(jsonString);
     } catch (e){}
   });
 

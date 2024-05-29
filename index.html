@@ -27,13 +27,11 @@
   function initSearchEngines(jsonStr){
     try{
       let val1st;
-      alert(jsonStr);
       engines=JSON.parse(jsonStr, (key, value)=>{
-        if(!val1st) val1st=value;
+        if(!val1st && !(/^\d+$/u.test(key))) val1st=value;
         return value;
       });
       if(val1st) defaultSE=val1st;
-      alert(defaultSE);
     }catch(e){}
   }
   function switchTab(i){
