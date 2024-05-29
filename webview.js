@@ -384,7 +384,8 @@ function topMenu(){
           win.webContents.executeJavaScript(js,false);
         }},
         { label: '', accelerator: 'Esc', click: ()=>{
-          let js = "document.activeElement.blur();tabs.children[iTab].stopFindInPage('clearSelection')";
+          let js = `{let e=document.activeElement;
+if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er){}}`;
           win.webContents.executeJavaScript(js,false);
         }},
         { label: '', accelerator: 'F5', click: ()=>{
