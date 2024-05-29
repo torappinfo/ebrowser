@@ -147,7 +147,7 @@ app.on ('web-contents-created', (event, contents) => {
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
     //contents.on('focus', ()=>{cbFocus(contents)});
-    contents.on('blur',()=>{cbBlur()});
+    //contents.on('blur',()=>{cbBlur()});
     if(redirects)
       contents.session.webRequest.onBeforeRequest(interceptRequest);
     contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
@@ -243,9 +243,6 @@ function cbFinishLoad(webContents){
   if(!bHistory) return;
   let histItem = webContents.getTitle()+" "+webContents.getURL()+"\n";
   fs.appendFile(historyFile, histItem, (err) => {});
-}
-
-function cbBlur(webContents){
 }
 
 function cbFocus(webContents){
