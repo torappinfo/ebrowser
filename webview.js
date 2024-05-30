@@ -137,10 +137,10 @@ app.on('will-quit', () => {
 
 app.on ('web-contents-created', (event, contents) => {
   if (contents.getType () === 'webview') {
-    //if(bDebug) contents.openDevTools({mode:'bottom',activate:true});
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
+    //contents.on('console-message',cbConsoleMsg);
     //contents.on('focus', ()=>{cbFocus(contents)});
     //contents.on('blur',()=>{cbBlur()});
     if(redirects)
@@ -232,6 +232,12 @@ function addrCommand(cmd){
       return;
     }
   }
+}
+
+function cbConsoleMsg(e, level, msg, line, sourceid){
+  console.log(line);
+  console.log(sourceid);
+  console.log(msg);
 }
 
 function cbFinishLoad(webContents){
@@ -394,6 +400,10 @@ if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er)
         }},
         { label: '', accelerator: 'F5', click: ()=>{
           win.webContents.executeJavaScript("tabs.children[iTab].reload()",false);
+        }},
+        { label: '', accelerator: 'F12', click: ()=>{
+          let js = "try{tabs.children[iTab].openDevTools()}catch(e){console.log(e)}";
+          win.webContents.executeJavaScript(js,false);
         }},
 
       ],
