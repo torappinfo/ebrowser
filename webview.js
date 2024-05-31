@@ -143,8 +143,7 @@ app.on ('web-contents-created', (event, contents) => {
     //contents.on('console-message',cbConsoleMsg);
     //contents.on('focus', ()=>{cbFocus(contents)});
     //contents.on('blur',()=>{cbBlur()});
-    if(redirects)
-      contents.session.webRequest.onBeforeRequest(interceptRequest);
+    contents.session.webRequest.onBeforeRequest(interceptRequest);
     contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
   }
 });
@@ -253,25 +252,6 @@ function cbFocus(webContents){
     console.log(r);
     if(r) webContents.executeJavaScript(r,false);
   });
-}
-
-function cbScheme_https(req){
-  if(!bJS && req.url.endsWith(".js"))
-    return new Response('',{});
-  if(!gredirect){
-    return fetch(req,{bypassCustomProtocolHandlers: true });
-  }
-  let newurl = gredirect+req.url;
-  const options = {
-    body:       req.body,
-    headers:    req.headers,
-    method:     req.method,
-    referer:    req.referer,
-    duplex: "half",
-    bypassCustomProtocolHandlers: true
-  };
-  
-  return fetch(newurl, options);
 }
 
 function interceptRequest(details, callback){
