@@ -259,7 +259,7 @@ function cbScheme_https(req){
   if(!bJS && req.url.endsWith(".js"))
     return new Response('',{});
   if(!gredirect){
-    return net.fetch(req,{bypassCustomProtocolHandlers: true });
+    return fetch(req,{bypassCustomProtocolHandlers: true });
   }
   let newurl = gredirect+req.url;
   const options = {
@@ -271,7 +271,7 @@ function cbScheme_https(req){
     bypassCustomProtocolHandlers: true
   };
   
-  return net.fetch(newurl, options);
+  return fetch(newurl, options);
 }
 
 function interceptRequest(details, callback){

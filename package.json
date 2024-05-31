@@ -1,5 +1,5 @@
 {
-  "name": "eweb",
+  "name": "ebrowser",
   "version": "1.0.0",
   "description": "electron web browser",
   "main": "webview.js",
