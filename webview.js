@@ -289,16 +289,13 @@ function interceptRequest(details, callback){
           if(wc){
             let nUrl = gredirect+url;
             fetch(nUrl).then(res=>{
-              if(res.ok) return res.blob();
+              if(res.ok) return res.arrayBuffer();
               throw new Error(`Err: ${res.status} - ${res.statusText}`);
-            }).then(blob=>{
-              let reader = new FileReader();
-              reader.readAsDataURL (blob);
-              reader.onload  = function() {
-                // 获取转换后的数据URL
-                let dataUrl = reader.result ;
-                wc.loadURL(dataUrl,{baseURLForDataURL:url});
-              };
+            }).then(aBuf=>{
+              const u8 = new Uint8Array(aBuf);
+              const b64 = Buffer.from (u8).toString('base64');
+              const dataUrl = `data:text/html;base64,${b64}`;
+              wc.loadURL(dataUrl,{baseURLForDataURL:url});
             }).catch(e=>{
               console.log(nUrl+" err:",e);
             });

@@ -94,10 +94,10 @@
     switch(key){
     case "PageDown":
       tabs.children[iTab].src =
-        "javascript:window.scrollBy(0,document.documentElement.clientHeight)";
+        "javascript:window.scrollBy(0,3*document.documentElement.clientHeight/4)";
       return;
     case "PageUp":
-      tabs.children[iTab].src = "javascript:window.scrollBy(0,-document.documentElement.clientHeight)";
+      tabs.children[iTab].src = "javascript:window.scrollBy(0,-3*document.documentElement.clientHeight/4)";
       return;
     }
     if(inputE === document.activeElement) return;
