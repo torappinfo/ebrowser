@@ -119,7 +119,7 @@ function createWindow () {
     addrCommand(cmd);
   });
 
-  protocol.handle("https",cbScheme_https);
+  //protocol.handle("https",cbScheme_https);
 }
 
 app.on('window-all-closed', function () {
@@ -275,7 +275,44 @@ function cbScheme_https(req){
 }
 
 function interceptRequest(details, callback){
+  if(!bJS && details.url.endsWith(".js")){
+    callback({ cancel: true });
+    return;
+  }
   do {
+    if(gredirect){
+      if(!details.url.startsWith("http")) break;
+      if(!details.url.startsWith(gredirect)){
+        if(details.resourceType === 'mainFrame'){
+          let wc = details.webContents;
+          let url = details.url;
+          if(wc){
+            let nUrl = gredirect+url;
+            fetch(nUrl).then(res=>{
+              if(res.ok) return res.blob();
+              throw new Error(`Err: ${res.status} - ${res.statusText}`);
+            }).then(blob=>{
+              let reader = new FileReader();
+              reader.readAsDataURL (blob);
+              reader.onload  = function() {
+                // 获取转换后的数据URL
+                let dataUrl = reader.result ;
+                wc.loadURL(dataUrl,{baseURLForDataURL:url});
+              };
+            }).catch(e=>{
+              console.log(nUrl+" err:",e);
+            });
+            callback({ cancel: true });
+            return;
+          }
+        }
+        let newUrl = gredirect + details.url;
+        callback({ cancel: false, redirectURL: newUrl });
+        return;
+      }
+      break;
+    }
+
     if(!bRedirect ||(details.resourceType !== 'mainFrame' &&
                      details.resourceType !== 'subFrame')) break;
     let oURL = new URL(details.url);
