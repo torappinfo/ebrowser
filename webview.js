@@ -66,6 +66,7 @@ function createWindow () {
   win = new BrowserWindow(
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
+       nodeIntegration: true,
        webviewTag: true,
      }});
   win.setMenuBarVisibility(false);
@@ -104,6 +105,11 @@ function createWindow () {
     try {
       useragents = JSON.parse(jsonString);
     } catch (e){}
+  });
+
+  fs.readFile(path.join(__dirname,'pdf.json'), 'utf8', (err, jsonString) => {
+    if (err) return;
+    win.webContents.executeJavaScript("initPDFOptions(`"+jsonString+"`)",false);
   });
 
   if(process.argv.length>2){

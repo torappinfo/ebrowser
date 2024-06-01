@@ -18,9 +18,11 @@
   .curWV{display: inherit !important;}
 </style>
 <script>
+  var fs;
   var iTab = 0;
   var tabs;
   var engines = {};
+  var pdfOptions = {};
   var defaultSE = "https://www.bing.com/search?q=";
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
@@ -32,6 +34,24 @@
         return value;
       });
       if(val1st) defaultSE=val1st;
+    }catch(e){}
+  }
+  function save(filePath, u8array){
+    if(!fs) fs = require('fs');
+    fs.writeFile (filePath, u8array, (err) => {
+      if (err) {
+        console.error (err);
+        return;
+      }
+    });
+  }
+  function print2PDF(filePath, options){
+    tabs.children[iTab].printToPDF(options)
+      .then(u8array=>save(filePath,u8array));
+  }
+  function initPDFOptions(jsonStr){
+    try{
+      pdfOptions = JSON.parse(jsonStr);
     }catch(e){}
   }
   function switchTab(i){
