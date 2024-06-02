@@ -107,11 +107,6 @@ function createWindow () {
     } catch (e){}
   });
 
-  fs.readFile(path.join(__dirname,'pdf.json'), 'utf8', (err, jsonString) => {
-    if (err) return;
-    win.webContents.executeJavaScript("initPDFOptions(`"+jsonString+"`)",false);
-  });
-
   if(process.argv.length>2){
     let url=process.argv.slice(2).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);

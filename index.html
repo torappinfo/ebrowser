@@ -49,11 +49,6 @@
     tabs.children[iTab].printToPDF(options)
       .then(u8array=>save(filePath,u8array));
   }
-  function initPDFOptions(jsonStr){
-    try{
-      pdfOptions = JSON.parse(jsonStr);
-    }catch(e){}
-  }
   function switchTab(i){
     let tab = tabs.children[iTab];
     if(document.activeElement == tab) tab.blur();
@@ -158,6 +153,46 @@
     }
     document.title = q;
   }
+  function coloncommand_render(cmd){
+    args = cmd.substring(1).split(/\s+/);
+    switch(args[0]){
+    case "Pdf":
+      savePdf(args);
+      return;
+    }
+
+  }
+  function savePdf(args){
+    let filename = "ebrowser.pdf";
+    let options = {};
+    if(1<args.length){
+      let c0 = args[1].charCodeAt(0);
+      let i = 1;
+      if(123!=c0){//not '{' options then it is filename
+        filename = args[1] + ".pdf";
+        i = 2;
+      }
+      if(i==args.length-1){//:Pdf [filename] {...}
+        if(2==args[i].length){// '{}'
+          let width = document.body.clientWidth/96;
+          tabs.children[itab].executeJavascript("document.documentElement.scrollHeight",
+          false).then((h)=>{
+            let opts = {
+              printBackground:true,
+              pageSize:{width:width,height:h/96}};
+            print2PDF(filename,opts);
+          });
+          return;
+        }else{
+          try {
+            options = JSON.parse(args[i]);
+          }catch(e){};
+        }
+      }
+    }
+    print2PDF(filename,options);
+  }
+
   function handleQuery(q){
     if(q.length>1){
       let c0=q.charCodeAt(0);
@@ -166,7 +201,11 @@
         tabs.children[iTab].findInPage(q.substring(1));
         return;
       case 58://':'
-        coloncommand(q);
+        let c1=q.charCodeAt(1);
+        if(c1>=97)
+          coloncommand(q);
+        else
+          coloncommand_render(q);
         return;
       }
     }
