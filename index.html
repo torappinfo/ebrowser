@@ -37,6 +37,7 @@
     }catch(e){}
   }
   function save(filePath, u8array){
+    //alert(Object.prototype.toString.call(u8array))
     if(!fs) fs = require('fs');
     fs.writeFile (filePath, u8array, (err) => {
       if (err) {
@@ -175,7 +176,7 @@
       if(i==args.length-1){//:Pdf [filename] {...}
         if(2==args[i].length){// '{}'
           let width = document.body.clientWidth/96;
-          tabs.children[itab].executeJavascript("document.documentElement.scrollHeight",
+          tabs.children[iTab].executeJavaScript("document.documentElement.scrollHeight",
           false).then((h)=>{
             let opts = {
               printBackground:true,

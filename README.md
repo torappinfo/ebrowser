@@ -38,6 +38,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
   - np : no proxy
   - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName].
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
+  - Pdf [filename] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. Empty option "{}" to capture screen in pdf.
 - ":!" address bar commands
 
 #### Configuration files

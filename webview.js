@@ -67,6 +67,7 @@ function createWindow () {
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
        nodeIntegration: true,
+       contextIsolation: false,
        webviewTag: true,
      }});
   win.setMenuBarVisibility(false);
@@ -120,6 +121,7 @@ function createWindow () {
     addrCommand(cmd);
   });
 
+  win.webContents.on('console-message',cbConsoleMsg);
   //protocol.handle("https",cbScheme_https);
 }
 
