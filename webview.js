@@ -7,7 +7,7 @@ if(!app.requestSingleInstanceLock())
   app.quit()
 else {
   app.on('ready', createWindow);
-  app.on('second-instance', (event, args) => {
+  app.on('second-instance', (event, args, cwd) => {
     // 当已经有运行的实例时，我们激活窗口而不是创建新的窗口
     if (win) {
       if (win.isMinimized()) {
@@ -15,9 +15,7 @@ else {
       }
       win.show()
       win.focus()
-      url = args.slice(3).join(" ");
-      win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
-      win.setTitle(url);
+      cmdlineProcess(args,cwd,1);
     }else
       createWindow();
   })
@@ -40,7 +38,7 @@ var useragents = {};
 var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
-app.userAgentFallback = defaultUA;//no effect
+app.userAgentFallback = defaultUA;
 var historyFile = path.join(__dirname,'history.rec');
 
 fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
@@ -108,12 +106,7 @@ function createWindow () {
     } catch (e){}
   });
 
-  if(process.argv.length>2){
-    let url=process.argv.slice(2).join(" ");
-    win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
-    win.setTitle(url);
-  }
-
+  cmdlineProcess(process.argv, process.cwd(), 0);
   //app.commandLine.appendSwitch ('trace-warnings');
 
   win.webContents.on('page-title-updated',(event,cmd)=>{
@@ -428,4 +421,21 @@ if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er)
   ];
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
+}
+
+function cmdlineProcess(argv,cwd,extra){
+  let i1st = 2+extra; //index for the first query item
+  if(argv.length>i1st){
+    if(i1st+1==argv.length && argv[i1st].endsWith(".html") &&
+       58 != argv[i1st].charCodeAt(4) && argv[i1st].length>5 &&
+       58 != argv[i1st].charCodeAt(5)){//local file
+      let fUrl = "file://"+cwd+"/"+argv[i1st];
+      win.webContents.executeJavaScript("tabs.children[iTab].src='"+fUrl+"'",false);
+      win.setTitle(argv[i1st]);
+      return;
+    }
+    let url=argv.slice(i1st).join(" ");
+    win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
+    win.setTitle(url);
+  }
 }

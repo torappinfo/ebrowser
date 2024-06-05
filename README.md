@@ -1,5 +1,5 @@
-### Eweb browser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
-Electron WEB browser bases on electron (thus chromium) with the philosophy for [uweb browser](https://gitlab.com/jamesfengcao/uweb).
+### Ebrowser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
+Electron browser bases on electron (thus chromium) with the philosophy for [uweb browser](https://gitlab.com/jamesfengcao/uweb).
 
 - lightweight (less than 10k) without bundled electron.
 - highly performant.
@@ -36,9 +36,9 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
   - nj/uj for No/Use external Javascript files.
   - nr/ur for No/Use "redirect.json" for domain redirection.
   - np : no proxy
-  - up [proxyName] : use proxy. privous proxy or the first proxy w/o [proxyName].
+  - up [proxyName] : use proxy. privous proxy w/o [proxyName].
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
-  - Pdf [filename] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. Empty option "{}" to capture screen in pdf.
+  - Pdf [filename] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - ":!" address bar commands
 
 #### Configuration files

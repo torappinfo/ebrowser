@@ -1,13 +1,13 @@
 {
   "name": "ebrowser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "electron web browser",
   "main": "webview.js",
   "scripts": {
-    "release": "electron-builder",
-    "test": "echo success"
+    "release": "electron-builder"
   },
   "author": "Richard H. Cao",
+  "keywords": ["browser"],
   "build": {
     "appId": "torapp.eweb",
     "publish": "github",
