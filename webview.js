@@ -48,19 +48,24 @@ fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
   } catch (e){}
 });
 
-(async ()=>{
-  try{
-    const readInterface = readline.createInterface ({
-      input: fs.createReadStream (path.join(__dirname,'config'), 'utf8'),
-    });
+async function createWindow () {
+  let json = await fs.promises.readFile(path.join(__dirname,'uas.json'), 'utf8');
+  try {
+    useragents = JSON.parse(json);
+  } catch (e){}
+  
+  await (async ()=>{
+    try{
+      const readInterface = readline.createInterface ({
+        input: fs.createReadStream (path.join(__dirname,'config'), 'utf8'),
+      });
 
-    for await (const line of readInterface) {
-      addrCommand(line);
-    }
-  }catch(e){return;}
-})();
+      for await (const line of readInterface) {
+        addrCommand(line);
+      }
+    }catch(e){return;}
+  })();
 
-function createWindow () {
   win = new BrowserWindow(
     {width: 800, height: 600,autoHideMenuBar: true,
      webPreferences: {
@@ -96,13 +101,6 @@ function createWindow () {
     if (err) return;
     try {
       proxies = JSON.parse(jsonString);
-    } catch (e){}
-  });
-
-  fs.readFile(path.join(__dirname,'uas.json'), 'utf8', (err, jsonString) => {
-    if (err) return;
-    try {
-      useragents = JSON.parse(jsonString);
     } catch (e){}
   });
 
