@@ -1,6 +1,6 @@
 {
   "name": "ebrowser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "electron web browser",
   "main": "webview.js",
   "scripts": {

@@ -1,12 +1,18 @@
 ### Ebrowser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
 Electron browser bases on electron (thus chromium) with the philosophy for [uweb browser](https://gitlab.com/jamesfengcao/uweb).
 
-- lightweight (less than 10k) without bundled electron.
+- lightweight (less than 20k bytes) without bundled electron.
 - highly performant.
 - keyboard (command line) friendly.
 - customizable.
 
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Eweb uses core chromium effectively and very lightweight. Recommend to install electron and eweb separately.
+
+#### Install
+- Install ebrowser with nodejs installed
+    npm install ebrowser
+- Run ebrowser
+    electron ~/node_modules/ebrowser
 
 #### Key shortcuts
 - CTRL+G: address bar to show page url
@@ -20,10 +26,12 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - CTRL+SHIFT+R: enable global redirection ("gredirect.json")
 - CTRL+R: disable global redirection
 - ESC
+- F5: page refresh/reload
+- F12: devtools
 - ":" for address bar commands
 - "!" for ":!" address bar commands
 
-#### Address bar
+#### Address bar commands
 - "/" for find-in-page
 - ":" for address bar commands
   - anycert : allow invalid certificates w/o arguments, otherwise restore to default
@@ -42,7 +50,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 - ":!" address bar commands
 
 #### Configuration files
-- "config": lines of address bar ":" commands.
+- "config": lines of address bar commands.
 - "search.json": search engines as shortcut-queryUrl pairs.
 - "default.autoc": predefined strings for address bar auto completion.
 - "gredirect.json": global redirection urls as array of urls
