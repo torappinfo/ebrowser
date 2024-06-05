@@ -9,9 +9,12 @@ Electron browser bases on electron (thus chromium) with the philosophy for [uweb
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Eweb uses core chromium effectively and very lightweight. Recommend to install electron and eweb separately.
 
 #### Install
-- Install ebrowser with nodejs installed
+Install ebrowser with nodejs installed
+
     npm install ebrowser
-- Run ebrowser
+
+Run ebrowser
+
     electron ~/node_modules/ebrowser
 
 #### Key shortcuts
