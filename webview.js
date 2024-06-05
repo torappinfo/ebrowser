@@ -315,41 +315,46 @@ function cbWindowOpenHandler(details){
 function cbTitleUpdate(event,title){
   win.setTitle(title);
 }
-function showContextMenu(linkUrl){
-  const titleItem = {
-    label: linkUrl,
-    enabled: false // Disable clicking on the title
-  };
-  const menuTemplate = [titleItem,
+function menuArray(labelprefix, linkUrl){
+  const menuTemplate = [
     {
-      label: 'Open Link',
+      label: labelprefix+'Open Link',
       click: () => {
         shell.openExternal(linkUrl);
       }
     },
     {
-      label: 'Copy Link',
+      label: labelprefix+'Copy Link',
       click: () => {
         clipboard.writeText(linkUrl);
       }
     },
     {
-      label: 'Download',
+      label: labelprefix+'Download',
       click: () => {
         win.contentView.children[i].webContents.downloadURL(linkUrl);
       }
     },
   ];
-
-  const contextMenu = Menu.buildFromTemplate(menuTemplate);
-  contextMenu.popup();
+  return menuTemplate;
 }
 
 function onContextMenu(event, params){
-  //console.log(params);
-  if (params.linkURL) {
-    showContextMenu(params.linkURL);
-  }
+  let url = params.linkURL;
+  let mTemplate = [];
+  if (url) {
+    mTemplate.push({label:url,enabled:false});
+    mTemplate.push.apply(mTemplate,menuArray("",url));
+    if((url=params.srcURL))
+      mTemplate.push.apply(mTemplate,menuArray("src: ",url));
+  }else if((url=params.srcURL)){
+    mTemplate.push({label:url,enabled:false});
+    mTemplate.push.apply(mTemplate,menuArray("src: ",url));
+  }else
+    return;
+
+  const contextMenu = Menu.buildFromTemplate(mTemplate);
+  contextMenu.popup();
 }
 
 function topMenu(){
