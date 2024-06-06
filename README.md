@@ -1,12 +1,12 @@
 ### Ebrowser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
-Electron browser bases on electron (thus chromium) with the philosophy for [uweb browser](https://gitlab.com/jamesfengcao/uweb).
+Ebrowser is the minimal browser with the philosophy of [uweb browser](https://gitlab.com/jamesfengcao/uweb).
 
 - lightweight (less than 20k bytes) without bundled electron.
 - highly performant.
 - keyboard (command line) friendly.
 - customizable.
 
-Note: Usually electron apps are heavyweight as they use browsers for simple things. Eweb uses core chromium effectively and very lightweight. Recommend to install electron and eweb separately.
+Note: Usually electron apps are heavyweight as they use browsers for simple things. Ebrowser uses core chromium effectively and very lightweight. Recommend to install electron separately.
 
 #### Install
 Install ebrowser with nodejs installed
@@ -47,7 +47,7 @@ Run ebrowser
   - nj/uj for No/Use external Javascript files.
   - nr/ur for No/Use "redirect.json" for domain redirection.
   - np : no proxy
-  - up [proxyName] : use proxy. privous proxy w/o [proxyName].
+  - up [proxyName] : use proxy. privous proxy or the first proxy in proxy.json w/o [proxyName].
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
   - Pdf [filename] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - ":!" address bar commands
@@ -60,3 +60,15 @@ Run ebrowser
 - "redirect.json": domain-replacementDomain pairs, default to be applied.
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-useragent pairs
+
+#### New usages
+- Vector designing with web tech to replace Adobe Illustrator/Inkscape.
+  - Design with web tech
+  
+  - Printing to pdf with customized paper size.
+  - Magnify the pdf paper size to the required size.
+
+  OR
+  
+  - Adjust window width and use addressbar command line ":Pdf {}" to export vector graphics.
+  - Use imageMagick to convert to any other vector graphics format. 
