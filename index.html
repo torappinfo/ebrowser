@@ -33,12 +33,8 @@
     if (err) return;
     initSearchEngines(jsonString,false);
   });
-
-  fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
-    if(err) return;
-    appendAutoc(str);
-  });
-  appendAutoc_rec(path.join(__dirname,'bookmark.rec'));
+  appendAutoc_rec(path.join(__dirname,'default.autoc'),null);
+  appendAutoc_rec(path.join(__dirname,'bookmark.rec'),' ');
 
   function initSearchEngines(jsonStr){
     try{
@@ -106,16 +102,7 @@
     try{title=title+' '+t.getTitle()+' '+t.getURL()}catch(e){}
     return title
   }
-  function appendAutoc(str){
-    let dl = document.forms[0].children[0];
-    let lines = str.split('\n');
-    for(let line of lines){
-      let opt = document.createElement('option');
-      opt.value = line;
-      dl.appendChild(opt);
-    }
-  }
-  async function appendAutoc_rec(filename){
+  async function appendAutoc_rec(filename, delimit){
     try{
       const readInterface = readline.createInterface ({
         input: fs.createReadStream (filename, 'utf8'),
@@ -123,9 +110,12 @@
 
       for await (const line of readInterface) {
         let opt = document.createElement('option');
-        opt.textContent = line;
-        let iS = line.lastIndexOf(' ');
-        opt.value = line.substring(iS+1);
+        if(delimit){
+          opt.textContent = line;
+          let iS = line.lastIndexOf(delimit);
+          opt.value = line.substring(iS+1);
+        }else
+          opt.value = line;
         document.forms[0].children[0].appendChild(opt);
       }
     }catch(e){return;}
