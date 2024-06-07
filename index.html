@@ -38,22 +38,7 @@
     if(err) return;
     appendAutoc(str);
   });
-
-  (async ()=>{
-    try{
-      const readInterface = readline.createInterface ({
-        input: fs.createReadStream (path.join(__dirname,'bookmark.rec'), 'utf8'),
-      });
-
-      for await (const line of readInterface) {
-        let opt = document.createElement('option');
-        opt.textContent = line;
-        let iS = line.lastIndexOf(' ');
-        opt.value = line.substring(iS+1);
-        document.forms[0].children[0].appendChild(opt);
-      }
-    }catch(e){return;}
-  })();
+  appendAutoc_rec(path.join(__dirname,'bookmark.rec'));
 
   function initSearchEngines(jsonStr){
     try{
@@ -129,6 +114,21 @@
       opt.value = line;
       dl.appendChild(opt);
     }
+  }
+  async function appendAutoc_rec(filename){
+    try{
+      const readInterface = readline.createInterface ({
+        input: fs.createReadStream (filename, 'utf8'),
+      });
+
+      for await (const line of readInterface) {
+        let opt = document.createElement('option');
+        opt.textContent = line;
+        let iS = line.lastIndexOf(' ');
+        opt.value = line.substring(iS+1);
+        document.forms[0].children[0].appendChild(opt);
+      }
+    }catch(e){return;}
   }
   function keyPress(e){
     var inputE = document.forms[0].q;
