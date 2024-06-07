@@ -20,6 +20,7 @@
 <script>
   const fs = require('fs');
   const path = require('path');
+  const readline = require('readline');
   var iTab = 0;
   var tabs;
   var engines = {};
@@ -38,6 +39,21 @@
     appendAutoc(str);
   });
 
+  (async ()=>{
+    try{
+      const readInterface = readline.createInterface ({
+        input: fs.createReadStream (path.join(__dirname,'bookmark.rec'), 'utf8'),
+      });
+
+      for await (const line of readInterface) {
+        let opt = document.createElement('option');
+        opt.textContent = line;
+        let iS = line.lastIndexOf(' ');
+        opt.value = line.substring(iS+1);
+        document.forms[0].children[0].appendChild(opt);
+      }
+    }catch(e){return;}
+  })();
 
   function initSearchEngines(jsonStr){
     try{
