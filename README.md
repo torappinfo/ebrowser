@@ -63,7 +63,7 @@ Run ebrowser
 
 #### New usages
 - Vector designing with web tech to replace Adobe Illustrator/Inkscape.
-  - Design with web tech
+  - Design with web tech.
   
   - Printing to pdf with customized paper size.
   - Magnify the pdf paper size to the required size.

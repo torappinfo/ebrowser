@@ -79,17 +79,6 @@ async function createWindow () {
   })
 
   win.loadFile('index.html');
-  fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
-    if (err) return;
-    win.webContents.executeJavaScript("initSearchEngines(`"+jsonString+"`)",false);
-  });
-
-  fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
-    if(err) return;
-    let js = "appendAutoc(`"+str+"`)";
-    win.webContents.executeJavaScript(js,false);
-  });
-
   fs.readFile(path.join(__dirname,'gredirect.json'), 'utf8', (err, jsonString) => {
     if (err) return;
     try {

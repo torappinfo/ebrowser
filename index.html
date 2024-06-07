@@ -18,7 +18,8 @@
   .curWV{display: inherit !important;}
 </style>
 <script>
-  var fs;
+  const fs = require('fs');
+  const path = require('path');
   var iTab = 0;
   var tabs;
   var engines = {};
@@ -26,6 +27,18 @@
   var defaultSE = "https://www.bing.com/search?q=";
   let lastKeyPressed;
   let lastKeyPressed_millis = 0;
+
+  fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
+    if (err) return;
+    initSearchEngines(jsonString,false);
+  });
+
+  fs.readFile(path.join(__dirname,'default.autoc'), 'utf8', (err, str) => {
+    if(err) return;
+    appendAutoc(str);
+  });
+
+
   function initSearchEngines(jsonStr){
     try{
       let val1st;
@@ -38,7 +51,6 @@
   }
   function save(filePath, u8array){
     //alert(Object.prototype.toString.call(u8array))
-    if(!fs) fs = require('fs');
     fs.writeFile (filePath, u8array, (err) => {
       if (err) {
         console.error (err);
