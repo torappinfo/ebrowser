@@ -412,6 +412,14 @@ if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er)
           let js = "try{tabs.children[iTab].openDevTools()}catch(e){console.log(e)}";
           win.webContents.executeJavaScript(js,false);
         }},
+        { label: '', accelerator: ':', click:()=>{
+          let js = "{let t=document.forms[0].q;t.value=':';t.focus()}";
+          win.webContents.executeJavaScript(js,false);
+        }},
+        { label: '', accelerator: '/', click:()=>{
+          let js = "{let t=document.forms[0].q;t.value='/';t.focus()}";
+          win.webContents.executeJavaScript(js,false);
+        }},
 
       ],
     },

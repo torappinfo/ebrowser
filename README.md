@@ -32,6 +32,7 @@ Run ebrowser
 - F5: page refresh/reload
 - F12: devtools
 - ":" for address bar commands
+- "/" for find-in-page with address bar
 - "!" for ":!" address bar commands
 
 #### Address bar commands
