@@ -122,9 +122,21 @@
   }
   function keyPress(e){
     var inputE = document.forms[0].q;
-    if (e.ctrlKey||e.altKey||e.metaKey)
+    if (e.altKey||e.metaKey)
       return;
     var key = e.key;
+    if(e.ctrlKey){
+      switch(key){
+      case "Home":
+        tabs.children[iTab].src = "javascript:window.scrollTo(0,0)";
+        return;
+      case "End":
+        tabs.children[iTab].src="javascript:window.scrollTo(0,document.body.scrollHeight)"
+        return;
+
+      }
+      return;
+    }
     switch(key){
     case "PageDown":
       tabs.children[iTab].src =
@@ -133,6 +145,13 @@
     case "PageUp":
       tabs.children[iTab].src = "javascript:window.scrollBy(0,-3*document.documentElement.clientHeight/4)";
       return;
+    case "ArrowDown":
+      tabs.children[iTab].src="javascript:window.scrollBy(0,32)";
+      return;
+    case "ArrowUp":
+      tabs.children[iTab].src="javascript:window.scrollBy(0,-32)";
+      return;
+ 
     }
     if(inputE === document.activeElement) return;
     var curMillis = Date.now();

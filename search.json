@@ -6,13 +6,14 @@
   "exa":"https://exa.ai/search?c=all&q=",
   "andi":"https://andisearch.com/?q=",
   "ph":"https://phind-ai.com/search?q=",
+  "gf":"https://greasyfork.org/en/scripts?filter_locale=0&sort=updated&q=",
   "dev":"https://devv.ai/search?agentMode=false&q=",
   "you":"https://you.com/search?tbm=youchat&q=",
   "p":"https://www.perplexity.ai/?q=",
   "brave":"https://search.brave.com/search?q=",
   "g":"https://google.com/search?q=",
   "git":"https://github.com/search?type=Repositories&q=",
-  "gt":"https://github.hscsec.cn/search?type=Repositories&q=",
+  "gt":"https://kkgithub.com/search?type=Repositories&q=",
   "360":"https://so.360.com/s?q=",
   "bd":"https://m.baidu.com/s?wd="
 }
