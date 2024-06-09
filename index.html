@@ -271,10 +271,17 @@
         }else if(q.startsWith("javascript:")) break;
       }
       let iS = q.indexOf(' ');
-      if(iS<0 && q.indexOf('.')>0)
-        url = 'https://'+q;
-      else
-        url = bang(q, iS);
+      if(iS<0){
+        if(q.length>5){
+          if(58==q.charCodeAt(5))
+            break;
+        }
+        if(q.indexOf('.')>0){
+          url = 'https://'+q;
+          break;
+        }
+      }
+      url = bang(q, iS);
     }while(false);
     tabs.children[iTab].src=url;
   }
