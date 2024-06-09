@@ -50,6 +50,7 @@ Run ebrowser
   - np : no proxy
   - up [proxyName] : use proxy. privous proxy or the first proxy in proxy.json w/o [proxyName].
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
+  - Bml [filename w/o extension]: load/execute the javascript file
   - Pdf [filename] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - ":!" address bar commands
 

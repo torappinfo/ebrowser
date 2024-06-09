@@ -194,11 +194,22 @@
   function coloncommand_render(cmd){
     args = cmd.substring(1).split(/\s+/);
     switch(args[0]){
+    case "Bml":
+      bml(args);
+      return;
     case "Pdf":
       savePdf(args);
       return;
     }
 
+  }
+  function bml(args){
+    if(2!=args.length) return;
+    let filename = args[1]+".js";
+    fs.readFile(path.join(__dirname,filename), 'utf8', (err,str) => {
+      if (err) return;
+      tabs.children[iTab].executeJavaScript(str,false);
+    });
   }
   function savePdf(args){
     let filename = "ebrowser.pdf";
