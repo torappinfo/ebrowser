@@ -120,10 +120,10 @@
 
       for await (const line of readInterface) {
         let opt = document.createElement('option');
-        if(delimit){
-          opt.textContent = line;
-          let iS = line.lastIndexOf(delimit);
-          opt.value = line.substring(iS+1);
+        let iS;
+        if(delimit && (iS=line.lastIndexOf(delimit))>0){
+          opt.value = line.substring(iS+delimit.length);
+          opt.textContent = line.substring(0,iS);
         }else
           opt.value = line;
         document.forms[0].children[0].appendChild(opt);

@@ -143,7 +143,7 @@ function addrCommand(cmd){
   case 58: //':'
     args = cmd.substring(1).split(/\s+/);
     switch(args[0]){
-    case "anycert":
+    case "cert":
       if(args.length==1)
         session.defaultSession.setCertificateVerifyProc((request, callback) => {
           callback(0);

@@ -38,20 +38,21 @@ Run ebrowser
 #### Address bar commands
 - "/" for find-in-page
 - ":" for address bar commands
-  - anycert : allow invalid certificates w/o arguments, otherwise restore to default
   - b [bookmarkfilename w/o ext] : bookmark current page in file
+  - bml [filename w/o extension]: load/execute the javascript file
+  - cert : allow invalid certificates w/o arguments, otherwise restore to default
   - clear : the arguments could be
     - cache : clear cache
     - dns : clear dns cache
     - storage: clear site storage data.
   - ext [extension path]: load unpacked Chrome extension.
+  - nh/uh for No/Use url history.
   - nj/uj for No/Use external Javascript files.
   - nr/ur for No/Use "redirect.json" for domain redirection.
   - np : no proxy
   - up [proxyName] : use proxy. privous proxy or the first proxy in proxy.json w/o [proxyName].
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
-  - bml [filename w/o extension]: load/execute the javascript file
-  - pdf [filename] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
+  - pdf [filename w/o extension] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - ":!" address bar commands
 
 #### Configuration files
