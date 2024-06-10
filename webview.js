@@ -36,7 +36,7 @@ var proxies = {};
 var proxy;
 var useragents = {};
 var defaultUA =
-    "Mozilla/5.0 (X11; Linux x86_64; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
 app.userAgentFallback = defaultUA;
 var historyFile = path.join(__dirname,'history.rec');
@@ -403,13 +403,14 @@ if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er)
 function cmdlineProcess(argv,cwd,extra){
   let i1st = 2+extra; //index for the first query item
   if(argv.length>i1st){
-    if(i1st+1==argv.length && argv[i1st].endsWith(".html") &&
-       58 != argv[i1st].charCodeAt(4) && argv[i1st].length>5 &&
-       58 != argv[i1st].charCodeAt(5)){//local file
-      let fUrl = "file://"+cwd+"/"+argv[i1st];
-      win.webContents.executeJavaScript("tabs.children[iTab].src='"+fUrl+"'",false);
-      win.setTitle(argv[i1st]);
-      return;
+    if(i1st+1==argv.length){//local file
+      let fname =  path.join(cwd, argv[i1st]);
+      if(fs.existsSync(fname)){
+        let js = "tabs.children[iTab].src='file://"+fname+"'";
+        win.webContents.executeJavaScript(js,false);
+        win.setTitle(argv[i1st]);
+        return;
+      }
     }
     let url=argv.slice(i1st).join(" ");
     win.webContents.executeJavaScript("handleQuery(`"+url+"`)",false);
