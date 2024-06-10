@@ -199,6 +199,9 @@
   function coloncommand_render(cmd){
     args = cmd.substring(1).split(/\s+/);
     switch(args[0]){
+    case "autoc":
+      autoc(args);
+      return;
     case "b":
       bookmark(args);
       return;
@@ -210,6 +213,10 @@
       return;
     }
 
+  }
+  function autoc(args){
+    if(2!=args.length) return;
+    appendAutoc_rec(path.join(__dirname,args[1]+".rec"),' ');
   }
   function bml(args){
     if(2!=args.length) return;
@@ -259,7 +266,7 @@
         return;
       case 58://':'
         let c1=q.charCodeAt(1);
-        if(c1!=98 && 112!=c1)
+        if(c1>98 && 112!=c1)
           coloncommand(q);
         else
           coloncommand_render(q);

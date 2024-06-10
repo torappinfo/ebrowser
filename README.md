@@ -38,9 +38,10 @@ Run ebrowser
 #### Address bar commands
 - "/" for find-in-page
 - ":" for address bar commands
-  - b [bookmarkfilename w/o ext] : bookmark current page in file
-  - bml [filename w/o extension]: load/execute the javascript file
-  - cert : allow invalid certificates w/o arguments, otherwise restore to default
+  - autoc [bookmark/history path w/o ext] : load ".rec" file for autocomplete.
+  - b [bookmarkfilename w/o ext] : bookmark current page in file.
+  - bml [filename w/o extension]: load/execute the javascript file.
+  - cert : allow invalid certificates w/o arguments, otherwise restore to default.
   - clear : the arguments could be
     - cache : clear cache
     - dns : clear dns cache
