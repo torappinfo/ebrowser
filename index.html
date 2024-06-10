@@ -26,8 +26,8 @@
   var engines = {};
   var pdfOptions = {};
   var defaultSE = "https://www.bing.com/search?q=";
-  let lastKeyPressed;
-  let lastKeyPressed_millis = 0;
+  let lastKeys;
+  let lastKeys_millis = 0;
 
   fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
     if (err) return;
@@ -164,24 +164,35 @@
  
     }
     if(inputE === document.activeElement) return;
+    if(1!=key.length) return;
     var curMillis = Date.now();
-    if(curMillis-lastKeyPressed_millis>1000)
-      lastKeyPressed = null;
-    lastKeyPressed_millis = curMillis;
+    if(curMillis-lastKeys_millis>500)
+      lastKeys = null;
+    lastKeys_millis = curMillis;
 
     switch (key) {
     case "!":
       inputE.value = ":";
       inputE.focus();
-      lastKeyPressed = null;
+      lastKeys = null;
       return;
     case "/":
     case ":":
       inputE.value = "";
       inputE.focus();
-      lastKeyPressed = null;
+      lastKeys = null;
       return;
     }
+    if(!lastKeys) {
+      lastKeys = key;
+      return;
+    }
+    lastKeys = lastKeys + key;
+    switch(lastKeys){
+    default:
+      return;
+    }
+    lastKeys = null;
   }
   function getQ(){return document.forms[0].q.value;}
   function bang(query, iSpace){
