@@ -194,10 +194,11 @@
       return;
     }
     lastKeys = lastKeys + key;
-    let cmd = mapKeys[lastKeys];
-    if(cmd){
+    let cmds = mapKeys[lastKeys];
+    if(cmds){
       lastKeys = null;
-      handleQuery(cmd);
+      for(var cmd of cmds.split("\n"))
+        handleQuery(cmd);
     }
   }
   function getQ(){return document.forms[0].q.value;}

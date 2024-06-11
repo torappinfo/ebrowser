@@ -66,7 +66,7 @@ The commands are defined in "mapkeys.json", which will map keys to address bar c
 - "default.autoc": predefined strings for address bar auto completion.
 - "gredirect.json": global redirection urls as array of urls
 - "redirect.json": domain-replacementDomain pairs, default to be applied.
-- "mapkeys.json": keys-addressbarCommands pairs. 
+- "mapkeys.json": keys-addressbarCommands pairs. The addressbar commands are multiple lines of address bar command separated by "\n".
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-useragent pairs
 
