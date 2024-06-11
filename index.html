@@ -301,7 +301,10 @@
             break;
           if(58==c5 && 47==q.charCodeAt(7))//https://
             break;
-        }else if(q.startsWith("javascript:")) break;
+        }else if(q.startsWith("javascript:")){
+          tabs.children[iTab].executeJavaScript(q.substring(11),false);
+          return;
+        }
       }
       let iS = q.indexOf(' ');
       if(iS<0){
