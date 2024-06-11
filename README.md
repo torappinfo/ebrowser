@@ -1,14 +1,14 @@
-### Ebrowser as alternative to [uweb browser](https://github.com/torappinfo/uweb)
-Ebrowser is the minimal browser with the philosophy of [uweb browser](https://gitlab.com/jamesfengcao/uweb).
+### [Ebrowser](https://github.com/torappinfo/ebrowser) as alternative to [uweb browser](https://github.com/torappinfo/uweb)
+Ebrowser is the minimal browser with the philosophy of [Android uweb browser](https://gitlab.com/jamesfengcao/uweb).
 
 - lightweight (less than 20k bytes) without bundled electron.
-- highly performant.
+- much less memory footprint than edge/chrome browser and highly performant.
 - keyboard (command line) friendly.
 - customizable.
 
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Ebrowser uses core chromium effectively and very lightweight. Recommend to install electron separately.
 
-#### Install
+#### Install (for Windows, MacOS and Linux)
 Install ebrowser with nodejs installed
 
     npm install ebrowser
@@ -31,9 +31,6 @@ Run ebrowser
 - ESC: remove focus. similar to vi normal mode.
 - F5: page refresh/reload
 - F12: devtools
-- ":" for address bar commands
-- "/" for find-in-page with address bar
-- "!" for ":!" address bar commands
 
 #### Address bar commands
 - "/" for find-in-page
@@ -58,7 +55,11 @@ Run ebrowser
 
 #### Commands in no-focus mode (this mode is similar to vi Normal mode)
 Pressing "ESC" to enter no-focus mode if not sure.
-The commands are defined in "mapkeys.json", which will map keys to address bar commands.
+- ":" for address bar commands
+- "/" for find-in-page with address bar
+- "!" for ":!" address bar commands
+
+The other commands are defined in "mapkeys.json", which will map keys to address bar commands.
 
 #### Configuration files
 - "config": lines of address bar commands.
