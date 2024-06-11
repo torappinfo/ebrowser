@@ -24,7 +24,7 @@
   var iTab = 0;
   var tabs;
   var engines = {};
-  var pdfOptions = {};
+  var mapKeys = {};
   var defaultSE = "https://www.bing.com/search?q=";
   let lastKeys;
   let lastKeys_millis = 0;
@@ -32,6 +32,12 @@
   fs.readFile(path.join(__dirname,'search.json'), 'utf8', (err, jsonString) => {
     if (err) return;
     initSearchEngines(jsonString,false);
+  });
+  fs.readFile(path.join(__dirname,'mapkeys.json'), 'utf8', (err, jsonStr) => {
+    if (err) return;
+    try {
+      mapKeys = JSON.parse(jsonStr);
+    }catch(e){}
   });
   appendAutoc_rec(path.join(__dirname,'default.autoc'),null);
   appendAutoc_rec(path.join(__dirname,'bookmark.rec'),' ');
@@ -188,11 +194,11 @@
       return;
     }
     lastKeys = lastKeys + key;
-    switch(lastKeys){
-    default:
-      return;
+    let cmd = mapKeys[lastKeys];
+    if(cmd){
+      lastKeys = null;
+      handleQuery(cmd);
     }
-    lastKeys = null;
   }
   function getQ(){return document.forms[0].q.value;}
   function bang(query, iSpace){

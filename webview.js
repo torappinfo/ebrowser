@@ -102,7 +102,6 @@ async function createWindow () {
   //app.commandLine.appendSwitch ('trace-warnings');
 
   win.webContents.on('page-title-updated',(event,cmd)=>{
-    console.log(cmd);
     addrCommand(cmd);
   });
 
@@ -186,6 +185,7 @@ function addrCommand(cmd){
         proxy = proxies[args[1]]; //retrieve proxy
       if(proxy)
         session.defaultSession.setProxy(proxy);
+      bRedirect = false;
       return;
     case "nr":
       bRedirect = false; return;

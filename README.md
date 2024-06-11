@@ -28,7 +28,7 @@ Run ebrowser
 - CTRL+->: go forward
 - CTRL+SHIFT+R: enable global redirection ("gredirect.json")
 - CTRL+R: disable global redirection
-- ESC
+- ESC: remove focus. similar to vi normal mode.
 - F5: page refresh/reload
 - F12: devtools
 - ":" for address bar commands
@@ -56,12 +56,17 @@ Run ebrowser
   - pdf [filename w/o extension] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - ":!" address bar commands
 
+#### Commands in no-focus mode (this mode is similar to vi Normal mode)
+Pressing "ESC" to enter no-focus mode if not sure.
+The commands are defined in "mapkeys.json", which will map keys to address bar commands.
+
 #### Configuration files
 - "config": lines of address bar commands.
 - "search.json": search engines as shortcut-queryUrl pairs.
 - "default.autoc": predefined strings for address bar auto completion.
 - "gredirect.json": global redirection urls as array of urls
 - "redirect.json": domain-replacementDomain pairs, default to be applied.
+- "mapkeys.json": keys-addressbarCommands pairs. 
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-useragent pairs
 
