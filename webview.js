@@ -34,6 +34,7 @@ var redirects;
 var bRedirect = true;
 var bJS = true;
 var bHistory = false;
+var bForwardCookie = false;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -420,9 +421,10 @@ function cmdlineProcess(argv,cwd,extra){
   }
 }
 
-function cbScheme_redir(req){
+async function cbScheme_redir(req){
   if(!gredirect) return null;
-  let newurl = gredirect+req.url.substring(4);
+  let oUrl = req.url.substring(4);
+  let newurl = gredirect+oUrl;
   const options = {
     body:       req.body,
     headers:    req.headers,
@@ -431,7 +433,10 @@ function cbScheme_redir(req){
     duplex: "half",
     bypassCustomProtocolHandlers: true
   };
-
-  return fetch(newurl, options);
+  if(bForwardCookie){
+    let cookies = await session.defaultSession.cookies.get({url: oUrl});
+    options.Cookie = cookies; 
+  }
+  return net.fetch(newurl, options);
 }
 

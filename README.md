@@ -1,9 +1,11 @@
 ### [Ebrowser](https://github.com/torappinfo/ebrowser) as alternative to [uweb browser](https://github.com/torappinfo/uweb)
-Ebrowser is the minimal browser with the philosophy of [Android uweb browser](https://gitlab.com/jamesfengcao/uweb).
+Ebrowser is the minimal suckless browser with the philosophy of [Android uweb browser](https://gitlab.com/jamesfengcao/uweb).
 
 - lightweight (less than 20k bytes) without bundled electron.
 - much less memory footprint than edge/chrome browser and highly performant.
-- keyboard (command line) friendly.
+- keyboard friendly with vim-style keymaps and command line support in address bar.
+- global redirection to bypass censorship.
+- user scripts at will.
 - customizable.
 
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Ebrowser uses core chromium effectively and very lightweight. Recommend to install electron separately.
@@ -81,4 +83,4 @@ The other commands are defined in "mapkeys.json", which will map keys to address
   OR
   
   - Adjust window width and use addressbar command line ":Pdf {}" to export vector graphics.
-  - Use imageMagick to convert to any other vector graphics format. 
+  - Use imageMagick to convert to any other vector graphics format.
