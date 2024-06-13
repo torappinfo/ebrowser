@@ -108,7 +108,7 @@ async function createWindow () {
   });
 
   win.webContents.on('console-message',cbConsoleMsg);
-  //protocol.handle("https",cbScheme_https);
+  protocol.handle("red",cbScheme_redir);
 }
 
 app.on('window-all-closed', function () {
@@ -231,8 +231,8 @@ function interceptRequest(details, callback){
   }
   do {
     if(gredirect){
-      if(!details.url.startsWith("http")) break;
-      if(!details.url.startsWith(gredirect)){
+      let c0 = details.url.charCodeAt(0);
+      if(104===c0||119===c0){
         if(details.resourceType === 'mainFrame'){
           let wc = details.webContents;
           let url = details.url;
@@ -253,7 +253,7 @@ function interceptRequest(details, callback){
             return;
           }
         }
-        let newUrl = gredirect + details.url;
+        let newUrl = "red:" + details.url;
         callback({ cancel: false, redirectURL: newUrl });
         return;
       }
@@ -419,3 +419,19 @@ function cmdlineProcess(argv,cwd,extra){
     win.setTitle(url);
   }
 }
+
+function cbScheme_redir(req){
+  if(!gredirect) return null;
+  let newurl = gredirect+req.url.substring(4);
+  const options = {
+    body:       req.body,
+    headers:    req.headers,
+    method:     req.method,
+    referer:    req.referer,
+    duplex: "half",
+    bypassCustomProtocolHandlers: true
+  };
+
+  return fetch(newurl, options);
+}
+
