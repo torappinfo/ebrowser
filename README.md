@@ -45,6 +45,7 @@ Run ebrowser
     - cache : clear cache
     - dns : clear dns cache
     - storage: clear site storage data.
+    - {[options](https://www.electronjs.org/docs/latest/api/session#sescleardataoptions)}
   - ext [extension path]: load unpacked Chrome extension.
   - nh/uh for No/Use url history.
   - nj/uj for No/Use external Javascript files.

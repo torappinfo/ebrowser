@@ -28,6 +28,7 @@ const fs = require('fs');
 const readline = require('readline');
 const path = require('path')
 const process = require('process')
+//const nfetch = require('node-fetch')
 var gredirects = [];
 var gredirect;
 var redirects;
@@ -167,6 +168,8 @@ function addrCommand(cmd){
       case "storage":
         session.defaultSession.clearStorageData();
         return;
+      default:
+        session.defaultSession.clearData(JSON.parse(args.slice(1).join("")));
       }
       return;
     case "ext":
@@ -431,12 +434,11 @@ async function cbScheme_redir(req){
     method:     req.method,
     referer:    req.referer,
     duplex: "half",
-    bypassCustomProtocolHandlers: true
   };
   if(bForwardCookie){
     let cookies = await session.defaultSession.cookies.get({url: oUrl});
-    options.Cookie = cookies; 
+    options.headers.Cookie = cookies.join ('; ');
   }
-  return net.fetch(newurl, options);
+  return fetch(newurl, options);
 }
 
