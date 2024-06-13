@@ -10,7 +10,6 @@ if(!app.requestSingleInstanceLock())
 else {
   app.on('ready', createWindow);
   app.on('second-instance', (event, args, cwd) => {
-    // 当已经有运行的实例时，我们激活窗口而不是创建新的窗口
     if (win) {
       if (win.isMinimized()) {
         win.restore()
@@ -49,14 +48,14 @@ fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
   if (err) return;
   try {
     redirects = JSON.parse(jsonString);
-  } catch (e){}
+  } catch (e){console.log(e)}
 });
 
 async function createWindow () {
   let json = await fs.promises.readFile(path.join(__dirname,'uas.json'), 'utf8');
   try {
     useragents = JSON.parse(json);
-  } catch (e){}
+  } catch (e){console.log(e)}
   
   await (async ()=>{
     try{
@@ -67,7 +66,7 @@ async function createWindow () {
       for await (const line of readInterface) {
         addrCommand(line);
       }
-    }catch(e){return;}
+    }catch(e){console.log(e);}
   })();
 
   win = new BrowserWindow(
@@ -87,7 +86,7 @@ async function createWindow () {
     if (err) return;
     try {
       gredirects = JSON.parse(jsonString);
-    } catch (e){}
+    } catch (e){console.log(e)}
   });
 
   fs.readFile(path.join(__dirname,'proxy.json'), 'utf8', (err, jsonString) => {
@@ -99,7 +98,7 @@ async function createWindow () {
         }
         return val;
       });
-    } catch (e){}
+    } catch (e){console.log(e)}
   });
 
   cmdlineProcess(process.argv, process.cwd(), 0);
@@ -156,6 +155,7 @@ function addrCommand(cmd){
       return;
     case "clear":
       if(args.length==1){
+        session.defaultSession.clearData();
         return;
       }
       switch(args[1]){
@@ -169,7 +169,10 @@ function addrCommand(cmd){
         session.defaultSession.clearStorageData();
         return;
       default:
-        session.defaultSession.clearData(JSON.parse(args.slice(1).join("")));
+        try {
+          let opts = JSON.parse(args.slice(1).join(""));
+          session.defaultSession.clearData(opts);
+        }catch(e){console.log(e)}
       }
       return;
     case "ext":

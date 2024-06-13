@@ -1,22 +1,22 @@
 {
   "name": "ebrowser",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "electron web browser",
   "main": "webview.js",
   "scripts": {
     "release": "electron-builder"
   },
-  "files": [
-    "webview.js",
-    "index.html",
-    "package.json",
-    "README.md"
-  ],
   "author": "Richard H. Cao",
   "keywords": ["browser","minimal","suckless","command line","vim key map","user scripts"],
   "build": {
     "appId": "torapp.eweb",
     "publish": "github",
+    "files": [
+      "webview.js",
+      "index.html",
+      "package.json",
+      "README.md"
+    ],
     "directories": {
       "output": "release"
     },
