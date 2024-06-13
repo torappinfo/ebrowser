@@ -4,6 +4,7 @@
   "description": "electron web browser",
   "main": "webview.js",
   "scripts": {
+    "prepublish": "html-minifier --input-dir . --output-dir dist --file-ext html --collapse-whitespace --remove-comments --minify-js --minify-css;uglifyjs webview.js -o dist/webview.js",
     "release": "electron-builder"
   },
   "author": "Richard H. Cao",

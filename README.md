@@ -5,7 +5,7 @@ Ebrowser is the minimal suckless browser with the philosophy of [Android uweb br
 - much less memory footprint than edge/chrome browser and highly performant.
 - keyboard friendly with vim-style keymaps and command line support in address bar.
 - global redirection to bypass censorship.
-- user scripts at will.
+- user scripts at will. Ex. pressing "tr" to translate the page (need mapkeys.json config).
 - customizable.
 
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Ebrowser uses core chromium effectively and very lightweight. Recommend to install electron separately.
