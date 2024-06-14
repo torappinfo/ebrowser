@@ -2,7 +2,8 @@
  */
 const {
   app, BrowserWindow, Menu, shell, clipboard,
-  session, protocol, net} = require('electron')
+  session, protocol, net, dialog
+} = require('electron')
 let win;
 
 if(!app.requestSingleInstanceLock())
@@ -33,7 +34,7 @@ var redirects;
 var bRedirect = true;
 var bJS = true;
 var bHistory = false;
-var bForwardCookie = true;
+var bForwardCookie = false;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -178,9 +179,14 @@ function addrCommand(cmd){
       return;
     case "nc":
       bForwardCookie = false;
+      msgbox_info("Cookie forwarding disabled");
       return;
     case "uc":
-      bForwardCookie = true;
+      if(bForwardCookie) {
+        msgbox_info("Cookie forwarding enabled for global redirection");
+        return;
+      }
+      forwardCookie();
       return;
     case "nh":
       bHistory = false; return;
@@ -438,3 +444,23 @@ function unregisterHandler(){
   protocol.unhandle("ws",cbScheme_redir);
   protocol.unhandle("wss",cbScheme_redir);
 }
+
+function forwardCookie(){
+  const choice = dialog.showMessageBoxSync(null,  {
+    type: 'warning',
+    title: 'Confirm cookie forwarding with global redirection',
+    message: 'Cookies are used to access your account. Forwarding cookies is vulnerable to global redirection server, proceed to enable cookie forwarding with global redirection?',
+    buttons: ['No','Yes']
+  })
+  if(1===choice) bForwardCookie=true;
+}
+function msgbox_info(msg){
+  dialog.showMessageBoxSync(null,  {
+    type: 'info',
+    title: msg,
+    message: msg,
+    buttons: ['OK']
+  })
+}
+
+

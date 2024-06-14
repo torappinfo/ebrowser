@@ -47,6 +47,7 @@ Run ebrowser
     - storage: clear site storage data.
     - {[options](https://www.electronjs.org/docs/latest/api/session#sescleardataoptions)}
   - ext [extension path]: load unpacked Chrome extension.
+  - nc/uc : No Cookie forwarding/Use Cookie forwarding with global redirection.
   - nh/uh for No/Use url history.
   - nj/uj for No/Use external Javascript files.
   - nr/ur for No/Use "redirect.json" for domain redirection.
