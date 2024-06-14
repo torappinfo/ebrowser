@@ -234,38 +234,7 @@ function interceptRequest(details, callback){
     return;
   }
   do {
-    if(gredirect){
-      break;
-      let c0 = details.url.charCodeAt(0);
-      if(104===c0||119===c0){
-        if(details.resourceType === 'mainFrame'){
-          let wc = details.webContents;
-          let url = details.url;
-          if(wc){
-            let nUrl = gredirect+url;
-            fetch(nUrl).then(res=>{
-              if(res.ok) return res.arrayBuffer();
-              throw new Error(`Err: ${res.status} - ${res.statusText}`);
-            }).then(aBuf=>{
-              const u8 = new Uint8Array(aBuf);
-              const b64 = Buffer.from (u8).toString('base64');
-              const dataUrl = `data:text/html;base64,${b64}`;
-              wc.loadURL(dataUrl,{baseURLForDataURL:url});
-            }).catch(e=>{
-              console.log(nUrl+" err:",e);
-            });
-            callback({ cancel: true });
-            return;
-          }
-        }
-        let newUrl = "red:" + details.url;
-        callback({ cancel: false, redirectURL: newUrl });
-        return;
-      }
-      break;
-    }
-
-    if(!bRedirect ||(details.resourceType !== 'mainFrame' &&
+    if(gredirect || !bRedirect ||(details.resourceType !== 'mainFrame' &&
                      details.resourceType !== 'subFrame')) break;
     let oURL = new URL(details.url);
     let domain = oURL.hostname;
