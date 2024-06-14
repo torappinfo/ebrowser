@@ -33,6 +33,7 @@ var redirects;
 var bRedirect = true;
 var bJS = true;
 var bHistory = false;
+var bForwardCookie = true;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -174,6 +175,12 @@ function addrCommand(cmd){
       return;
     case "ext":
       session.defaultSession.loadExtension(args[1]);
+      return;
+    case "nc":
+      bForwardCookie = false;
+      return;
+    case "uc":
+      bForwardCookie = true;
       return;
     case "nh":
       bHistory = false; return;
@@ -402,7 +409,7 @@ async function cbScheme_redir(req){
   if(!gredirect) return null;
   let oUrl = req.url;
   let newurl = gredirect+oUrl;
-  const options = {
+  let options = {
     body:       req.body,
     headers:    req.headers,
     method:     req.method,
@@ -410,6 +417,12 @@ async function cbScheme_redir(req){
     duplex: "half",
     bypassCustomProtocolHandlers: true
   };
+  if(bForwardCookie){
+    let cookies = await session.defaultSession.cookies.get({url: oUrl});
+    let cookieS = cookies.map (cookie => cookie.name  + '=' + cookie.value ).join(';');
+    options.headers['Cookie'] = cookieS;
+  }
+
   return fetch(newurl, options);
 }
 
@@ -417,9 +430,11 @@ function registerHandler(){
   protocol.handle("http",cbScheme_redir);
   protocol.handle("https",cbScheme_redir);
   protocol.handle("ws",cbScheme_redir);
+  protocol.handle("wss",cbScheme_redir);
 }
 function unregisterHandler(){
   protocol.unhandle("http",cbScheme_redir);
   protocol.unhandle("https",cbScheme_redir);
   protocol.unhandle("ws",cbScheme_redir);
+  protocol.unhandle("wss",cbScheme_redir);
 }
