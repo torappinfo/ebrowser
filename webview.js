@@ -107,7 +107,6 @@ async function createWindow () {
   });
 
   win.webContents.on('console-message',cbConsoleMsg);
-  protocol.handle("red",cbScheme_redir);
 }
 
 app.on('window-all-closed', function () {
@@ -236,6 +235,7 @@ function interceptRequest(details, callback){
   }
   do {
     if(gredirect){
+      break;
       let c0 = details.url.charCodeAt(0);
       if(104===c0||119===c0){
         if(details.resourceType === 'mainFrame'){
@@ -355,10 +355,14 @@ function topMenu(){
           win.webContents.executeJavaScript(js,false);
         }},
         { label: '', accelerator: 'Ctrl+R', click: ()=>{
-          gredirect=null;
+          if(gredirect){
+            gredirect=null;
+            unregisterHandler();
+          }
         }},
         { label: '', accelerator: 'Ctrl+Shift+R', click: ()=>{
           if(0==gredirects.length) return;
+          if(!gredirect) registerHandler();
           gredirect=gredirects[0];
         }},
         { label: '', accelerator: 'Ctrl+W', click: ()=>{
@@ -427,7 +431,7 @@ function cmdlineProcess(argv,cwd,extra){
 
 async function cbScheme_redir(req){
   if(!gredirect) return null;
-  let oUrl = req.url.substring(4);
+  let oUrl = req.url;
   let newurl = gredirect+oUrl;
   const options = {
     body:       req.body,
@@ -435,7 +439,18 @@ async function cbScheme_redir(req){
     method:     req.method,
     referer:    req.referer,
     duplex: "half",
+    bypassCustomProtocolHandlers: true
   };
   return fetch(newurl, options);
 }
 
+function registerHandler(){
+  protocol.handle("http",cbScheme_redir);
+  protocol.handle("https",cbScheme_redir);
+  protocol.handle("ws",cbScheme_redir);
+}
+function unregisterHandler(){
+  protocol.unhandle("http",cbScheme_redir);
+  protocol.unhandle("https",cbScheme_redir);
+  protocol.unhandle("ws",cbScheme_redir);
+}
