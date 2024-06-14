@@ -27,14 +27,12 @@ const fs = require('fs');
 const readline = require('readline');
 const path = require('path')
 const process = require('process')
-//const nfetch = require('node-fetch')
 var gredirects = [];
 var gredirect;
 var redirects;
 var bRedirect = true;
 var bJS = true;
 var bHistory = false;
-var bForwardCookie = false;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -438,10 +436,6 @@ async function cbScheme_redir(req){
     referer:    req.referer,
     duplex: "half",
   };
-  if(bForwardCookie){
-    let cookies = await session.defaultSession.cookies.get({url: oUrl});
-    options.headers.Cookie = cookies.join ('; ');
-  }
   return fetch(newurl, options);
 }
 
