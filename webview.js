@@ -340,6 +340,10 @@ function topMenu(){
           let js = "newTab();document.forms[0].q.select();switchTab(tabs.children.length-1)";
           win.webContents.executeJavaScript(js,false);
         }},
+        { label: 'Restore Tab', accelerator: 'Ctrl+Shift+T', click:()=>{
+          let js = "{let u=closedUrls.pop();if(u){newTab();switchTab(tabs.children.length-1);tabs.children[iTab].src=u}}";
+          win.webContents.executeJavaScript(js,false);
+        }},
         { label: 'No redirect', accelerator: 'Ctrl+R', click: ()=>{
           if(gredirect){
             gredirect=null;
