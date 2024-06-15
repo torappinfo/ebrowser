@@ -1,5 +1,5 @@
-### [Ebrowser](https://github.com/torappinfo/ebrowser) as alternative to [uweb browser](https://github.com/torappinfo/uweb)
-Ebrowser is the minimal suckless browser with the philosophy of [Android uweb browser](https://gitlab.com/jamesfengcao/uweb).
+### [Ebrowser](https://github.com/torappinfo/ebrowser): keyboard-friendly minimal suckless web browser
+Ebrowser is designed with the philosophy of [Android uweb browser](https://github.com/torappinfo/uweb) ([gitlab](https://gitlab.com/jamesfengcao/uweb)).
 
 - lightweight (less than 20k bytes) without bundled electron.
 - much less memory footprint than edge/chrome browser and highly performant.
@@ -20,9 +20,11 @@ Run ebrowser
     electron ~/node_modules/ebrowser
 
 #### Key shortcuts
+- CTRL+C: stop loading
 - CTRL+G: address bar to show page url
 - CTRL+L: focus to address bar
 - CTRL+T: new Tab
+- CTRL+SHIFT+T: restore closed Tab
 - CTRL+TAB: switch to next tab
 - CTRL+SHIFT+TAB: switch to previous tab
 - CTRL+W: close Tab

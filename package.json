@@ -1,10 +1,9 @@
 {
   "name": "ebrowser",
-  "version": "1.0.14",
-  "description": "electron web browser",
+  "version": "1.0.15",
+  "description": "The keyboard-friendly minimal suckless web browser",
   "main": "webview.js",
   "scripts": {
-    "prepublish": "html-minifier --input-dir . --output-dir dist --file-ext html --collapse-whitespace --remove-comments --minify-js --minify-css;uglifyjs webview.js -o dist/webview.js",
     "release": "electron-builder"
   },
   "author": "Richard H. Cao",
