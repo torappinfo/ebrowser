@@ -325,63 +325,67 @@ function topMenu(){
     {
       label: '',
       submenu: [
-        { label: '', accelerator: 'Ctrl+G', click: ()=>{
+        { label: 'Stop', accelerator: 'Ctrl+C', click: ()=>{
+          let js="tabs.children[iTab].stop()"
+          win.webContents.executeJavaScript(js,false)
+        }},
+        { label: 'getURL', accelerator: 'Ctrl+G', click: ()=>{
           let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
           win.webContents.executeJavaScript(js,false)
         }},
-        { label: '', accelerator: 'Ctrl+L', click:()=>{
+        { label: 'Select', accelerator: 'Ctrl+L', click:()=>{
           win.webContents.executeJavaScript("document.forms[0].q.select()",false);
         }},
-        { label: '', accelerator: 'Ctrl+T', click:()=>{
+        { label: 'New Tab', accelerator: 'Ctrl+T', click:()=>{
           let js = "newTab();document.forms[0].q.select();switchTab(tabs.children.length-1)";
           win.webContents.executeJavaScript(js,false);
         }},
-        { label: '', accelerator: 'Ctrl+R', click: ()=>{
+        { label: 'No redirect', accelerator: 'Ctrl+R', click: ()=>{
           if(gredirect){
             gredirect=null;
             unregisterHandler();
           }
         }},
-        { label: '', accelerator: 'Ctrl+Shift+R', click: ()=>{
+        { label: 'Redirect', accelerator: 'Ctrl+Shift+R', click: ()=>{
           if(0==gredirects.length) return;
           if(!gredirect) registerHandler();
           gredirect=gredirects[0];
         }},
-        { label: '', accelerator: 'Ctrl+W', click: ()=>{
+        { label: 'Close', accelerator: 'Ctrl+W', click: ()=>{
           win.webContents.executeJavaScript("tabClose()",false).then((r)=>{
             if(""===r) win.close();
             else win.setTitle(r);
           });
         }},
-        { label: '', accelerator: 'Ctrl+Tab', click: ()=>{
+        { label: 'Next Tab', accelerator: 'Ctrl+Tab', click: ()=>{
           let js="tabInc(1);getWinTitle()";
           win.webContents.executeJavaScript(js,false).then((r)=>{
             win.setTitle(r);
           });
         }},
-        { label: '', accelerator: 'Ctrl+Shift+Tab', click: ()=>{
+        { label: 'Previous Tab', accelerator: 'Ctrl+Shift+Tab', click: ()=>{
           let js="tabDec(-1);getWinTitle()";
           win.webContents.executeJavaScript(js,false).then((r)=>{
             win.setTitle(r);
           });
         }},
-        { label: '', accelerator: 'Ctrl+Left', click: ()=>{
+        { label: 'Go backward', accelerator: 'Ctrl+Left', click: ()=>{
           let js="tabs.children[iTab].goBack()";
           win.webContents.executeJavaScript(js,false);
         }},
-        { label: '', accelerator: 'Ctrl+Right', click: ()=>{
+        { label: 'Go forward', accelerator: 'Ctrl+Right', click: ()=>{
           let js="tabs.children[iTab].goForward()";
           win.webContents.executeJavaScript(js,false);
         }},
-        { label: '', accelerator: 'Esc', click: ()=>{
+        { label: 'No focus', accelerator: 'Esc', click: ()=>{
           let js = `{let e=document.activeElement;
 if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er){}}`;
           win.webContents.executeJavaScript(js,false);
         }},
-        { label: '', accelerator: 'F5', click: ()=>{
+        { label: 'Reload', accelerator: 'F5', click: ()=>{
           win.webContents.executeJavaScript("tabs.children[iTab].reload()",false);
         }},
-        { label: '', accelerator: 'F12', click: ()=>{
+        { label: 'Devtools', accelerator: 'F12', click: ()=>{
           let js = "try{tabs.children[iTab].openDevTools()}catch(e){console.log(e)}";
           win.webContents.executeJavaScript(js,false);
         }},
