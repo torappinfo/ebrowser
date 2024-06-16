@@ -387,6 +387,18 @@ function topMenu(){
           let js="tabs.children[iTab].goForward()";
           win.webContents.executeJavaScript(js,false);
         }},
+        { label: 'Zoom in', accelerator: 'Ctrl+Shift+=', click: ()=>{
+          let js="{let t=tabs.children[iTab];let s=t.getZoomFactor()*1.2;t.setZoomFactor(s)}";
+          win.webContents.executeJavaScript(js,false);
+        }},
+        { label: 'Zoom out', accelerator: 'Ctrl+-', click: ()=>{
+          let js="{let t=tabs.children[iTab];let s=t.getZoomFactor()/1.2;t.setZoomFactor(s)}";
+          win.webContents.executeJavaScript(js,false);
+        }},
+        { label: 'Default zoom', accelerator: 'Ctrl+0', click: ()=>{
+          let js="tabs.children[iTab].setZoomFactor(1)";
+          win.webContents.executeJavaScript(js,false);
+        }},
         { label: 'No focus', accelerator: 'Esc', click: ()=>{
           let js = `{let e=document.activeElement;
 if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er){}}`;
