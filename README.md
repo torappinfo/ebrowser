@@ -10,8 +10,11 @@ Ebrowser is designed with the philosophy of [Android uweb browser](https://githu
 
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Ebrowser uses core chromium effectively and very lightweight. Recommend to install electron separately.
 
-#### Install (for Windows, MacOS and Linux)
-Install ebrowser with nodejs installed
+#### Installing (for Windows, MacOS and Linux)
+##### Install with prebuilt binaries
+You can find prebuilt binaries [here](https://github.com/torappinfo/ebrowser/releases).
+
+##### Install with nodejs installed
 
     npm install electron
     npm install ebrowser
@@ -19,6 +22,8 @@ Install ebrowser with nodejs installed
 Run ebrowser
 
     electron ~/node_modules/ebrowser
+
+Later on, you can run "npm install electron" to update electron/chromium or "npm install ebrowser" to update ebrowser independently.
 
 #### Key shortcuts
 - CTRL+C: stop loading
@@ -89,3 +94,6 @@ The other commands are defined in "mapkeys.json", which will map keys to address
   
   - Adjust window width and use addressbar command line ":Pdf {}" to export vector graphics.
   - Use imageMagick to convert to any other vector graphics format.
+
+#### License
+You can copy or modify the code/program under the terms of the GPL3.0 or later versions.
