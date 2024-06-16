@@ -203,9 +203,14 @@ function addrCommand(cmd){
     case "up":
       if(args.length>1)
         proxy = proxies[args[1]]; //retrieve proxy
-      if(proxy)
+      if(proxy){
+        if(gredirect){
+          gredirect=null;
+          unregisterHandler();
+        }
+        bRedirect = false;
         session.defaultSession.setProxy(proxy);
-      bRedirect = false;
+      }
       return;
     case "nr":
       bRedirect = false; return;
