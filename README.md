@@ -26,6 +26,7 @@ Run ebrowser
 Later on, you can run "npm install electron" to update electron/chromium or "npm install ebrowser" to update ebrowser independently.
 
 #### Key shortcuts
+- F1: Help
 - CTRL+C: stop loading
 - CTRL+G: address bar to show page url
 - CTRL+L: focus to address bar

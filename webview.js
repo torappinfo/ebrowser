@@ -331,6 +331,10 @@ function topMenu(){
     {
       label: '',
       submenu: [
+        { label: 'Help', accelerator: 'F1', click: ()=>{
+          let js="tabs.children[iTab].src='file://'+__dirname+'/README.md'";
+          win.webContents.executeJavaScript(js,false)
+        }},
         { label: 'Stop', accelerator: 'Ctrl+C', click: ()=>{
           let js="tabs.children[iTab].stop()"
           win.webContents.executeJavaScript(js,false)
