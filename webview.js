@@ -198,6 +198,7 @@ function addrCommand(cmd){
       bJS = true; return;
     case "np":
       session.defaultSession.setProxy ({mode:"direct"});
+      bRedirect = true;
       return;
     case "up":
       if(args.length>1)
