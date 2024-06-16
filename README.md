@@ -4,7 +4,7 @@ Ebrowser is designed with the philosophy of [Android uweb browser](https://githu
 - lightweight (less than 20k bytes) without bundled electron.
 - much less memory footprint than edge/chrome browser and highly performant.
 - keyboard friendly with vim-style keymaps and command line support in address bar.
-- global redirection to bypass censorship.
+- [global redirection](https://uweb.surge.sh/en/redirect/index.html#) to bypass censorship.
 - user scripts at will. Ex. pressing "tr" to translate the page (need mapkeys.json config).
 - customizable.
 

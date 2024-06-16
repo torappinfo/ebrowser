@@ -11,6 +11,7 @@ Copyright (C) 2024 Richard Hao Cao
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin-top: 1px;
   }
   div.webviews{
     display: flex;
@@ -133,7 +134,7 @@ Copyright (C) 2024 Richard Hao Cao
         let opt = document.createElement('option');
         let iS;
         if(delimit && (iS=line.lastIndexOf(delimit))>0){
-          opt.value = line.substring(iS+delimit.length);
+          opt.value = line.substring(iS+1);
           opt.textContent = line.substring(0,iS);
         }else
           opt.value = line;
