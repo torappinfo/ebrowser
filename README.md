@@ -13,6 +13,7 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 #### Install (for Windows, MacOS and Linux)
 Install ebrowser with nodejs installed
 
+    npm install electron
     npm install ebrowser
 
 Run ebrowser
