@@ -1,6 +1,6 @@
 {
   "name": "ebrowser",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "The keyboard-friendly minimal suckless web browser",
   "main": "webview.js",
   "scripts": {
@@ -19,11 +19,20 @@
     "files": [
       "webview.js",
       "index.html",
-      "package.json",
-      "README.md"
+      "package.json"
     ],
+    "extraFiles":  {
+      "from": "README.md",
+      "to": "."
+    },
     "directories": {
       "output": "release"
+    },
+    "mac": {
+      "extraResources":  {
+        "from": "README.md",
+        "to": "../../"
+      }
     },
     "dmg": {
       "contents": [
@@ -33,6 +42,9 @@
     },
     "nsis": {
       "createDesktopShortcut": "always"
+    },
+    "linux": {
+      "target": "AppImage"
     }
   },
   "dependencies": {
