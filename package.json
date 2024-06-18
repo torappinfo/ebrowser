@@ -1,6 +1,6 @@
 {
   "name": "ebrowser",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "The keyboard-friendly minimal suckless web browser",
   "main": "webview.js",
   "scripts": {
@@ -16,23 +16,15 @@
   "build": {
     "appId": "torapp.eweb",
     "publish": "github",
+    "asar": false,
     "files": [
       "webview.js",
       "index.html",
-      "package.json"
+      "package.json",
+      "README.md"
     ],
-    "extraFiles":  {
-      "from": "README.md",
-      "to": "."
-    },
     "directories": {
       "output": "release"
-    },
-    "mac": {
-      "extraResources":  {
-        "from": "README.md",
-        "to": "../../"
-      }
     },
     "dmg": {
       "contents": [
