@@ -177,6 +177,17 @@ function addrCommand(cmd){
     case "ext":
       session.defaultSession.loadExtension(args[1]);
       return;
+    case "gr":
+      if(args.length<2) {
+        gredirect_enable(0);
+        return;
+      }
+      let i = parseInt(args[1]);
+      if(i>=0 && i<gredirects.length)
+        gredirect_enable(i);
+      else
+        gredirect_disable();
+      return;
     case "nc":
       bForwardCookie = false;
       msgbox_info("Cookie forwarding disabled");
@@ -204,11 +215,7 @@ function addrCommand(cmd){
       if(args.length>1)
         proxy = proxies[args[1]]; //retrieve proxy
       if(proxy){
-        if(gredirect){
-          gredirect=null;
-          unregisterHandler();
-        }
-        bRedirect = false;
+        gredirect_disable();
         session.defaultSession.setProxy(proxy);
       }
       return;
@@ -224,6 +231,19 @@ function addrCommand(cmd){
       return;
     }
   }
+}
+
+function gredirect_disable(){
+  if(gredirect){
+    gredirect=null;
+    unregisterHandler();
+  }
+  bRedirect = false;
+}
+function gredirect_enable(i){
+  if(i>=gredirects.length) return;
+  if(!gredirect) registerHandler();
+  gredirect=gredirects[i];
 }
 
 function cbConsoleMsg(e, level, msg, line, sourceid){
@@ -355,15 +375,10 @@ function topMenu(){
           win.webContents.executeJavaScript(js,false);
         }},
         { label: 'No redirect', accelerator: 'Ctrl+R', click: ()=>{
-          if(gredirect){
-            gredirect=null;
-            unregisterHandler();
-          }
+          gredirect_disable();
         }},
         { label: 'Redirect', accelerator: 'Ctrl+Shift+R', click: ()=>{
-          if(0==gredirects.length) return;
-          if(!gredirect) registerHandler();
-          gredirect=gredirects[0];
+          gredirect_enable(0);
         }},
         { label: 'Close', accelerator: 'Ctrl+W', click: ()=>{
           win.webContents.executeJavaScript("tabClose()",false).then((r)=>{
