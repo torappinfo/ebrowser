@@ -25,8 +25,12 @@ Run ebrowser
 
 Later on, you can run "npm install electron" to update electron/chromium or "npm install ebrowser" to update ebrowser independently.
 
-##### Update the app quickly
-Type ":update" in the address bar and press "enter" key to finish updating. Mirror urls could be used like ":update https://uwebzh.netlify.app/misc/ebrowser". All the mirrors listed in [uweb browser](https://uwebzh.netlify.app/en/readme/index.html) could be used.
+##### Update app quickly without updating chromium
+Pressing "Alt" to show the menu bar and choose "Check for updates" under "Help". OR
+
+Type ":update" in the address bar and press "enter" key to update.
+
+Mirror urls could be used like ":update https://uwebzh.netlify.app/misc/ebrowser". All the mirrors listed in [uweb browser](https://uwebzh.netlify.app/en/readme/index.html) could be used. The update url needs to be changed accordingly to to be the folder "misc/ebrowser" under the mirror site root url.
 
 #### Key shortcuts
 - F1: Help
