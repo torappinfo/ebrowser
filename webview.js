@@ -81,7 +81,7 @@ async function createWindow () {
     win = null
   })
 
-  win.loadFile('index.html');
+  win.loadURL(`file://${path.join(__dirname,'index.html')}`);
   fs.readFile(path.join(__dirname,'gredirect.json'), 'utf8', (err, jsonString) => {
     if (err) return;
     try {
