@@ -188,10 +188,6 @@ Copyright (C) 2024 Richard Hao Cao
 
     switch (key) {
     case "!":
-      inputE.value = ":";
-      inputE.focus();
-      lastKeys = null;
-      return;
     case "/":
     case ":":
       inputE.value = "";
@@ -287,11 +283,32 @@ Copyright (C) 2024 Richard Hao Cao
     }
     print2PDF(filename,options);
   }
-
+  function bangcommand(q){
+    let iS = q.indexOf(' ',1);
+    if(iS<0) iS=q.length;
+    let fname = q.substring(1,iS);
+    let fpath = path.join(__dirname,fname+'.js');
+    if (fs.existsSync(fpath)) {
+      fs.readFile(fpath, 'utf8',(err, js)=>{
+        if (err) {
+          console.log(err);
+          return;
+        }
+        const prefix = "(function(){";
+        const postfix = "})(`";
+        const end ="`)";
+        const fjs = `${prefix}${js}${postfix}${q}${end}`;
+        eval(fjs);
+      });
+    }
+  }
   function handleQuery(q){
     if(q.length>1){
       let c0=q.charCodeAt(0);
       switch(c0){
+      case 33://"!"
+        bangcommand(q);
+        return;
       case 47://"/"
         tabs.children[iTab].findInPage(q.substring(1));
         return;

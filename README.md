@@ -60,12 +60,13 @@ Later on, you can run "npm install electron" to update electron/chromium or "npm
   - nh/uh for No/Use url history.
   - nj/uj for No/Use external Javascript files.
   - nr/ur for No/Use "redirect.json" for domain redirection.
-  - np : no proxy. 
+  - np : no proxy.
   - up [proxyName] : use proxy. privous proxy or the first proxy in proxy.json w/o [proxyName]. ":up" command also disables global and domain redirections, which are not restored by ":np".
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
   - pdf [filename w/o extension] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
-- ":!" address bar commands
-
+- "!" address bar commands
+  "!xx ..." evaluates "xx.js" with the whole address bar text as arguments[0].
+  
 #### Commands in no-focus mode (this mode is similar to vi Normal mode)
 Pressing "ESC" to enter no-focus mode if not sure.
 - ":" for address bar commands

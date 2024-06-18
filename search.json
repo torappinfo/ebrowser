@@ -1,8 +1,10 @@
 {
   "b":"https://www.bing.com/search?q=%s",
+  "bdic":"http://cn.bing.com/dict/search?q=%s",
   "ms":"https://metaso.cn?q=%s",
   "gc":"https://gitcode.com/aisearch?q=%s",
   "ta":"https://thinkany.so/search?q=%s",
+  "ks":"https://kaisouai.com?q=%s",
   "exa":"https://exa.ai/search?c=all&q=%s",
   "andi":"https://andisearch.com/?q=%s",
   "ph":"https://phind-ai.com/search?q=%s",
