@@ -229,6 +229,16 @@ function addrCommand(cmd){
       else
         session.defaultSession.setUserAgent(defaultUA);
       return;
+    case "update":
+      let updateurl;
+      if(1==args.length)
+        updateurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
+      else {
+        updateurl = args[1];
+        if(!updateurl.endsWith("/")) updateurl = updateurl +"/";
+      }
+      updateApp(updateurl);
+      return;
     }
   }
 }
@@ -508,4 +518,66 @@ function msgbox_info(msg){
   })
 }
 
+async function updateApp(url){//url must ending with "/"
+  let msg;
+  do {
+    try {
+      let res = await fetch(url+"package.json");
+      let packageS = await res.text();
+      let nLatestVer;
+      //the last part of version string is the version number, must keep increasing
+      {
+        let head = packageS.slice(2,40);
+        let iV = head.indexOf("version");
+        if(iV<0) {
+          msg = "remote package.json corrupted"
+          break;
+        }
+        iV = iV + 11;
+        let iE = head.indexOf('"',iV+4);
+        let iS = head.lastIndexOf('.',iE-1);
+        nLatestVer = parseInt(head.substring(iS+1,iE));
+      }
+      let nVer;
+      {
+        let ver = process.versions;
+        let iS = ver.lastIndexOf('.');
+        nVer = parseInt(ver.substring(iS+1));
+      }
+      if(nVer>=nLatestVer){
+        msg = "Already up to date";
+        break;
+      }
+      writeFile("package.json", packageS);
 
+      fetch2file(url,"webview.js");
+      fetch2file(url,"index.html");
+      
+      msg = "Update completed";
+    }catch(e){
+      msg = "Fail to update"
+    }
+  }while(false);
+  dialog.showMessageBoxSync(null,  {
+    type: 'info',
+    title: msg,
+    message: msg,
+    buttons: ['OK']
+  })
+}
+
+async function fetch2file(urlFolder, filename){
+  let res = await fetch(urlFolder+filename);
+  let str =  await res.text();
+  writeFile(filename, str);
+}
+
+async function writeFile(filename, str){
+  let pathname=path.join(__dirname,filename+".new");
+  fs.writeFile(pathname, str, (err) => {
+    if(err) throw "Fail to write";
+    fs.rename(pathname,path.join(__dirname,filename),(e1)=>{
+      if(e1) throw "Fail to rename";
+    });
+  });
+}
