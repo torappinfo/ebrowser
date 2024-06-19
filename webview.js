@@ -24,6 +24,7 @@ else {
 }
 topMenu();
 
+const repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
 const fs = require('fs');
 const readline = require('readline');
 const path = require('path')
@@ -232,7 +233,7 @@ function addrCommand(cmd){
     case "update":
       let updateurl;
       if(1==args.length)
-        updateurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
+        updateurl = repositoryurl;
       else {
         updateurl = args[1];
         if(!updateurl.endsWith("/")) updateurl = updateurl +"/";
