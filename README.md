@@ -95,10 +95,10 @@ The other commands are defined in "mapkeys.json", which will map keys to address
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-useragent pairs
 
-#### Javascript at three different levels
-- Web page level: urls like "javascript:" or bookmarklet command ":bml" run in web page.
-- Browser level: "!xx" evaluates "xx.js", which could manipulate address bar etc.
-- OS level: ":js" to execute the following js code with all OS APIs available.
+#### Javascript at three levels
+- Web page: urls like "javascript:" or bookmarklet command ":bml" run in web page.
+- Browser (or renderer process) : "!xx" evaluates "xx.js", which could manipulate address bar etc.
+- OS level (or main process) : ":js" to execute the following js code with all OS APIs available.
 
 #### New usages
 - Vector designing with web tech to replace Adobe Illustrator/Inkscape.
