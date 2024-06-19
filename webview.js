@@ -24,7 +24,7 @@ else {
 }
 topMenu();
 
-const repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
+var repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
 const fs = require('fs');
 const readline = require('readline');
 const path = require('path')

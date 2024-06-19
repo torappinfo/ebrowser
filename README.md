@@ -64,6 +64,7 @@ Mirror urls could be used like ":update https://uwebzh.netlify.app/misc/ebrowser
     - {[options](https://www.electronjs.org/docs/latest/api/session#sescleardataoptions)}
   - ext [extension path]: load unpacked Chrome extension.
   - gr [gredirect index]: global redirection with corresponding index. Use the first global redirection url if no argument. Disable global redirection with any index out of the range.
+  - js [js code] : execute JS code at OS level. Note: "javascript:..." is special url and thus works in the current web page, while ":js ..." commands can do any OS operations. 
   - nc/uc : No Cookie forwarding/Use Cookie forwarding with global redirection.
   - nh/uh for No/Use url history.
   - nj/uj for No/Use external Javascript files.
