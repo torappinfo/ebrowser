@@ -534,7 +534,7 @@ async function updateApp(url){//url must ending with "/"
           msg = "remote package.json corrupted"
           break;
         }
-        iV = iV + 11;
+        iV = iV + 10;
         let iE = head.indexOf('"',iV+4);
         let iS = head.lastIndexOf('.',iE-1);
         let nLatestVer = parseInt(head.substring(iS+1,iE));
