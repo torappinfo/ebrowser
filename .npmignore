@@ -1,3 +1,5 @@
-gredirect.json
+*.json
+*.rec
+*.autoc
+url.js
 .github/*
-dist/*
