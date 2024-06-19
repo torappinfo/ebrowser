@@ -580,21 +580,31 @@ async function updateApp(url){//url must ending with "/"
   })
 }
 
-async function fetch2file(urlFolder, filename){
+async function fetch2file(urlFolder, filename, bOverwritten=true){
+  let pathname=path.join(__dirname,filename);
+  if(!bOverwritten && fs.existsSync(pathname)) return;
   let res = await fetch(urlFolder+filename);
   let str =  await res.text();
-  writeFile(filename, str);
+  writeFile(pathname, str);
 }
 
 async function writeFile(filename, str){
-  let pathname=path.join(__dirname,filename+".new");
+  let pathname=filename+".new";
   fs.writeFile(pathname, str, (err) => {
     if(err) throw "Fail to write";
-    fs.rename(pathname,path.join(__dirname,filename),(e1)=>{
+    fs.rename(pathname,filename,(e1)=>{
       if(e1) throw "Fail to rename";
     });
   });
 }
+
+function initConfig(repourl){
+  filenameArray = ["search.json"];
+  for(let i=0;i<filenameArray.length;i++){
+    fetch2file(repourl, filenameArray[i], false);
+  }
+}
+
 function help(){
   const readme = "README.md";
   const htmlFN = path.join(__dirname,readme+".html");
