@@ -189,6 +189,9 @@ function addrCommand(cmd){
       else
         gredirect_disable();
       return;
+    case "js"://exetute js
+      eval(cmd.slice(4));
+      return;
     case "nc":
       bForwardCookie = false;
       msgbox_info("Cookie forwarding disabled");
@@ -596,13 +599,6 @@ async function writeFile(filename, str){
       if(e1) throw "Fail to rename";
     });
   });
-}
-
-function initConfig(repourl){
-  filenameArray = ["search.json"];
-  for(let i=0;i<filenameArray.length;i++){
-    fetch2file(repourl, filenameArray[i], false);
-  }
 }
 
 function help(){
