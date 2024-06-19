@@ -97,7 +97,7 @@ The other commands are defined in "mapkeys.json", which will map keys to address
 
 #### Javascript at three different levels
 - Web page level: urls like "javascript:" or bookmarklet command ":bml" run in web page.
-- Browser level: "!xx" evaluates "xx.js", which could operate address bar etc.
+- Browser level: "!xx" evaluates "xx.js", which could manipulate address bar etc.
 - OS level: ":js" to execute the following js code with all OS APIs available.
 
 #### New usages
