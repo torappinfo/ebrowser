@@ -252,7 +252,17 @@ You should have received a copy of the GNU General Public License along with thi
   }
   function autoc(args){
     if(2!=args.length) return;
-    appendAutoc_rec(path.join(__dirname,args[1]+".rec"),' ');
+    let fpath = path.join(__dirname,args[1]);
+    let fname = fpath;
+    let delimit = ' ';
+    if (!fs.existsSync(fname)){
+      fname = fpath+".autoc";
+      if (!fs.existsSync(fname))
+        fname = fpath+".rec";
+      else
+        delimit = null;
+    }
+    appendAutoc_rec(fname,delimit);
   }
   function bml(args){
     if(2!=args.length) return;
