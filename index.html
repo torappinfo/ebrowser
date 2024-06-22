@@ -36,6 +36,7 @@ You should have received a copy of the GNU General Public License along with thi
   var mapKeys = {};
   var closedUrls = [];
   var defaultSE = "https://www.bing.com/search?q=%s";
+  var bQueryHistory = false;
   let lastKeys;
   let lastKeys_millis = 0;
 
@@ -311,7 +312,8 @@ You should have received a copy of the GNU General Public License along with thi
     }
   }
   function recQueryHistory(q){
-    fs.appendFile(path.join(__dirname,"history.autoc"), q, (err)=>{});
+    if(bQueryHistory)
+      fs.appendFile(path.join(__dirname,"history.autoc"), q, (err)=>{});
   }
   function handleQuery(q){
     if(q.length>1){

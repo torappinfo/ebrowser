@@ -209,9 +209,13 @@ function addrCommand(cmd){
       forwardCookie();
       return;
     case "nh":
-      bHistory = false; return;
+      bHistory = false;
+      win.webContents.executeJavaScript("bQueryHistory=false",false);
+      return;
     case "uh":
-      bHistory = true; return;
+      bHistory = true;
+      win.webContents.executeJavaScript("bQueryHistory=true",false);      
+      return;
     case "nj":
       bJS = false; return;
     case "uj":
