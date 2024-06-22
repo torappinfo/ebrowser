@@ -68,6 +68,7 @@ You should have received a copy of the GNU General Public License along with thi
   var autocStrArray = [];
   var defaultSE = "https://www.bing.com/search?q=%s";
   var bQueryHistory = false;
+  var autocMode = 0; //0 for substring, 1 for startsWith
   let lastKeys;
   let lastKeys_millis = 0;
 
@@ -413,16 +414,13 @@ You should have received a copy of the GNU General Public License along with thi
   }
 function autocomplete(inp,container,arr) {
   var currentFocus;
-  /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function(e) {
       var b, i, val = this.value;
       var a = container;
-      /*close any already open lists of autocompleted values*/
       closeAllLists();
       if (!val) { return false;}
       currentFocus = -1;
       for (i = 0; i < arr.length; i++) {
-        /*check if the item starts with the same letters as the text field value:*/
         if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
           b = document.createElement("DIV");
           b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
@@ -436,7 +434,6 @@ function autocomplete(inp,container,arr) {
         }
       }
   });
-  /*execute a function presses a key on the keyboard:*/
   inp.addEventListener("keydown", function(e) {
       var x = container.getElementsByTagName("div");
       if (0===x.length) return false;
@@ -469,7 +466,6 @@ function autocomplete(inp,container,arr) {
   function closeAllLists() {
     container.innerHTML = '';
   }
-  /*execute a function when someone clicks in the document:*/
   inp.addEventListener("blur", function () {
       closeAllLists();
   });
@@ -477,10 +473,9 @@ function autocomplete(inp,container,arr) {
 </script>
 </head>
 <body>
-  <form autocomplete="off" action="javascript:handleQuery(getQ())">
-  <div class="autocomplete">
+  <form class="autocomplete" autocomplete="off" action="javascript:handleQuery(getQ())">
   <input type="text" name=q style="width:100%" autofocus>
-  <div class="autocomplete-items"></div></div>
+  <div class="autocomplete-items"></div>
   </form>
   <div class="webviews">
   <webview class="curWV" allowpopups></webview>
