@@ -310,12 +310,16 @@ You should have received a copy of the GNU General Public License along with thi
       });
     }
   }
+  function recQueryHistory(q){
+    fs.appendFile(path.join(__dirname,"history.autoc"), q, (err)=>{});
+  }
   function handleQuery(q){
     if(q.length>1){
       let c0=q.charCodeAt(0);
       switch(c0){
       case 33://"!"
         bangcommand(q);
+        recQueryHistory(q);
         return;
       case 47://"/"
         tabs.children[iTab].findInPage(q.substring(1));
@@ -326,6 +330,7 @@ You should have received a copy of the GNU General Public License along with thi
           coloncommand(q);
         else
           coloncommand_render(q);
+        recQueryHistory(q);
         return;
       }
     }
@@ -341,6 +346,7 @@ You should have received a copy of the GNU General Public License along with thi
             break;
         }else if(q.startsWith("javascript:")){
           tabs.children[iTab].executeJavaScript(q.substring(11),false);
+          recQueryHistory(q);
           return;
         }else if(q.startsWith("view-source:")) break;
         else if(q.startsWith("data:")) break;
@@ -355,9 +361,11 @@ You should have received a copy of the GNU General Public License along with thi
           break;
         }
         url = defaultSE.replace('%s',q);
+        recQueryHistory(q);
         break;
       }
       url = bang(q, iS);
+      recQueryHistory(q);
     }while(false);
     tabs.children[iTab].src=url;
   }
