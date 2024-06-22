@@ -25,6 +25,36 @@ You should have received a copy of the GNU General Public License along with thi
   }
   webview{display: none;width:100%;height:100%}
   .curWV{display: inherit !important;}
+  .autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+  }
+  /*the container must be positioned relative:*/
+  .autocomplete {
+    position: relative;
+    display: inline-block;
+    width:100%;
+  }
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+  .autocomplete-items div:hover {
+    background-color: #e9e9e9;
+  }
 </style>
 <script>
   const fs = require('fs');
@@ -35,6 +65,7 @@ You should have received a copy of the GNU General Public License along with thi
   var engines = {};
   var mapKeys = {};
   var closedUrls = [];
+  var autocStrArray = [];
   var defaultSE = "https://www.bing.com/search?q=%s";
   var bQueryHistory = false;
   let lastKeys;
@@ -140,14 +171,11 @@ You should have received a copy of the GNU General Public License along with thi
       });
 
       for await (const line of readInterface) {
-        let opt = document.createElement('option');
         let iS;
         if(delimit && (iS=line.lastIndexOf(delimit))>0){
-          opt.value = line.substring(iS+1);
-          opt.textContent = line.substring(0,iS);
+          autocStrArray.push(line.substring(iS+1));
         }else
-          opt.value = line;
-        document.forms[0].children[0].appendChild(opt);
+           autocStrArray.push(line);
       }
     }catch(e){return;}
   }
@@ -177,10 +205,12 @@ You should have received a copy of the GNU General Public License along with thi
       tabs.children[iTab].src = "javascript:window.scrollBy(0,-3*document.documentElement.clientHeight/4)";
       return;
     case "ArrowDown":
-      tabs.children[iTab].src="javascript:window.scrollBy(0,32)";
+      if(inputE !== document.activeElement || 0==inputE.nextElementSibling.children.length)
+        tabs.children[iTab].src="javascript:window.scrollBy(0,32)";
       return;
     case "ArrowUp":
-      tabs.children[iTab].src="javascript:window.scrollBy(0,-32)";
+      if(inputE !== document.activeElement || 0==inputE.nextElementSibling.children.length)
+        tabs.children[iTab].src="javascript:window.scrollBy(0,-32)";
       return;
  
     }
@@ -381,41 +411,26 @@ You should have received a copy of the GNU General Public License along with thi
     }while(false);
     tabs.children[iTab].src=url;
   }
-function autocomplete(inp, arr) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
+function autocomplete(inp,container,arr) {
   var currentFocus;
   /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function(e) {
-      var a, b, i, val = this.value;
+      var b, i, val = this.value;
+      var a = container;
       /*close any already open lists of autocompleted values*/
       closeAllLists();
       if (!val) { return false;}
       currentFocus = -1;
-      /*create a DIV element that will contain the items (values):*/
-      a = document.createElement("DIV");
-      a.setAttribute("id", this.id + "autocomplete-list");
-      a.setAttribute("class", "autocomplete-items");
-      /*append the DIV element as a child of the autocomplete container:*/
-      this.parentNode.appendChild(a);
-      /*for each item in the array...*/
       for (i = 0; i < arr.length; i++) {
         /*check if the item starts with the same letters as the text field value:*/
         if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-          /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
-          /*make the matching letters bold:*/
           b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
           b.innerHTML += arr[i].substr(val.length);
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
           b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
               inp.value = this.getElementsByTagName("input")[0].value;
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              closeAllLists();
           });
           a.appendChild(b);
         }
@@ -423,72 +438,59 @@ function autocomplete(inp, arr) {
   });
   /*execute a function presses a key on the keyboard:*/
   inp.addEventListener("keydown", function(e) {
-      var x = document.getElementById(this.id + "autocomplete-list");
-      if (x) x = x.getElementsByTagName("div");
-      if (e.keyCode == 40) {
-        /*If the arrow DOWN key is pressed,
-        increase the currentFocus variable:*/
+      var x = container.getElementsByTagName("div");
+      if (0===x.length) return false;
+      if (e.keyCode == 40) {//downarrow
         currentFocus++;
-        /*and and make the current item more visible:*/
         addActive(x);
       } else if (e.keyCode == 38) { //up
-        /*If the arrow UP key is pressed,
-        decrease the currentFocus variable:*/
         currentFocus--;
-        /*and and make the current item more visible:*/
         addActive(x);
       } else if (e.keyCode == 13) {
-        /*If the ENTER key is pressed, prevent the form from being submitted,*/
-        e.preventDefault();
         if (currentFocus > -1) {
-          /*and simulate a click on the "active" item:*/
+          e.preventDefault();
           if (x) x[currentFocus].click();
+          currentFocus = -1;
         }
+        closeAllLists();
       }
   });
   function addActive(x) {
-    /*a function to classify an item as "active":*/
-    if (!x) return false;
-    /*start by removing the "active" class on all items:*/
     removeActive(x);
     if (currentFocus >= x.length) currentFocus = 0;
     if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
     x[currentFocus].classList.add("autocomplete-active");
   }
   function removeActive(x) {
-    /*a function to remove the "active" class from all autocomplete items:*/
     for (var i = 0; i < x.length; i++) {
       x[i].classList.remove("autocomplete-active");
     }
   }
-  function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
-    var x = document.getElementsByClassName("autocomplete-items");
-    for (var i = 0; i < x.length; i++) {
-      if (elmnt != x[i] && elmnt != inp) {
-        x[i].parentNode.removeChild(x[i]);
-      }
-    }
+  function closeAllLists() {
+    container.innerHTML = '';
   }
   /*execute a function when someone clicks in the document:*/
-  document.addEventListener("click", function (e) {
-      closeAllLists(e.target);
+  inp.addEventListener("blur", function () {
+      closeAllLists();
   });
 }
-candidates=["china","chichi","usa"];  
 </script>
 </head>
 <body>
   <form autocomplete="off" action="javascript:handleQuery(getQ())">
-  <input type="text" name=q style="width:100%" autofocus></form>
+  <div class="autocomplete">
+  <input type="text" name=q style="width:100%" autofocus>
+  <div class="autocomplete-items"></div></div>
+  </form>
   <div class="webviews">
   <webview class="curWV" allowpopups></webview>
   </div>
   <script>
     tabs = document.body.children[1];
-    autocomplete(document.forms[0].q,candidates);
+    {
+      let inp = document.forms[0].q;
+      autocomplete(inp,inp.nextElementSibling,autocStrArray);
+    }
     document.addEventListener('keydown', keyPress);
   </script>
 </body></html>
