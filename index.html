@@ -412,11 +412,10 @@ You should have received a copy of the GNU General Public License along with thi
   }
 function autocomplete(inp,container,arr) {
   var currentFocus;
-  function appendElement(el){
-    el.addEventListener("click", function(e) {
-      let val = this.getElementsByTagName("input")[0].value;
-      inp.value = val;
-    });
+  function clickItem(e){inp.value = e.target.dataset.str;}
+  function appendElement(el,dataindex){
+    el.dataset.str = arr[dataindex];
+    el.addEventListener("click", clickItem);
     container.appendChild(el);
   }
   inp.addEventListener("input", function(e) {
@@ -435,9 +434,7 @@ function autocomplete(inp,container,arr) {
           b.innerHTML = arr[i].substr(0,iStr);
           b.innerHTML += "<strong>" + arr[i].substr(iStr, val.length) + "</strong>";
           b.innerHTML += arr[i].substr(iStr+val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          appendElement(b);
+          appendElement(b,i);
           if(container.children.length>MAXITEMS) break;
         }
       }
@@ -448,9 +445,7 @@ function autocomplete(inp,container,arr) {
           b = document.createElement("DIV");
           b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
           b.innerHTML += arr[i].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          appendElement(b);
+          appendElement(b,i);
           if(container.children.length>MAXITEMS) break;
         }
       }
