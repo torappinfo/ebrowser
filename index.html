@@ -414,25 +414,45 @@ You should have received a copy of the GNU General Public License along with thi
   }
 function autocomplete(inp,container,arr) {
   var currentFocus;
+  function appendElement(el){
+    el.addEventListener("click", function(e) {
+      inp.value = this.getElementsByTagName("input")[0].value;
+    });
+    container.appendChild(el);
+  }
   inp.addEventListener("input", function(e) {
-      var b, i, val = this.value;
-      var a = container;
-      closeAllLists();
-      if (!val) { return false;}
-      currentFocus = -1;
+    var b, i, val = this.value;
+    closeAllLists();
+    if (!val) { return false;}
+    currentFocus = -1;
+    switch(autocMode){
+    case 0:
       for (i = 0; i < arr.length; i++) {
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+        let iStr = arr[i].indexOf(val);
+        if(iStr<0) continue;
+        {
+          b = document.createElement("DIV");
+          b.innerHTML = arr[i].substr(0,iStr);
+          b.innerHTML += "<strong>" + arr[i].substr(iStr, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(iStr+val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          appendElement(b);
+        }
+      }
+      return;
+    case 1://startsWith
+      for (i = 0; i < arr.length; i++) {
+        if (arr[i].substr(0, val.length) === val) {
           b = document.createElement("DIV");
           b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
           b.innerHTML += arr[i].substr(val.length);
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          b.addEventListener("click", function(e) {
-              inp.value = this.getElementsByTagName("input")[0].value;
-          });
-          a.appendChild(b);
+          appendElement(b);
         }
       }
+    }
   });
   inp.addEventListener("keydown", function(e) {
       var x = container.getElementsByTagName("div");
