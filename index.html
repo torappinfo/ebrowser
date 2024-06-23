@@ -29,6 +29,7 @@ You should have received a copy of the GNU General Public License along with thi
     background-color: DodgerBlue !important; 
     color: #ffffff; 
   }
+  .invis{display: none}
   /*the container must be positioned relative:*/
   .autocomplete {
     position: relative;
@@ -47,10 +48,7 @@ You should have received a copy of the GNU General Public License along with thi
     right: 0;
   }
   .autocomplete-items div {
-    padding: 10px;
     cursor: pointer;
-    background-color: #fff;
-    border-bottom: 1px solid #d4d4d4;
   }
   .autocomplete-items div:hover {
     background-color: #e9e9e9;
@@ -416,7 +414,8 @@ function autocomplete(inp,container,arr) {
   var currentFocus;
   function appendElement(el){
     el.addEventListener("click", function(e) {
-      inp.value = this.getElementsByTagName("input")[0].value;
+      let val = this.getElementsByTagName("input")[0].value;
+      inp.value = val;
     });
     container.appendChild(el);
   }
@@ -490,7 +489,10 @@ function autocomplete(inp,container,arr) {
     container.innerHTML = '';
   }
   inp.addEventListener("blur", function () {
-      closeAllLists();
+    setTimeout(()=>container.classList.add("invis"),200);
+  });
+  inp.addEventListener("focus", function () {
+    container.classList.remove("invis");
   });
 }
 </script>
