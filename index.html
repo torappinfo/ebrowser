@@ -421,6 +421,7 @@ function autocomplete(inp,container,arr) {
     container.appendChild(el);
   }
   inp.addEventListener("input", function(e) {
+    const MAXITEMS = 10;
     var b, i, val = this.value;
     closeAllLists();
     if (!val) { return false;}
@@ -438,6 +439,7 @@ function autocomplete(inp,container,arr) {
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           appendElement(b);
+          if(container.children.length>MAXITEMS) break;
         }
       }
       return;
@@ -450,6 +452,7 @@ function autocomplete(inp,container,arr) {
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           appendElement(b);
+          if(container.children.length>MAXITEMS) break;
         }
       }
     }
