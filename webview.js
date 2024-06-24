@@ -393,7 +393,7 @@ function topMenu(){
           win.webContents.executeJavaScript(js,false)
         }},
         { label: 'getURL', accelerator: 'Ctrl+G', click: ()=>{
-          let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].src}"
+          let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].getURL()}"
           win.webContents.executeJavaScript(js,false)
         }},
         { label: 'Select', accelerator: 'Ctrl+L', click:()=>{
