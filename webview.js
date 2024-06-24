@@ -431,11 +431,11 @@ function topMenu(){
             win.setTitle(r);
           });
         }},
-        { label: 'Go backward', accelerator: 'Ctrl+Left', click: ()=>{
+        { label: 'Go backward', accelerator: 'Alt+Left', click: ()=>{
           let js="tabs.children[iTab].goBack()";
           win.webContents.executeJavaScript(js,false);
         }},
-        { label: 'Go forward', accelerator: 'Ctrl+Right', click: ()=>{
+        { label: 'Go forward', accelerator: 'Alt+Right', click: ()=>{
           let js="tabs.children[iTab].goForward()";
           win.webContents.executeJavaScript(js,false);
         }},

@@ -41,8 +41,8 @@ Mirror urls could be used like ":update https://uwebzh.netlify.app/misc/ebrowser
 - CTRL+TAB: switch to next tab
 - CTRL+SHIFT+TAB: switch to previous tab
 - CTRL+W: close Tab
-- CTRL+<-: go backward
-- CTRL+->: go forward
+- ALT+<-: go backward
+- ALT+->: go forward
 - CTRL+SHIFT+R: enable global redirection ("gredirect.json")
 - CTRL+R: disable global redirection
 - ESC: remove focus. similar to vi normal mode.
