@@ -6,7 +6,8 @@
     "webview.js",
     "index.html",
     "package.json",
-    "README.md"
+    "README.md",
+    "mapkeys.json"
   ],
   "scripts": {
     "release": "electron-builder"

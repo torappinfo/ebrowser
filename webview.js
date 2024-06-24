@@ -206,16 +206,6 @@ function addrCommand(cmd){
       }
       forwardCookie();
       return;
-    case "nh":
-      win.webContents.executeJavaScript("bHistory=bQueryHistory=false",false);
-      return;
-    case "uh":
-      win.webContents.executeJavaScript("bHistory=bQueryHistory=true",false);
-      return;
-    case "nj":
-      bJS = false; return;
-    case "uj":
-      bJS = true; return;
     case "np":
       session.defaultSession.setProxy ({mode:"direct"});
       bRedirect = true;

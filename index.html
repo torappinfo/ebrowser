@@ -80,7 +80,10 @@ You should have received a copy of the GNU General Public License along with thi
     initSearchEngines(jsonString,false);
   });
   fs.readFile(path.join(__dirname,'mapkeys.json'), 'utf8', (err, jsonStr) => {
-    if (err) return;
+    if (err) {
+      coloncommand(":js fetch2file(repositoryurl,'mapkeys.json')");
+      return;
+    }
     try {
       mapKeys = JSON.parse(jsonStr);
     }catch(e){}
@@ -290,6 +293,9 @@ You should have received a copy of the GNU General Public License along with thi
       return;
     case "b":
       bookmark(args);
+      return;
+    case "bjs":
+      eval(cmd.slice(5));
       return;
     case "bml":
       bml(args);

@@ -1,5 +1,7 @@
 {
   "al":"javascript:/*comments:test*/alert('test')",
-  "uj":":uj",
-  "nj":":nj"
+  "uj":":js bJS=true //Use javascript",
+  "nj":":js bJS=false //No javascript",
+  "uh":":bjs bHistory=bQueryHistory=true //record/Use history",
+  "nh":":bjs bHistory=bQueryHistory=false //No history"
 }
