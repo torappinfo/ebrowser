@@ -195,24 +195,34 @@ You should have received a copy of the GNU General Public License along with thi
       }
       return;
     }
+    SCROLL: do {
+    let h;
     switch(key){
+    case " ":
+      if(e.shiftKey){
+        h = -3*document.documentElement.clientHeight/4;
+        break;
+      }
     case "PageDown":
-      tabs.children[iTab].src =
-        "javascript:window.scrollBy(0,3*document.documentElement.clientHeight/4)";
-      return;
+      h = 3*document.documentElement.clientHeight/4;
+      break;
     case "PageUp":
-      tabs.children[iTab].src = "javascript:window.scrollBy(0,-3*document.documentElement.clientHeight/4)";
-      return;
+      h = -3*document.documentElement.clientHeight/4;
+      break;
     case "ArrowDown":
-      if(inputE !== document.activeElement || 0==inputE.nextElementSibling.children.length)
-        tabs.children[iTab].src="javascript:window.scrollBy(0,32)";
-      return;
+      h = 32;
+      break;
     case "ArrowUp":
-      if(inputE !== document.activeElement || 0==inputE.nextElementSibling.children.length)
-        tabs.children[iTab].src="javascript:window.scrollBy(0,-32)";
-      return;
- 
+      h = -32;
+      break;
+    default:
+      break SCROLL;
     }
+    let js = `javascript:window.scrollBy(0,${h})`;
+    tabs.children[iTab].src = js;
+    return;
+    }while(false);
+
     if(inputE === document.activeElement){
       if (9===e.keyCode){//tab completion
       }
