@@ -70,8 +70,8 @@ You should have received a copy of the GNU General Public License along with thi
   var bHistory = false;
   var bQueryHistory = false;
   var autocMode = 0; //0 for substring, 1 for startsWith
-  const JSPREFIX_LOAD = "{let d=document;function _loadJs(u){var a=d.createElement('script');a.type='text/javascript';a.src=u;d.body.appendChild(a)}";
-  const BML_md = JSPREFIX_LOAD + "_loadJs('https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js');let b=d.body;b.innerHTML=marked.parse(b.textContent)}";
+  const JSPREFIX_LOAD = "(async ()=>{let d=document;async function _loadJs(u){var a=d.createElement('script');a.type='text/javascript';a.async=false;a.src=u;d.body.appendChild(a);await new Promise(resolve=>a.onload=resolve)}";
+  const BML_md = JSPREFIX_LOAD + "await _loadJs('https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js');let b=d.body;b.innerHTML=marked.parse(b.textContent)})()";
 
   let lastKeys;
   let lastKeys_millis = 0;
@@ -139,7 +139,6 @@ You should have received a copy of the GNU General Public License along with thi
     let tab = e.target;
     let js = tab.dataset.jsonce;
     if(js){
-      console.log(js);
       tab.dataset.jsonce = null;
       tab.executeJavaScript(js,false);
     }
