@@ -65,6 +65,8 @@ You should have received a copy of the GNU General Public License along with thi
   var closedUrls = [];
   var autocStrArray = [];
   var defaultSE = "https://www.bing.com/search?q=%s";
+  var historyFile = path.join(__dirname,'history.rec');
+  var bHistory = false;
   var bQueryHistory = false;
   var autocMode = 0; //0 for substring, 1 for startsWith
   let lastKeys;
@@ -126,9 +128,19 @@ You should have received a copy of the GNU General Public License along with thi
     iTab = i;
     tabs.children[iTab].classList.add('curWV');
   }
+  function cbFinishLoad(e){
+    if(!bHistory) return;
+    let tab = e.target;
+    let histItem = tab.getTitle()+" "+tab.getURL()+"\n";
+    fs.appendFile(historyFile, histItem, (err) => {});
+  }
+  function initTab(tab){
+    tab.allowpopups = true;
+    tab.addEventListener('did-finish-load',cbFinishLoad);
+  }
   function newTab(){
     var tab = document.createElement('webview');
-    tab.allowpopups = true;
+    initTab(tab);
     tabs.appendChild(tab);
   }
   function tabInc(num){
@@ -505,10 +517,11 @@ function autocomplete(inp,container,arr) {
   <div class="autocomplete-items"></div>
   </form>
   <div class="webviews">
-  <webview class="curWV" allowpopups></webview>
+  <webview class="curWV"></webview>
   </div>
   <script>
     tabs = document.body.children[1];
+    initTab(tabs.children[0]);
     {
       let inp = document.forms[0].q;
       autocomplete(inp,inp.nextElementSibling,autocStrArray);

@@ -39,7 +39,6 @@ var gredirect;
 var redirects;
 var bRedirect = true;
 var bJS = true;
-var bHistory = false;
 var bForwardCookie = false;
 var proxies = {};
 var proxy;
@@ -48,7 +47,6 @@ var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
 app.userAgentFallback = defaultUA;
-var historyFile = path.join(__dirname,'history.rec');
 
 fs.readFile(path.join(__dirname,'redirect.json'), 'utf8', (err, jsonString) => {
   if (err) return;
@@ -139,7 +137,7 @@ app.on ('web-contents-created', (event, contents) => {
     //contents.on('focus', ()=>{cbFocus(contents)});
     //contents.on('blur',()=>{cbBlur()});
     contents.session.webRequest.onBeforeRequest(interceptRequest);
-    contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
+    //contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
   }
 });
 
@@ -194,7 +192,7 @@ function addrCommand(cmd){
       else
         gredirect_disable();
       return;
-    case "js"://exetute js
+    case "js"://execute js
       eval(cmd.slice(4));
       return;
     case "nc":
@@ -209,12 +207,10 @@ function addrCommand(cmd){
       forwardCookie();
       return;
     case "nh":
-      bHistory = false;
-      win.webContents.executeJavaScript("bQueryHistory=false",false);
+      win.webContents.executeJavaScript("bHistory=bQueryHistory=false",false);
       return;
     case "uh":
-      bHistory = true;
-      win.webContents.executeJavaScript("bQueryHistory=true",false);      
+      win.webContents.executeJavaScript("bHistory=bQueryHistory=true",false);
       return;
     case "nj":
       bJS = false; return;
@@ -273,12 +269,6 @@ function cbConsoleMsg(e, level, msg, line, sourceid){
   console.log(line);
   console.log(sourceid);
   console.log(msg);
-}
-
-function cbFinishLoad(webContents){
-  if(!bHistory) return;
-  let histItem = webContents.getTitle()+" "+webContents.getURL()+"\n";
-  fs.appendFile(historyFile, histItem, (err) => {});
 }
 
 function cbFocus(webContents){
