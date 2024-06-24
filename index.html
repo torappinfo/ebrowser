@@ -413,8 +413,11 @@ You should have received a copy of the GNU General Public License along with thi
             break NOREC;
           if(58===c5 && 47===q.charCodeAt(7))//https://
             break NOREC;
-        }else if(q.startsWith("javascript:")) break;
-        else if(q.startsWith("view-source:")) break;
+        }else if(q.startsWith("javascript:")){
+          tabs.children[iTab].executeJavaScript(q.substring(11),false);
+          recQueryHistory(q);
+          return;
+        }else if(q.startsWith("view-source:")) break;
         else if(q.startsWith("data:")) break;
       }
       let iS = q.indexOf(' ');
@@ -523,7 +526,7 @@ function autocomplete(inp,container,arr) {
   <div class="autocomplete-items"></div>
   </form>
   <div class="webviews">
-  <webview class="curWV"></webview>
+  <webview class="curWV" allowpopups></webview>
   </div>
   <script>
     tabs = document.body.children[1];
