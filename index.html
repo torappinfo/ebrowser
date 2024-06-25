@@ -478,8 +478,8 @@ function autocomplete(inp,container,arr) {
     lastVal = val;
     if(val.startsWith(lastV)){
       let itemsLen = items.length;
+      if(itemsLen<=0) return;
       i = itemsLen -1;
-      if(i<0) return;
       iBase = items[i].dataset.index +1;
       switch(autocMode){
       case 0:
