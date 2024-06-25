@@ -456,9 +456,9 @@ You should have received a copy of the GNU General Public License along with thi
 function autocomplete(inp,container,arr) {
   var currentFocus;
   var lastVal;
-  function clickItem(e){inp.value = e.target.dataset.str;}
+  function clickItem(e){inp.value = arr[e.target.dataset.index];}
   function appendElement(el,dataindex){
-    el.dataset.str = arr[dataindex];
+    el.dataset.index = dataindex;
     el.addEventListener("click", clickItem);
     container.appendChild(el);
   }
@@ -473,12 +473,19 @@ function autocomplete(inp,container,arr) {
     if (!val) { return false;}
     currentFocus = -1;
     let items = container.children;
-    if(items.length<MAXITEMS && val.startsWith(lastVal)){
+    let iBase = 0;
+    let lastV = lastVal;
+    lastVal = val;
+    if(val.startsWith(lastV)){
+      let itemsLen = items.length;
+      i = itemsLen -1;
+      if(i<0) return;
+      iBase = items[i].dataset.index +1;
       switch(autocMode){
       case 0:
-        for (i = items.length-1; i>=0; i--) {
+        for (; i>=0; i--) {
           b = items[i];
-          let str = b.dataset.str;
+          let str = arr[b.dataset.index];
           let iStr = str.indexOf(val);
           if(iStr<0) {
             b.parentNode.removeChild(b);
@@ -488,9 +495,9 @@ function autocomplete(inp,container,arr) {
         }
         break;
       case 1:
-        for (i = items.length-1; i>=0; i--) {
+        for (; i>=0; i--) {
           b = items[i];
-          let str = b.dataset.str;
+          let str = arr[b.dataset.index];
           let oLen = lastval.length;
           if(!str.startsWith(val.substring(oLen),oLen)) {
             b.parentNode.removeChild(b);
@@ -500,14 +507,16 @@ function autocomplete(inp,container,arr) {
         }
         break;
       }
-      lastVal = val;
-      return;
-    }
-    lastVal = val;
-    closeAllLists();
+      if(itemsLen<MAXITEMS)
+        return;
+      else
+        if(container.children.length>=MAXITEMS) return;
+    }else
+      closeAllLists();
+    i = iBase;
     switch(autocMode){
     case 0:
-      for (i = 0; i < arr.length; i++) {
+      for (; i < arr.length; i++) {
         let iStr = arr[i].indexOf(val);
         if(iStr<0) continue;
         {
@@ -519,7 +528,7 @@ function autocomplete(inp,container,arr) {
       }
       return;
     case 1://startsWith
-      for (i = 0; i < arr.length; i++) {
+      for (; i < arr.length; i++) {
         if (arr[i].startsWith(val)) {
           b = document.createElement("DIV");
           itemInnerHTML(b,arr[i],val,0);
