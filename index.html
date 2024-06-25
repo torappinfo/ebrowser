@@ -455,18 +455,56 @@ You should have received a copy of the GNU General Public License along with thi
   }
 function autocomplete(inp,container,arr) {
   var currentFocus;
+  var lastVal;
   function clickItem(e){inp.value = e.target.dataset.str;}
   function appendElement(el,dataindex){
     el.dataset.str = arr[dataindex];
     el.addEventListener("click", clickItem);
     container.appendChild(el);
   }
+  function itemInnerHTML(b,str,val,iStr){
+    b.innerHTML = str.substr(0,iStr);
+    b.innerHTML += "<strong>" + str.substr(iStr, val.length) + "</strong>";
+    b.innerHTML += str.substr(iStr+val.length);
+  }
   inp.addEventListener("input", function(e) {
-    const MAXITEMS = 10;
+    const MAXITEMS = 30;
     var b, i, val = this.value;
-    closeAllLists();
     if (!val) { return false;}
     currentFocus = -1;
+    let items = container.children;
+    if(items.length<MAXITEMS && val.startsWith(lastVal)){
+      switch(autocMode){
+      case 0:
+        for (i = items.length-1; i>=0; i--) {
+          b = items[i];
+          let str = b.dataset.str;
+          let iStr = str.indexOf(val);
+          if(iStr<0) {
+            b.parentNode.removeChild(b);
+            continue;
+          }
+          itemInnerHTML(b,str,val,iStr);
+        }
+        break;
+      case 1:
+        for (i = items.length-1; i>=0; i--) {
+          b = items[i];
+          let str = b.dataset.str;
+          let oLen = lastval.length;
+          if(!str.startsWith(val.substring(oLen),oLen)) {
+            b.parentNode.removeChild(b);
+            continue;
+          }
+          itemInnerHTML(b,str,val,0);
+        }
+        break;
+      }
+      lastVal = val;
+      return;
+    }
+    lastVal = val;
+    closeAllLists();
     switch(autocMode){
     case 0:
       for (i = 0; i < arr.length; i++) {
@@ -474,22 +512,19 @@ function autocomplete(inp,container,arr) {
         if(iStr<0) continue;
         {
           b = document.createElement("DIV");
-          b.innerHTML = arr[i].substr(0,iStr);
-          b.innerHTML += "<strong>" + arr[i].substr(iStr, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(iStr+val.length);
+          itemInnerHTML(b,arr[i],val,iStr);
           appendElement(b,i);
-          if(container.children.length>MAXITEMS) break;
+          if(container.children.length>=MAXITEMS) break;
         }
       }
       return;
     case 1://startsWith
       for (i = 0; i < arr.length; i++) {
-        if (arr[i].substr(0, val.length) === val) {
+        if (arr[i].startsWith(val)) {
           b = document.createElement("DIV");
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
+          itemInnerHTML(b,arr[i],val,0);
           appendElement(b,i);
-          if(container.children.length>MAXITEMS) break;
+          if(container.children.length>=MAXITEMS) break;
         }
       }
     }
