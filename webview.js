@@ -27,6 +27,8 @@ else {
       createWindow();
   })
 }
+var langs = app.getPreferredSystemLanguages();
+Menu.setApplicationMenu(null);
 topMenu();
 
 var repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
