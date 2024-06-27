@@ -359,20 +359,20 @@ function onContextMenu(event, params){
 function topMenu(){
   const menuTemplate = [
     {
-      label: '&Edit',
+      label: translate('Edit'),
       submenu: [
-        { label: 'Config folder', click: ()=>{
+        { label: translate('Config folder'), click: ()=>{
           shell.openPath(__dirname);
         }},
       ]
     },
     {
-      label: '&Help',
+      label: translate('Help'),
       submenu: [
-        { label: 'Check for updates', click: ()=>{
+        { label: translate('Check for updates'), click: ()=>{
           addrCommand(":update");
         }},
-        { label: 'Help', accelerator: 'F1', click: ()=>{
+        { label: translate('Help'), accelerator: 'F1', click: ()=>{
           help();
         }},
         { label: 'Stop', accelerator: 'Ctrl+C', click: ()=>{
