@@ -27,9 +27,14 @@ else {
       createWindow();
   })
 }
-var langs = app.getPreferredSystemLanguages();
-Menu.setApplicationMenu(null);
-topMenu();
+var translateRes;
+{
+  let langs = app.getPreferredSystemLanguages();
+  if(langs.length==0 || langs[0].startsWith('en') || !initTranslateRes(langs[0]))
+    topMenu();
+  else
+    Menu.setApplicationMenu(null);
+}
 
 var repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
 const fs = require('fs');
@@ -597,4 +602,26 @@ function help(){
   const htmlFN = path.join(__dirname,readme);
   let js=`{let t=tabs.children[iTab];t.dataset.jsonce=BML_md;t.src="file://${htmlFN}"}`;
   win.webContents.executeJavaScript(js,false)
+}
+
+function initTranslateRes(lang){
+  let basename=path.join(__dirname,"translate.");
+  let fname = basename+lang;
+  if(!fs.existsSync(fname))
+    fname = basename+lang.slice(0,2);
+  if(!fs.existsSync(fname)) return false;
+  (async ()=>{
+    try {
+      let json = await fs.promises.readFile(fname,'utf8');
+      translateRes = JSON.parse(json);
+    } catch (e){}
+    topMenu();
+  })();
+  return true;
+}
+
+function translate(str){
+  let result;
+  if(translateRes && (result=translateRes[str])) return result;
+  return str;
 }
