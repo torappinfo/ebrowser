@@ -2,5 +2,21 @@
   "Edit":"编辑",
   "Help":"帮助",
   "Config folder":"配置目录",
-  "Check for updates":"检查更新"
+  "Check for updates":"检查更新",
+  "Stop":"停止",
+  "getURL":"显示网址",
+  "Select":"全选地址栏",
+  "New Tab":"新标签页",
+  "Restore Tab":"恢复标签页",
+  "Close tab":"关闭标签页",
+  "Next Tab":"后标签页",
+  "Previous Tab":"前标签页",
+  "Go backward":"后退",
+  "Go forward":"前进",
+  "Zoom in":"放大",
+  "Zoom out":"缩小",
+  "Default zoom":"默认缩放",
+  "No focus":"无焦点",
+  "Reload":"刷新",
+  "Devtools":"开发工具"
 }
