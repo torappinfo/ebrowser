@@ -504,6 +504,7 @@ function autocomplete(inp,container,arr) {
   inp.addEventListener("input", function(e) {
     const MAXITEMS = 30;
     var b, i, val = this.value;
+    console.log(val)
     if (!val) { return false;}
     currentFocus = -1;
     let items = container.children;
@@ -588,6 +589,7 @@ function autocomplete(inp,container,arr) {
           currentFocus = -1;
         }
         closeAllLists();
+        lastVal = null;
       }
   });
   function addActive(x) {
