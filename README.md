@@ -5,7 +5,8 @@ Ebrowser is designed with the philosophy of [Android uweb browser](https://githu
 - much less memory footprint than edge/chrome browser and highly performant.
 - keyboard friendly with vim-style keymaps and command line support in address bar.
 - [global redirection](https://uweb.surge.sh/en/redirect/index.html#) to bypass censorship.
-- user scripts at will. Ex. pressing "md" in no-focus mode to preview markdown file.
+- user CSS/JS at will. Ex. pressing "md" in no-focus mode to preview markdown file.
+- global CSS/JS for all sites at will.
 - CSS/JS for domains, similar to [uweb](https://jamesfengcao.gitlab.io/uweb/en/sitejs/index.html), but use sitejs/[domain].js or sitecss/[domain].css, not [domain root].js/css.
 - customizable.
 
