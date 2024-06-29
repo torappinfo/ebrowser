@@ -144,20 +144,16 @@ You should have received a copy of the GNU General Public License along with thi
     tabs.children[iTab].classList.add('curWV');
   }
   async function loadJSFile(tab,jsF){
-    if(fs.existsSync(jsF)){
       try {
         let js = await fs.promises.readFile(jsF,'utf8');
         tab.executeJavaScript(js,false);
       }catch(e){}
-    }
   }
   async function loadCSSFile(tab,jsF){
-    if(fs.existsSync(jsF)){
       try {
         let js = await fs.promises.readFile(jsF,'utf8');
         tab.insertCSS(css);
       }catch(e){}
-    }
   }
   function cbStartLoading(e){
     if(!bDomainCSS) return;
