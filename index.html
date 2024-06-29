@@ -71,8 +71,6 @@ You should have received a copy of the GNU General Public License along with thi
   var bQueryHistory = false;
   let sitecssP = path.join(__dirname,"sitecss");
   let sitejsP = path.join(__dirname,"sitejs");
-  let gjsP = path.join(__dirname,"gjs");
-  let gcssP = path.join(__dirname,"gcss");
   let gjsA = [];
   let gcssA = [];
   let gcssJSA = [];
@@ -173,11 +171,11 @@ You should have received a copy of the GNU General Public License along with thi
     jsF = path.join(sitecssP, domain+".css");
     loadCSSFile(tab,jsF);
     gcssA.forEach((fname)=>{
-      jsF = path.join(gcssP, fname);
+      jsF = path.join(__dirname, fname);
       loadCSSFile(tab,jsF);
     });
     gcssJSA.forEach((fname)=>{
-      jsF = path.join(gcssP, fname);
+      jsF = path.join(__dirname, fname);
       loadJSFile(tab,jsF);
     });
   }
@@ -199,7 +197,7 @@ You should have received a copy of the GNU General Public License along with thi
       loadJSFile(tab,jsF);
     }
     gjsA.forEach((fname)=>{
-      let jsF = path.join(gjsP, fname);
+      let jsF = path.join(__dirname, fname);
       loadJSFile(tab,jsF);
     });
   }
