@@ -130,11 +130,11 @@ async function createWindow () {
   session.defaultSession.on("will-download", (e, item) => {
     //item.setSavePath(save)
     if(!downloadMenus) return;
-    let buttons = ["OK", "Cancel", "Copy url"];
+    let buttons = ["OK", "Cancel", translate("Copy")];
     buttons.push(downloadMenus.filter((item, index) => (index&1) === 0));
     const button = dialog.showMessageBoxSync(mainWindow, {
       "type": "question",
-      "title": "Downlod",
+      "title": translate("Download"),
       "message":  `Do you want to download the file?`,
       "buttons": buttons,
       "defaultId": 0,
@@ -357,24 +357,36 @@ function cbTitleUpdate(event,title){
 function menuArray(labelprefix, linkUrl){
   const menuTemplate = [
     {
-      label: labelprefix+'Open Link',
+      label: labelprefix+translate('Open'),
       click: () => {
         shell.openExternal(linkUrl);
       }
     },
     {
-      label: labelprefix+'Copy Link',
+      label: labelprefix+translate('Copy'),
       click: () => {
         clipboard.writeText(linkUrl);
       }
     },
     {
-      label: labelprefix+'Download',
+      label: labelprefix+translate('Download'),
       click: () => {
         win.contentView.children[i].webContents.downloadURL(linkUrl);
       }
     },
   ];
+  if(downloadMenus){
+    for(let i=0; i<downloadMenus.length-1;i++){
+      menuTemplate.push({
+        label: labelprefix+downloadMenus[i],
+        click: () => {
+          let cmd = downloadMenus[i+1].replace('%u',linkUrl);
+          let js = `handleQuery(\`${cmd}\`)`;
+          win.webContents.executeJavaScript(js,false);
+        }
+      });
+    }
+  }
   return menuTemplate;
 }
 

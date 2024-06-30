@@ -18,5 +18,8 @@
   "Default zoom":"默认缩放",
   "No focus":"无焦点",
   "Reload":"刷新",
-  "Devtools":"开发工具"
+  "Devtools":"开发工具",
+  "Open":"打开",
+  "Copy":"复制",
+  "Download":"下载"
 }
