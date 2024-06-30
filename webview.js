@@ -238,12 +238,16 @@ function addrCommand(cmd){
     case "update":
       let updateurl;
       if(1==args.length)
-        updateurl = repositoryurl;
+        updateApp(repositoryurl);
       else {
-        updateurl = args[1];
-        if(!updateurl.endsWith("/")) updateurl = updateurl +"/";
+        filename = args[1];
+        let iSlash = filename.lastIndexOf('/');
+        if(iSlash>0){
+          let folder = path.join(__dirname,filename.substring(0,iSlash));
+          fs.mkdirSync(folder,{ recursive: true });
+        }
+        fetch2file(repositoryurl,filename);
       }
-      updateApp(updateurl);
       return;
     }
   }

@@ -75,7 +75,7 @@ Like any popular browser, the very first word in address bar if defined in "sear
   - np : no proxy.
   - up [proxyName] : use proxy. privous proxy or the first proxy in proxy.json w/o [proxyName]. ":up" command also disables global and domain redirections, which are not restored by ":np".
   - ua [useragentName] : set user agent for future tabs. default user agent w/o arguments.
-  - update [updateurl] : update the app. updateurl is optional.
+  - update [filename] : update the app w/o argument, otherwise retrive the [filename] from remote.
   - pdf [filename w/o extension] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - "!" address bar commands  
   "!xx ..." evaluates "xx.js" with the whole text as arguments[0].
