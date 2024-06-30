@@ -50,6 +50,7 @@ var bForwardCookie = false;
 var proxies = {};
 var proxy;
 var useragents = {};
+var downloadMenus; //[]
 var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
@@ -115,8 +116,43 @@ async function createWindow () {
   cmdlineProcess(process.argv, process.cwd(), 0);
   //app.commandLine.appendSwitch ('trace-warnings');
 
+  fs.readFile(path.join(__dirname,'download.json'), 'utf8', (err, jsonStr) => {
+    if (err) return;
+    try {
+      downloadMenus = JSON.parse(jsonStr);
+    }catch (e){console.log(e)}
+  });
+
   win.webContents.on('page-title-updated',(event,cmd)=>{
     addrCommand(cmd);
+  });
+
+  session.defaultSession.on("will-download", (e, item) => {
+    //item.setSavePath(save)
+    if(!downloadMenus) return;
+    let buttons = ["OK", "Cancel", "Copy url"];
+    buttons.push(downloadMenus.filter((item, index) => (index&1) === 0));
+    const button = dialog.showMessageBoxSync(mainWindow, {
+      "type": "question",
+      "title": "Downlod",
+      "message":  `Do you want to download the file?`,
+      "buttons": buttons,
+      "defaultId": 0,
+    });
+    switch(button) {
+    case 0:
+      return;
+    case 1:
+      break;
+    case 2:
+      clipboard.writeText(item.getURL());
+      break;
+    default:
+      let cmd = downloadMenus[2*button-5].replace('%u',item.getURL());
+      let js = `handleQuery(\`${cmd}\`)`;
+      win.webContents.executeJavaScript(js,false);
+    }
+    e.preventDefault();
   });
 
   win.webContents.on('console-message',cbConsoleMsg);
