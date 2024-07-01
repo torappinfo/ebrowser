@@ -176,6 +176,16 @@ You should have received a copy of the GNU General Public License along with thi
       loadJSFile(tab,jsF);
     });
   }
+  function cbNavigate(e){
+    let url = e.url;
+    if(58===url.charCodeAt(1)){
+      e.preventDefault();
+      if(confirm("Proceed to execute risky operations: "+url))
+        internalLink(url);
+      else
+        document.forms[0].q.value = url;
+    }
+  }
   function cbFinishLoad(e){
     let tab = e.target;
     let url = tab.getURL();
@@ -202,6 +212,7 @@ You should have received a copy of the GNU General Public License along with thi
     tab.allowpopups = true;
     tab.addEventListener('did-finish-load',cbFinishLoad);
     tab.addEventListener('did-start-loading',cbStartLoading);
+    tab.addEventListener('will-navigate',cbNavigate);
   }
   function newTab(){
     var tab = document.createElement('webview');
