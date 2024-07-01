@@ -472,7 +472,6 @@ You should have received a copy of the GNU General Public License along with thi
         return;
       }
       if(58===c1){
-        console.log(q)
         internalLink(q);
         return;
       }
@@ -541,12 +540,32 @@ You should have received a copy of the GNU General Public License along with thi
             })();
           }
         }
+      case 48:  //i:00
+        let iColon = url.indexOf(':',5);
+        let endS;
+        let is = url.indexOf('%s',iColon+1);
+        if(is<0)
+          endS = '%s"\n';
+        else
+          endS = '"\n';
+        let pname = path.join(__dirname,"search.json");
+        let str = '"'+url.slice(4,iColon)+'":"'+url.substring(iColon+1)+
+          endS;
+        jsonAppend(pname,125,str);
+      default:
       }
     }
   }
 async function jsonAppend(filePath, charcode, str){
+  let fd;
   try{
-    const fd = await fs.promises.open(filePath, 'r+');
+    fd = await fs.promises.open(filePath, 'r+');
+  }catch(e){
+    try {
+      fd = await fs.promises.open(filePath, 'w+');
+    }catch(e1){return}
+  }
+  try{
     const stats = await fd.stat();
     const fileSize = stats.size;
     const buffer = Buffer.alloc(1);
@@ -554,6 +573,7 @@ async function jsonAppend(filePath, charcode, str){
     while (position >= 0) {
       await fd.read(buffer, 0, 1, position);
       if (buffer[0] === charcode) break;
+      position--;
     }
     let endS = String.fromCharCode(charcode);
     if(position<0){//re-write whole file
@@ -566,7 +586,7 @@ async function jsonAppend(filePath, charcode, str){
     await fd.write(buf, 0, buf.length, position);
     await fd.close();
   }catch(e){console.log(e)}
-}  
+}
 function autocomplete(inp,container,arr) {
   var currentFocus;
   function clickItem(e){inp.value = arr[e.target.dataset.index];}
