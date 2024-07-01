@@ -7,7 +7,7 @@ You should have received a copy of the GNU General Public License along with thi
 */
 const {
   app, BrowserWindow, Menu, shell, clipboard,
-  session, protocol, net, dialog
+  session, protocol, net, dialog, ipcMain
 } = require('electron')
 let win;
 
@@ -182,6 +182,10 @@ app.on ('web-contents-created', (event, contents) => {
     contents.session.webRequest.onBeforeRequest(interceptRequest);
     //contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
   }
+});
+
+ipcMain.on('command', (event, cmd) => {
+  addrCommand(cmd);
 });
 
 function addrCommand(cmd){
@@ -680,7 +684,7 @@ function translate(str){
 
 async function jsonAppend(filePath, charcode, str){
   try{
-    const fd = await fs.promises.open(filePath, 'w+');
+    const fd = await fs.promises.open(filePath, 'r+');
     const stats = await fd.stat();
     const fileSize = stats.size;
     const buffer = Buffer.alloc(1);
