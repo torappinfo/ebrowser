@@ -68,7 +68,8 @@ async function createWindow () {
     let json = await fs.promises.readFile(path.join(__dirname,'uas.json'), 'utf8');
     useragents = JSON.parse(json);
   } catch (e){console.log(e)}
-  
+
+  protocol.handle("i",(req)=>{return null;});
   await (async ()=>{
     try{
       const readInterface = readline.createInterface ({
@@ -309,14 +310,15 @@ function cbConsoleMsg(e, level, msg, line, sourceid){
 }
 
 function interceptRequest(details, callback){
-  if(!bJS && details.url.endsWith(".js")){
+  let url = details.url;
+  if(58===url.charCodeAt(1) || (!bJS && url.endsWith(".js"))){
     callback({ cancel: true });
     return;
   }
   do {
     if(gredirect || !bRedirect ||(details.resourceType !== 'mainFrame' &&
                      details.resourceType !== 'subFrame')) break;
-    let oURL = new URL(details.url);
+    let oURL = new URL(url);
     let domain = oURL.hostname;
     let newUrl;
     try{
