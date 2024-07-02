@@ -176,11 +176,7 @@ app.on ('web-contents-created', (event, contents) => {
     contents.setWindowOpenHandler(cbWindowOpenHandler);
     contents.on('context-menu',onContextMenu);
     contents.on('page-title-updated',cbTitleUpdate);
-    //contents.on('console-message',cbConsoleMsg);
-    //contents.on('focus', ()=>{cbFocus(contents)});
-    //contents.on('blur',()=>{cbBlur()});
     contents.session.webRequest.onBeforeRequest(interceptRequest);
-    //contents.on('did-finish-load',()=>{cbFinishLoad(contents)});
   }
 });
 
@@ -310,15 +306,6 @@ function cbConsoleMsg(e, level, msg, line, sourceid){
   console.log(line);
   console.log(sourceid);
   console.log(msg);
-}
-
-function cbFocus(webContents){
-  let js = "if(focusMesg){let m=focusMesg;focusMesg=null;m}";
-  win.webContents.executeJavaScript(js,false).then((r)=>{
-    //focusMesg as js code
-    console.log(r);
-    if(r) webContents.executeJavaScript(r,false);
-  });
 }
 
 function interceptRequest(details, callback){
