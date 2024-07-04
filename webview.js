@@ -28,6 +28,8 @@ else {
   })
 }
 Menu.setApplicationMenu(null);
+const fs = require('fs');
+const path = require('path')
 var translateRes;
 {
   let langs = app.getPreferredSystemLanguages();
@@ -38,9 +40,7 @@ var translateRes;
 }
 
 var repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
-const fs = require('fs');
 const readline = require('readline');
-const path = require('path')
 const process = require('process')
 var gredirects = [];
 var gredirect;
@@ -411,7 +411,7 @@ async function topMenu(){
       let submenu = [];
       for(let i=0;i<menus.length-1; i=i+2){
         let cmd = menus[i+1];
-        let js = `handleQuery(\`${cmd}\`)`;
+        let js = `handleQuery("${cmd}")`;
         submenu.push({
           label: menus[i], click: ()=>{
             win.webContents.executeJavaScript(js,false);
@@ -422,7 +422,7 @@ async function topMenu(){
         submenu: submenu,
       });
     }
-  }catch(e){}
+  }catch(e){console.log(e)}
   menuTemplate.push(
     {
       label: translate('Edit'),
