@@ -52,6 +52,7 @@ var proxies = {};
 var proxy;
 var useragents = {};
 var downloadMenus; //[]
+var selectMenus = [];
 var defaultUA =
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" +
     process.versions.chrome +" Safari/537.36";
@@ -125,6 +126,13 @@ async function createWindow () {
     }catch (e){console.log(e)}
   });
 
+  fs.readFile(path.join(__dirname,'select.json'), 'utf8', (err, jsonStr) => {
+    if (err) return;
+    try {
+      selectMenus = JSON.parse(jsonStr);
+    }catch (e){console.log(e)}
+  });
+
   win.webContents.on('page-title-updated',(event,cmd)=>{
     addrCommand(cmd);
   });
@@ -134,7 +142,7 @@ async function createWindow () {
     if(!downloadMenus) return;
     let buttons = ["OK", "Cancel", translate("Copy")];
     buttons.push(downloadMenus.filter((item, index) => (index&1) === 0));
-    const button = dialog.showMessageBoxSync(mainWindow, {
+    const button = dialog.showMessageBoxSync(win, {
       "type": "question",
       "title": translate("Download"),
       "message":  `Do you want to download the file?`,
@@ -348,8 +356,20 @@ function cbWindowOpenHandler(details){
 function cbTitleUpdate(event,title){
   win.setTitle(title);
 }
+function menuSelection(menuTemplate, text){
+  for(let i=0; i<selectMenus.length-1;i++){
+    menuTemplate.push({
+      label: selectMenus[i],
+      click: () => {
+        let cmd = selectMenus[i+1].replace('%s',text);
+        let js = `handleQuery(\`${cmd}\`)`;
+        win.webContents.executeJavaScript(js,false);
+      }
+    });
+  }
+}
 function menuArray(labelprefix, linkUrl){
-  const menuTemplate = [
+  let menuTemplate = [
     {
       label: labelprefix+translate('Open'),
       click: () => {
@@ -395,6 +415,8 @@ function onContextMenu(event, params){
   }else if((url=params.srcURL)){
     mTemplate.push({label:url,enabled:false});
     mTemplate.push.apply(mTemplate,menuArray("src: ",url));
+  }else if((url=params.selectionText)){
+    menuSelection(mTemplate,url);
   }else
     return;
 
