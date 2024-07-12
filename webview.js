@@ -159,7 +159,7 @@ async function createWindow () {
       break;
     default:
       let cmd = downloadMenus[2*button-5].replace('%u',item.getURL());
-      let js = `handleQuery(\`${cmd}\`)`;
+      let js = `handleQueries(\`${cmd}\`)`;
       win.webContents.executeJavaScript(js,false);
     }
     e.preventDefault();
@@ -362,7 +362,7 @@ function menuSelection(menuTemplate, text){
       label: selectMenus[i],
       click: () => {
         let cmd = selectMenus[i+1].replace('%s',text);
-        let js = `handleQuery(\`${cmd}\`)`;
+        let js = `handleQueries(\`${cmd}\`)`;
         win.webContents.executeJavaScript(js,false);
       }
     });
@@ -395,7 +395,7 @@ function menuArray(labelprefix, linkUrl){
         label: labelprefix+downloadMenus[i],
         click: () => {
           let cmd = downloadMenus[i+1].replace('%u',linkUrl);
-          let js = `handleQuery(\`${cmd}\`)`;
+          let js = `handleQueries(\`${cmd}\`)`;
           win.webContents.executeJavaScript(js,false);
         }
       });
@@ -433,7 +433,7 @@ async function topMenu(){
       let submenu = [];
       for(let i=0;i<menus.length-1; i=i+2){
         let cmd = menus[i+1];
-        let js = `handleQuery("${cmd}")`;
+        let js = `handleQueries("${cmd}")`;
         submenu.push({
           label: menus[i], click: ()=>{
             win.webContents.executeJavaScript(js,false);

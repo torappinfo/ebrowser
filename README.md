@@ -99,8 +99,10 @@ The other commands are defined in "mapkeys.json", which will map keys to address
 - "mapkeys.json": keys-addressbarCommands pairs. The addressbar commands are multiple lines of address bar command separated by "\n".
 - "proxy.json": name-[ProxyConfig](https://www.electronjs.org/docs/latest/api/structures/proxy-config) pairs
 - "uas.json" : name-<a href="https://jamesfengcao.gitlab.io/uweb/en/useragents/index.html" onclick="if(notRepo()){location='../useragents/index.html#';return false;}">useragent</a> pairs.
-- "menu.json": array of strings for <a href="https://jamesfengcao.gitlab.io/uweb/en/urls/index.html" onclick="if(notRepo()){location='../urls/index.html#';return false;}">user-defined menus</a>. The array has submenu name and address bar commands alternately.
-- "download.json" : array of strings to define buttons for downloading dialog. The even-indexed strings are texts to show on the button. The odd-indexed strings are address bar commands with "%u" as the downloaded url.
+- Customized menus: json files as array of strings with menuitem name and address bar commands alternately.
+  - "menu.json": array of strings for <a href="https://jamesfengcao.gitlab.io/uweb/en/urls/index.html" onclick="if(notRepo()){location='../urls/index.html#';return false;}">user-defined menus</a>. The array has submenu name and address bar commands alternately. The odd-indexed strings are address bar commands with "%u" as the downloaded url.
+  - "select.json": to define menus for text selections. The odd-indexed strings are address bar commands with "%s" as the text selection.
+  - "download.json" : array of strings to define context menu and buttons for downloading dialog. The even-indexed strings are texts to show on the button. The odd-indexed strings are address bar commands with "%u" as the downloaded url.
 
 #### Javascript at three levels
 - Web page: url like "javascript:" or bookmarklet command ":bml" runs in web page.
