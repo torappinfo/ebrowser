@@ -153,19 +153,7 @@ async function createWindow () {
     if(0===button) return;
     e.preventDefault();
     if(1===button) return;
-    let url = item.getURL();
-    let mTemplate =
-      [{label:url,enabled:false},
-       {
-         label: translate('Copy'),
-         click: () => {
-           clipboard.writeText(url);
-         }
-       },
-      ];
-    menuDownload(mTemplate, "", url);
-    const contextMenu = Menu.buildFromTemplate(mTemplate);
-    contextMenu.popup();
+    downloadContextMenu(item.getURL());
   });
 
   win.webContents.on('console-message',cbConsoleMsg);
@@ -697,6 +685,20 @@ function help(){
   win.webContents.executeJavaScript(js,false)
 }
 
+async function downloadContextMenu(url){
+  let mTemplate =
+      [{label:url,enabled:false},
+       {
+         label: translate('Copy'),
+         click: () => {
+           clipboard.writeText(url);
+         }
+       },
+      ];
+  menuDownload(mTemplate, "", url);
+  const contextMenu = Menu.buildFromTemplate(mTemplate);
+  contextMenu.popup();
+}
 async function initTranslateRes(lang){
   let basename=path.join(__dirname,"translate.");
   let fname = basename+lang;
