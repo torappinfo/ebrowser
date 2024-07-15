@@ -1,3 +1,3 @@
 [
-  "note.ms","i:0/js/s2ta.js:https://note.ms/ric?%s"
+  "note.ms",":bjs newTab();switchTab(tabs.children.length-1)\ni:0/js/s2ta.js:https://note.ms/ric?%s"
 ]
