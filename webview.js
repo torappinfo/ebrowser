@@ -461,8 +461,10 @@ async function topMenu(){
           win.webContents.executeJavaScript(js,false)
         }},
         { label: translate('getURL'), accelerator: 'Ctrl+G', click: ()=>{
-          let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].getURL()}"
-          win.webContents.executeJavaScript(js,false)
+          let js="{let q=document.forms[0].q;q.focus();q.value=tabs.children[iTab].getURL();getWinTitle()}"
+          win.webContents.executeJavaScript(js,false).then((r)=>{
+            win.setTitle(r);
+          });
         }},
         { label: translate('Select'), accelerator: 'Ctrl+L', click:()=>{
           win.webContents.executeJavaScript("document.forms[0].q.select()",false);
