@@ -25,5 +25,7 @@
   "fl":"https://felo.ai/search?q=%s",
   "bg":"https://bagoodex.io/chat?q=%s",
   "bc":"i:0/js/s2ta.js:https://www.baichuan-ai.com/chat?%s",
+  "xa":"i:0/js/s2ta.js:https://www.xanswer.com/?%s",
+  "wa":"https://www.wolframalpha.com/input?i=%s",
   "bd":"https://baidu.com/s?wd=%s"
 }
