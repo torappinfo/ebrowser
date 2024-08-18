@@ -148,7 +148,6 @@ async function createWindow () {
   session.defaultSession.on("will-download", async (e, item) => {
     //item.setSavePath(save)
     if(!downloadMenus) return;
-    e.preventDefault();
     let menuT = downloadContextMenuTemp(item.getURL());
     let button = await promiseContextMenu(menuT);
     if(-1===button) return;
