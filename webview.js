@@ -266,9 +266,11 @@ function addrCommand(cmd){
     case "ur":
       bRedirect = true; return;
     case "ua":
-      if(args.length==2)
-        session.defaultSession.setUserAgent(useragents[args[1]]);
-      else
+      if(args.length==2){
+        let ua = useragents[args[1]];
+        if(ua)
+          session.defaultSession.setUserAgent(ua);
+      }else
         session.defaultSession.setUserAgent(defaultUA);
       return;
     case "update":
