@@ -17,7 +17,8 @@ Note: Usually electron apps are heavyweight as they use browsers for simple thin
 You can find prebuilt binaries [here](https://github.com/torappinfo/ebrowser/releases).
 
 ##### Install ebrowser and electron separatedly
-###### Install ebrowser either with nodejs by
+###### Install ebrowser
+Either with nodejs by
 
     npm install ebrowser
 
@@ -40,7 +41,7 @@ OR download and decompress electron binary directly from [github](https://github
 
 OR
 
-    electron [the-path-of-ebrowser]/ebrowser
+    electron [the-path-of-folder-with-downloaded-files]
 
 Later on, you can run "npm install electron" to update electron/chromium or "npm install ebrowser" to update ebrowser independently.
 
