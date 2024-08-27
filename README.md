@@ -36,7 +36,6 @@ Before you can run ebrowser, you need to install electron either with nodejs by
 OR download and unzip electron binary directly from [github](https://github.com/electron/electron/releases) or mirrors like [npmmirror](https://registry.npmmirror.com/binary.html?path=electron).
 
 ###### Run ebrowser
-Run ebrowser
 
     electron ~/node_modules/ebrowser
 
