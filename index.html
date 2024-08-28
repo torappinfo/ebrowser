@@ -589,12 +589,12 @@ You should have received a copy of the GNU General Public License along with thi
     return;
     case 97: //i:a
     {
+      let iQ = url.indexOf('?',12);
+      let data;
+      let rurl;
       switch(subcmd){
       case 49: //i:a1
       {
-        let iQ = url.indexOf('?',12);
-        let data;
-        let rurl;
         if(iQ>4) {
           rurl = url.substring(4,iQ);
           data = [{
@@ -605,10 +605,12 @@ You should have received a copy of the GNU General Public License along with thi
           rurl = url.substring(4);
           data = [];
         }
-        tabs.children[iTab].loadURL(rurl,{postData:data,extraHeaders:'Content-Type: application/x-www-form-urlencoded'});
-        return;
       }
+      case 50: //i:a2[url]?[filePath] post request with local file
+        rurl = url.substring(4,iQ);
+        data = [{type: 'file', filePath:url.substring(iQ+1)}];
       }
+      tabs.children[iTab].loadURL(rurl,{postData:data,extraHeaders:'Content-Type: application/x-www-form-urlencoded'});
       return;
     }
     case 113: //i:q for multiple queries
