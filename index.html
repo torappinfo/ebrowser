@@ -606,6 +606,13 @@ You should have received a copy of the GNU General Public License along with thi
       }
     }
     return;
+    case 56: //i:8
+      switch(subcmd){
+      case 100: //i:8d[url] to download
+        tabs.children[iTab].downloadURL(url.substring(4));
+        return;
+      }
+      return;
     case 112: //i:p[url]#[querystring] for http POST
     {
       let iQ = url.indexOf('#',12);

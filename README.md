@@ -98,6 +98,7 @@ Like any popular browser, the very first word in address bar if defined in "sear
   - "!!xx ..." evaluates "xx.js" with the whole text as arguments[0] at browser level, which could manipulate address bar etc.
 - i: internal urls, which will be consistent with [uweb](https://jamesfengcao.gitlab.io/uweb/en/links/index.html).
   - "i:0/js/xxx.js:[url]" loads the "[url]" with bookmarklet "js/xxx.js".
+  - "i:8d[url]" fo force downloading
 
 #### Commands in no-focus mode (this mode is similar to vi Normal mode)
 Pressing "ESC" to enter no-focus mode if not sure.
