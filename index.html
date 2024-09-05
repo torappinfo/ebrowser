@@ -483,7 +483,10 @@ You should have received a copy of the GNU General Public License along with thi
       let c1=q.charCodeAt(1);
       switch(c0){
       case 33://"!"
-        coloncommand(q);
+        if(33!=c1)
+          coloncommand(q);
+        else
+          bangcommand(q,2);
         recQueryHistory(q);
         return;
       case 47://"/"

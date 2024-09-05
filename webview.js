@@ -188,7 +188,7 @@ function addrCommand(cmd){
   let c0 = cmd.charCodeAt(0);
   switch(c0){
   case 33://"!"
-    bangcommand(q);
+    bangcommand(q,1);
     return;
   case 58: //':'
     args = cmd.substring(1).split(/\s+/);

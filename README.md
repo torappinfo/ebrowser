@@ -94,7 +94,8 @@ Like any popular browser, the very first word in address bar if defined in "sear
   - update [filename] : update the app w/o argument, otherwise retrive the [filename] from remote. The filename could be any file on [mirror sites](https://jamesfengcao.gitlab.io/uweb/en/readme/index.html) (this repository is part of it).
   - pdf [filename w/o extension] {[options](https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions)} : print to PDF file. All arguments are optional; empty option "{}" to capture long screenshot as vector graphics.
 - "!" address bar commands  
-  "!xx ..." evaluates "xx.js" with the whole text as arguments[0].
+  - "!xx ..." evaluates "xx.js" with the whole text as arguments[0] at OS level.
+  - "!!xx ..." evaluates "xx.js" with the whole text as arguments[0] at browser level, which could manipulate address bar etc.
 - i: internal urls, which will be consistent with [uweb](https://jamesfengcao.gitlab.io/uweb/en/links/index.html).
   - "i:0/js/xxx.js:[url]" loads the "[url]" with bookmarklet "js/xxx.js".
 
