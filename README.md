@@ -76,7 +76,7 @@ Like any popular browser, the very first word in address bar if defined in "sear
   - ac [bookmark/history path w/o ext] : load ".rec" file for autocomplete.
   - b [bookmarkfilename w/o ext] : bookmark current page in file.
   - bjs : Browser-level JavaScript execution.
-  - bml [filename w/o extension]: load/execute the javascript file.
+  - bml [filename w/o extension] [arguments...]: load/execute the javascript file.
   - cert : allow invalid certificates w/o arguments, otherwise restore to default.
   - clear : the arguments could be
     - cache : clear cache
@@ -124,8 +124,8 @@ The other commands are defined in "mapkeys.json", which will map keys to address
 - Web page: url like "javascript:" or bookmarklet command ":bml" runs in web page.
 - Browser (or renderer process) :
   - ":bjs" to execute the following js code at browser level.
-  - "!xx" evaluates "xx.js", which could manipulate address bar etc.
 - OS level (or main process) : ":js" to execute the following js code with all OS APIs available.
+  - "!xx" evaluates "xx.js" with arguments.
 
 ##### examples for ":js"/":bjs" commands
 
