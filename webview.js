@@ -751,3 +751,24 @@ function httpReq(url, method, filePath){
     request.end();
   });
 }
+
+function bangcommand(q,offset){
+  let iS = q.indexOf(' ',offset);
+  if(iS<0) iS=q.length;
+  let fname = q.substring(offset,iS);
+  let fpath = path.join(__dirname,fname+'.js');
+  if (fs.existsSync(fpath)) {
+    fs.readFile(fpath, 'utf8',(err, js)=>{
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const prefix = "(function(){";
+      const postfix = "})(`";
+      const end ="`)";
+      const fjs = `${prefix}${js}${postfix}${q}${end}`;
+      eval(fjs);
+    });
+  }
+}
+
