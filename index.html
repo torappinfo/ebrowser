@@ -367,16 +367,16 @@ You should have received a copy of the GNU General Public License along with thi
   }
   function coloncommand_render(cmd){
     const delimiter = /\s+/;
-    let arg0 = cmd;
+    let arg0;
     let argrest = null;
     const match = delimiter.exec(cmd);
     if(match){
       const sIndex = match.index;
       const eIndex = startIndex + match[0].length - 1;
-      arg0 = cmd.substring(0,sIndex);
+      arg0 = cmd.substring(1,sIndex);
       argrest = cmd.substring(eIndex);
-    }
-    args = cmd.substring(1).split(/\s+/);
+    }else
+      arg0 = cmd.substring(1);
     switch(arg0){
     case "ac":
       autoc(argrest);

@@ -259,8 +259,11 @@ function addrCommand(cmd){
       if(args.length>1)
         proxy = proxies[args[1]]; //retrieve proxy
       if(proxy){
-        gredirect_disable();
-        session.defaultSession.setProxy(proxy);
+        session.defaultSession.setProxy(proxy)
+          .then(() => {gredirect_disable()})
+          .catch((error) => {
+            console.error('Failed to set proxy:', error);
+          });
       }
       return;
     case "nr":
