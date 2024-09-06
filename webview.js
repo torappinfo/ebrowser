@@ -116,7 +116,7 @@ async function createWindow () {
     if (err) return;
     try {
       proxies = JSON.parse(jsonString);
-      let match = jsonString.match(/"([^"]+)":/);
+      let match = jsonString.match(/"([^"]+)"/);
       if(match)
         proxy = proxies[match[1]];
     } catch (e){console.log(e)}
