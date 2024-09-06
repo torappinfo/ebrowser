@@ -115,12 +115,10 @@ async function createWindow () {
   fs.readFile(path.join(__dirname,'proxy.json'), 'utf8', (err, jsonString) => {
     if (err) return;
     try {
-      proxies = JSON.parse(jsonString, (key,val)=>{
-        if(!proxy && key==="proxyRules"){
-          proxy = {proxyRules:val};
-        }
-        return val;
-      });
+      proxies = JSON.parse(jsonString);
+      let match = jsonString.match(/"([^"]+)":/);
+      if(match)
+        proxy = proxies[match[1]];
     } catch (e){console.log(e)}
   });
 
