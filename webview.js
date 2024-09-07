@@ -47,7 +47,7 @@ var gredirect;
 var redirects;
 var bRedirect = true;
 var bJS = true;
-var bForwardCookie = false;
+var bForwardCookie = true;
 var proxies = {};
 var proxy;
 var useragents = {};
@@ -567,18 +567,21 @@ async function cbScheme_redir(req){
   if(!gredirect) return null;
   let oUrl = req.url;
   let newurl = gredirect+oUrl;
+  let method = req.method.toUpperCase();
   let options = {
-    body:       req.body,
     headers:    req.headers,
-    method:     req.method,
+    method:     method,
     referer:    req.referer,
     duplex: "half",
     bypassCustomProtocolHandlers: true
   };
+  if(method!=="GET" && method!=="HEAD" && req.uploadData){
+    options.body = req.uploadData[0].bytes;
+  }
   if(bForwardCookie){
     let cookies = await session.defaultSession.cookies.get({url: oUrl});
     let cookieS = cookies.map (cookie => cookie.name  + '=' + cookie.value ).join(';');
-    options.headers['Cookie'] = cookieS;
+    options.headers.set('Cookie', cookieS);
   }
 
   return fetch(newurl, options);
