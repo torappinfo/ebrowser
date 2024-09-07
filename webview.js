@@ -575,8 +575,8 @@ async function cbScheme_redir(req){
     duplex: "half",
     bypassCustomProtocolHandlers: true
   };
-  if(method!=="GET" && method!=="HEAD" && req.uploadData){
-    options.body = req.uploadData[0].bytes;
+  if(req.body){
+    options.body = req.body;
   }
   if(bForwardCookie){
     let cookies = await session.defaultSession.cookies.get({url: oUrl});
