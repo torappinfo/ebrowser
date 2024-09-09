@@ -7,7 +7,7 @@ You should have received a copy of the GNU General Public License along with thi
 */
 const {
   app, BrowserWindow, Menu, shell, clipboard,
-  session, protocol, net, dialog, ipcMain
+  session, protocol, dialog, ipcMain
 } = require('electron')
 let win;
 
@@ -742,20 +742,14 @@ function httpReq(url, method, filePath){
       return;
     }
 
-    // Create a new net request
-    const request = net.request({
+    let opts = {
       method: method,
-      url: url,
-      session: session.defaultSession, // Use the session to include cookies
-    });
-
-    // Set the Content-Type header
-    request.setHeader('Content-Type', 'application/octet-stream');
-    request.on('error', (error) => {
-      console.error(`ERROR: ${error.message}`);
-    });
-    request.write(fileData);
-    request.end();
+      headers: {
+        "Content-Type":'application/octet-stream',
+      },
+      body: fileData,
+    };
+    fetch(url,opts);
   });
 }
 
