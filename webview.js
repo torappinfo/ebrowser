@@ -584,7 +584,6 @@ async function cbScheme_redir(req){
   }
   return new Promise((resolve, reject) => {
     const nreq = https.request(options, (res) => {
-      resolve(res);
       if (res.statusCode < 200 || res.statusCode >= 300) {
         return reject(new Error('statusCode=' + res.statusCode));
       }
@@ -610,9 +609,17 @@ async function cbScheme_redir(req){
     nreq.on('error', (err) => {
       reject(err);
     });
-    if (req.body)
-      req.pipe(nreq, { end: true });
-    nreq.end();
+    if (req.body){
+      const reader = req.body.getReader();
+      reader.read().then(function processText({ done, value }) {
+        if (done) {
+          nreq.end();
+          return;
+        }
+        nreq.write(value);
+      });
+    }else
+      nreq.end();
   });
 }
 
