@@ -30,6 +30,8 @@ else {
 Menu.setApplicationMenu(null);
 const fs = require('fs');
 const path = require('path')
+const https = require('https');
+const url = require('url');
 var translateRes;
 {
   let langs = app.getPreferredSystemLanguages();
@@ -567,24 +569,51 @@ async function cbScheme_redir(req){
   if(!gredirect) return null;
   let oUrl = req.url;
   let newurl = gredirect+oUrl;
-  let method = req.method.toUpperCase();
-  let options = {
-    headers:    req.headers,
-    method:     method,
-    referer:    req.referer,
-    duplex: "half",
-    bypassCustomProtocolHandlers: true
+  const parsedUrl = url.parse(newurl);
+  const options = {
+    hostname: parsedUrl.hostname,
+    port: parsedUrl.port,
+    path: parsedUrl.path,
+    method: req.method,
+    headers: req.headers
   };
-  if(req.body){
-    options.body = req.body;
-  }
   if(bForwardCookie){
     let cookies = await session.defaultSession.cookies.get({url: oUrl});
     let cookieS = cookies.map (cookie => cookie.name  + '=' + cookie.value ).join(';');
     options.headers.set('Cookie', cookieS);
   }
+  return new Promise((resolve, reject) => {
+    const nreq = https.request(options, (res) => {
+      resolve(res);
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        return reject(new Error('statusCode=' + res.statusCode));
+      }
+      let body = [];
+      res.on('data', (chunk) => {
+        body.push(chunk);
+      });
 
-  return fetch(newurl, options);
+      res.on('end', () => {
+        try {
+          body = Buffer.concat(body);
+          const response = new Response(body, {
+            status: res.status,
+            statusText: res.statusText,
+            headers: res.headers,
+          });
+          resolve(response);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+    nreq.on('error', (err) => {
+      reject(err);
+    });
+    if (req.body)
+      req.pipe(nreq, { end: true });
+    nreq.end();
+  });
 }
 
 function registerHandler(){
