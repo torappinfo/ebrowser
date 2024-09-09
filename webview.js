@@ -584,9 +584,6 @@ async function cbScheme_redir(req){
   }
   return new Promise((resolve, reject) => {
     const nreq = https.request(options, (res) => {
-      if (res.statusCode < 200 || res.statusCode >= 300) {
-        return reject(new Error('statusCode=' + res.statusCode));
-      }
       let body = [];
       res.on('data', (chunk) => {
         body.push(chunk);
