@@ -369,7 +369,7 @@ You should have received a copy of the GNU General Public License along with thi
     const match = delimiter.exec(cmd);
     if(match){
       const sIndex = match.index;
-      const eIndex = sIndex + match[0].length - 1;
+      const eIndex = sIndex + match[0].length;
       arg0 = cmd.substring(1,sIndex);
       argrest = cmd.substring(eIndex);
     }else
