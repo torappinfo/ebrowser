@@ -223,6 +223,9 @@ function addrCommand(cmd){
         }catch(e){console.log(e)}
       }
       return;
+    case "exit":
+      win.close();
+      return;
     case "ext":
       session.defaultSession.loadExtension(args[1]);
       return;
@@ -580,7 +583,7 @@ async function cbScheme_redir(req){
   if(bForwardCookie){
     let cookies = await session.defaultSession.cookies.get({url: oUrl});
     let cookieS = cookies.map (cookie => cookie.name  + '=' + cookie.value ).join(';');
-    options.headers.set('Cookie', cookieS);
+    options.headers['cookie']=cookieS;
   }
   return new Promise((resolve, reject) => {
     const nreq = https.request(options, (res) => {
