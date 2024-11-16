@@ -607,13 +607,17 @@ async function cbScheme_redir(req){
     });
     if (req.body){
       const reader = req.body.getReader();
-      reader.read().then(function processText({ done, value }) {
-        if (done) {
-          nreq.end();
-          return;
-        }
-        nreq.write(value);
-      });
+      function readStream() {
+        reader.read().then(({ done, value })=> {
+          if (done) {
+            nreq.end();
+            return;
+          }
+          nreq.write(value);
+          readStream(); // Continue reading
+        }).catch(reject);
+      }
+      readStream();
     }else
       nreq.end();
   });
