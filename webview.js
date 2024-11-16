@@ -595,11 +595,7 @@ async function cbScheme_redir(req){
       res.on('end', () => {
         try {
           body = Buffer.concat(body);
-          const response = new Response(body, {
-            status: res.status,
-            statusText: res.statusText,
-            headers: res.headers,
-          });
+          const response = new Response(body, res);
           resolve(response);
         } catch (e) {
           reject(e);
