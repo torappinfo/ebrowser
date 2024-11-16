@@ -585,7 +585,7 @@ async function cbScheme_redir(req){
     let cookieS = cookies.map (cookie => cookie.name  + '=' + cookie.value ).join(';');
     options.headers['cookie']=cookieS;
   }
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const nreq = https.request(options, (res) => {
       let body = [];
       res.on('data', (chunk) => {
@@ -606,18 +606,17 @@ async function cbScheme_redir(req){
       reject(err);
     });
     if (req.body){
+     try {
       const reader = req.body.getReader();
-      function readStream() {
-        reader.read().then(({ done, value })=> {
-          if (done) {
-            nreq.end();
-            return;
-          }
-          nreq.write(value);
-          readStream(); // Continue reading
-        }).catch(reject);
-      }
-      readStream();
+      do {
+        const { done, value } = await reader.read();
+        if (done) {
+          nreq.end();
+          break;
+        }
+        nreq.write(value);
+      }while (true);
+     }catch(e){reject(e)}
     }else
       nreq.end();
   });
