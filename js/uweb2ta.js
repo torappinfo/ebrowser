@@ -1,0 +1,1 @@
+(async ()=>{let d=document;let t=location.href;t=t.substring(t.indexOf('uweb=')+5);t=decodeURI(t);while(true){let ta=d.querySelector('textarea');if(ta){ta.value=t;ta.dispatchEvent(new InputEvent('input'));ta.focus();return;}await new Promise(resolve=>setTimeout(resolve,400));}})()
