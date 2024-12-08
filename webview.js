@@ -183,7 +183,7 @@ ipcMain.on('command', (event, cmd) => {
   addrCommand(cmd);
 });
 
-function addrCommand(cmd){
+async function addrCommand(cmd){
   if(cmd.length<3) return;
   let c0 = cmd.charCodeAt(0);
   switch(c0){
@@ -293,6 +293,32 @@ function addrCommand(cmd){
     case "ur":
       bRedirect = true; return;
     case "sys":
+      {
+        let iHTTP = cmd.search(/https?:\/\//);
+        if(iHTTP<0) return;
+        let iEnd = cmd.indexOf(' ',iHTTP+10);
+        if(iEnd<0) iEnd = cmd.length;
+        let url = cmd.substring(iHTTP,iEnd);
+        let cookies = await session.defaultSession.cookies.get({url: url});
+        let cookieS = cookies.map (cookie => cookie.name  + '='
+                                   + cookie.value ).join(';');
+        let args = cmd.substring(5).split(/\s+/);
+        for(let i=1;i<args.length;i++){
+          let iC = args[i].indexOf('%cookie');
+          if(iC<0) continue;
+          args[i] = args[i].substring(0,i)+cookieS+args[i].substring(i+7);
+          break;
+        }
+        const { spawn } = require('child_process');
+        const process = spawn(args[0],args.slice(1));
+        process.stdout.on('data', (data) => {
+          let str = data.toString();
+          console.log(str);
+          let js = "showHtml(`"+str+"`)";
+          win.webContents.executeJavaScript(js,false);
+        });
+      }
+      return;
     case "ua":
       if(cmd.length>iS){
         let ua = useragents[cmd.substring(iS+1)];
