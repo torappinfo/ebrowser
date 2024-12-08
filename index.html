@@ -126,7 +126,9 @@ You should have received a copy of the GNU General Public License along with thi
   }
   function showHtml(html){
     let js = "document.documentElement.innerHTML=`"+html+"`;";
-    tabs.children[iTab].executeJavaScript(js,false);
+    let t=tabs.children[iTab];
+    t.dataset.jsonce=js;
+    t.src="about:blank";
   }
   function bookmark(argrest){//b [filenamestem] :bookmark
     let bmFileName = "bookmark.rec";
