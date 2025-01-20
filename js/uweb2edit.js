@@ -6,5 +6,5 @@ if(65===t.charCodeAt(i-3))bAppend=true;}}
 t=decodeURI(t.substring(i+5));
 while(true){let ta=document.querySelector('[contenteditable="true"]');
 if(ta){
-if(!bAppend)ta.value=t;else ta.value+=t;
+if(!bAppend)ta.innerHTML=t;else ta.innerHTML+=t;
 ta.dispatchEvent(new InputEvent('input'));ta.focus();return;}await sleep(400);}})()
