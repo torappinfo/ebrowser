@@ -605,6 +605,19 @@ You should have received a copy of the GNU General Public License along with thi
          jsonAppend(pname,125,str);
       }
       return;
+      case 85: {//i:0U
+        let sscmd = url.charCodeAt(4);
+        switch(sscmd){
+        case 65: {//i:0UA
+          let iC = url.indexOf(':',5);
+          let ua = navigator.userAgent;
+          ua += ' '+url.substring(5,iC);
+          tabs.children[iTab].loadURL(url.substring(iC+1),{userAgent:ua});
+        }
+        return;
+        }
+      }
+      return;
       default:
       }
     }
