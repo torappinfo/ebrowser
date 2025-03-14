@@ -16,4 +16,6 @@ while(true){let ta=document.querySelector('textarea');
 if(ta){
 if(bAppend)t=ta.value+t;
 setVal(ta,t);
+if(13===t.charCodeAt(t.length-1)){await sleep(100);
+ta.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',keyCode:13,bubbles:true}));}
 return;}await sleep(400);}})()
