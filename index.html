@@ -612,7 +612,8 @@ You should have received a copy of the GNU General Public License along with thi
           let iC = url.indexOf(':',5);
           let ua = navigator.userAgent;
           ua += ' '+url.substring(5,iC);
-          tabs.children[iTab].loadURL(url.substring(iC+1),{userAgent:ua});
+          tabs.children[iTab].setUserAgent(ua);
+          handleQuery(url.substring(iC+1));
         }
         return;
         }
