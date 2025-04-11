@@ -72,7 +72,7 @@ You should have received a copy of the GNU General Public License along with thi
   var bHistory = false;
   var bQueryHistory = false;
   const currentHour = new Date().getHours();
-  var bDarkTheme = (currentHour >= 18 || currentHour < 6);
+  var bDarkTheme = (currentHour >= 17 || currentHour < 8);
   let sitecssP = path.join(__dirname,"sitecss");
   let sitejsP = path.join(__dirname,"sitejs");
   let gjsA = [];
@@ -391,10 +391,6 @@ You should have received a copy of the GNU General Public License along with thi
       return;
     case "b":
       bookmark(argrest);
-      return;
-    case "bDark":
-      bDarkTheme = true;
-      tabs.children[iTab].insertCSS(cssInvert);
       return;
     case "bjs":
       eval(argrest);
