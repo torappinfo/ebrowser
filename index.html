@@ -163,7 +163,6 @@ You should have received a copy of the GNU General Public License along with thi
   }
   function cbStartLoading(e){
     let tab = e.target;
-    if(bDarkTheme) tab.insertCSS(cssInvert);
     if(!bDomainCSS) return;
     let domain;
     try{
@@ -194,6 +193,7 @@ You should have received a copy of the GNU General Public License along with thi
   }
   function cbFinishLoad(e){
     let tab = e.target;
+    if(bDarkTheme) tab.insertCSS(cssInvert);
     let url = tab.getURL();
     if(bHistory){
       let histItem = tab.getTitle()+" "+url+"\n";
