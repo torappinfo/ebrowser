@@ -71,7 +71,8 @@ You should have received a copy of the GNU General Public License along with thi
   var historyFile = path.join(__dirname,'history.rec');
   var bHistory = false;
   var bQueryHistory = false;
-  var bDarkTheme = false;
+  const currentHour = new Date().getHours();
+  var bDarkTheme = (currentHour >= 18 || currentHour < 6);
   let sitecssP = path.join(__dirname,"sitecss");
   let sitejsP = path.join(__dirname,"sitejs");
   let gjsA = [];
@@ -216,6 +217,7 @@ You should have received a copy of the GNU General Public License along with thi
   }
   function initTab(tab){
     tab.allowpopups = true;
+    if(bDarkTheme) tab.src="about:blank";
     tab.addEventListener('did-finish-load',cbFinishLoad);
     tab.addEventListener('dom-ready',cbStartLoading);
     tab.addEventListener('will-navigate',cbNavigate);
@@ -842,7 +844,7 @@ function autocomplete(inp,container,arr) {
   <div class="autocomplete-items"></div>
   </form>
   <div class="webviews">
-  <webview class="curWV" allowpopups></webview>
+  <webview class="curWV" src="about:blank" allowpopups></webview>
   </div>
   <script>
     tabs = document.body.children[1];
