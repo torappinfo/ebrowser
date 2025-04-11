@@ -60,6 +60,7 @@ You should have received a copy of the GNU General Public License along with thi
   const fs = require('fs');
   const path = require('path');
   const readline = require('readline');
+  const cssInvert = "html,img,video{filter:invert(1) hue-rotate(180deg) !important;}body{background:white !important;}img[src],input[type=image]{opacity:.9;}";
   var iTab = 0;
   var tabs;
   var engines = {};
@@ -70,6 +71,7 @@ You should have received a copy of the GNU General Public License along with thi
   var historyFile = path.join(__dirname,'history.rec');
   var bHistory = false;
   var bQueryHistory = false;
+  var bDarkTheme = false;
   let sitecssP = path.join(__dirname,"sitecss");
   let sitejsP = path.join(__dirname,"sitejs");
   let gjsA = [];
@@ -156,12 +158,13 @@ You should have received a copy of the GNU General Public License along with thi
   async function loadCSSFile(tab,jsF){
       try {
         let js = await fs.promises.readFile(jsF,'utf8');
-        tab.insertCSS(css);
+        tab.insertCSS(js);
       }catch(e){}
   }
   function cbStartLoading(e){
-    if(!bDomainCSS) return;
     let tab = e.target;
+    if(bDarkTheme) tab.insertCSS(cssInvert);
+    if(!bDomainCSS) return;
     let domain;
     try{
       domain = new URL(tab.getURL()).hostname;
@@ -386,6 +389,10 @@ You should have received a copy of the GNU General Public License along with thi
       return;
     case "b":
       bookmark(argrest);
+      return;
+    case "bDark":
+      bDarkTheme = true;
+      tabs.children[iTab].insertCSS(cssInvert);
       return;
     case "bjs":
       eval(argrest);
