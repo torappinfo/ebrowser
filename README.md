@@ -9,6 +9,7 @@ Ebrowser is designed with the philosophy of [Android uweb browser](https://githu
 - global CSS/JS for all sites at will.
 - CSS/JS for domains, similar to [uweb](https://jamesfengcao.gitlab.io/uweb/en/sitejs/index.html), but use sitejs/[domain].js or sitecss/[domain].css, not [domain root].js/css.
 - customizable.
+- dark theme support.
 
 Note: Usually electron apps are heavyweight as they use browsers for simple things. Ebrowser uses core chromium effectively and very lightweight. Recommend to install electron separately.
 
