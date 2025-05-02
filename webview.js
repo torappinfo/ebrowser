@@ -95,13 +95,16 @@ async function createWindow () {
   })();
 
   win = new BrowserWindow(
-    {width: 1200, height: 800,autoHideMenuBar: true,
+    {maximized: true,show: false, autoHideMenuBar: true,
      webPreferences: {
        nodeIntegration: true,
        contextIsolation: false,
        webviewTag: true,
      }});
   win.setMenuBarVisibility(false);
+  win.once('ready-to-show', () => {
+    win.show();
+  });
   win.on('closed', function () {
     win = null
   })
