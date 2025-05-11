@@ -28,3 +28,4 @@ jobs:
           # GitHub token, automatically provided to the action
           github_token: ${{ secrets.github_token }}
           release: true
+          args: "--publish=always"

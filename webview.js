@@ -153,7 +153,14 @@ async function createWindow () {
     if(!downloadMenus) return;
     let menuT = downloadContextMenuTemp(item.getURL());
     let button = await promiseContextMenu(menuT);
-    if(-1===button) return;
+    if(-1===button){//choose to download
+      item.on('updated', (event, state) => {
+        const progress = item.getReceivedBytes() / item.getTotalBytes();
+        win.setProgressBar(progress);
+      });
+      item.on('done', () => win.setProgressBar(-1));
+      return;
+    }
     e.preventDefault();
   });
 
