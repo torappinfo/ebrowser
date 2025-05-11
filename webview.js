@@ -95,7 +95,7 @@ async function createWindow () {
   })();
 
   win = new BrowserWindow(
-    {maximized: true,show: false, autoHideMenuBar: true,
+    {show: false, autoHideMenuBar: true,
      webPreferences: {
        nodeIntegration: true,
        contextIsolation: false,
@@ -103,6 +103,7 @@ async function createWindow () {
      }});
   win.setMenuBarVisibility(false);
   win.once('ready-to-show', () => {
+    win.maximize();
     win.show();
   });
   win.on('closed', function () {
