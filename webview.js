@@ -53,7 +53,7 @@ var bForwardCookie = true;
 var proxies = {};
 var proxy;
 var useragents = {};
-var downloadMenus; //[]
+var downloadMenus = [];
 var selectMenus = [];
 var defaultUA;
 {
@@ -151,7 +151,6 @@ async function createWindow () {
 
   session.defaultSession.on("will-download", async (e, item) => {
     //item.setSavePath(save)
-    if(!downloadMenus) return;
     let menuT = downloadContextMenuTemp(item.getURL());
     let button = await promiseContextMenu(menuT);
     if(-1===button){//choose to download
