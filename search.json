@@ -43,5 +43,5 @@
   "wa":"https://www.wolframalpha.com/input?i=%s",
   "zdm":"http://search.smzdm.com/?c=youhui&s=%s",
   "android":"http://cn.bing.com/search?q=site:developer.android.google.cn/reference+%s",
-  "bd":"https://baidu.com/s?wd=%s"
+  "bd":"https://www.baidu.com/s?wd=%s"
 }
