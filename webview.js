@@ -32,6 +32,7 @@ const fs = require('fs');
 const path = require('path')
 const https = require('https');
 const url = require('url');
+var downloadMillis = 0;
 var translateRes;
 {
   let langs = app.getPreferredSystemLanguages();
@@ -151,9 +152,8 @@ async function createWindow () {
 
   session.defaultSession.on("will-download", async (e, item) => {
     //item.setSavePath(save)
-    let menuT = downloadContextMenuTemp(item.getURL());
-    let button = await promiseContextMenu(menuT);
-    if(-1===button){//choose to download
+    let curMillis = Date.now();
+    if(curMillis-downloadMillis<2000){
       item.on('updated', (event, state) => {
         const progress = item.getReceivedBytes() / item.getTotalBytes();
         win.setProgressBar(progress);
@@ -162,6 +162,13 @@ async function createWindow () {
       return;
     }
     e.preventDefault();
+    let url = item.getURL();
+    let menuT = downloadContextMenuTemp(url);
+    let button = await promiseContextMenu(menuT);
+    if(-1===button){//choose to download
+      downloadMillis = Date.now();
+      win.webContents.downloadURL(url);
+    }
   });
 
   win.webContents.on('console-message',cbConsoleMsg);
@@ -453,6 +460,7 @@ function menuArray(labelprefix, linkUrl){
     {
       label: labelprefix+translate('Download'),
       click: () => {
+        downloadMillis = Date.now();
         win.webContents.downloadURL(linkUrl);
       }
     },
