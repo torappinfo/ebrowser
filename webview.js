@@ -153,7 +153,7 @@ async function createWindow () {
   session.defaultSession.on("will-download", async (e, item) => {
     //item.setSavePath(save)
     let curMillis = Date.now();
-    if(curMillis-downloadMillis<2000){
+    if(curMillis-downloadMillis<9000){
       item.on('updated', (event, state) => {
         const progress = item.getReceivedBytes() / item.getTotalBytes();
         win.setProgressBar(progress);
@@ -164,11 +164,8 @@ async function createWindow () {
     e.preventDefault();
     let url = item.getURL();
     let menuT = downloadContextMenuTemp(url);
-    let button = await promiseContextMenu(menuT);
-    if(-1===button){//choose to download
-      downloadMillis = Date.now();
-      win.webContents.downloadURL(url);
-    }
+    const menu = Menu.buildFromTemplate(menuT);
+    menu.popup();
   });
 
   win.webContents.on('console-message',cbConsoleMsg);
@@ -803,7 +800,12 @@ function help(){
 function downloadContextMenuTemp(url){
   let mTemplate =
       [{label:url,enabled:false},
-       {label: translate('Download')},
+       {label: translate('Download'),
+        click: () => {
+          downloadMillis = Date.now();
+          win.webContents.downloadURL(url);
+        }
+       },
        {
          label: translate('Copy'),
          click: () => {
@@ -830,15 +832,6 @@ function translate(str){
   let result;
   if(translateRes && (result=translateRes[str])) return result;
   return str;
-}
-
-function promiseContextMenu(menuTemplate) {
-  return new Promise((resolve, reject) => {
-    menuTemplate[1].click = () => resolve(-1);
-    const menu = Menu.buildFromTemplate(menuTemplate);
-    menu.on('menu-will-close', () => resolve(-2));
-    menu.popup();
-  });
 }
 
 function httpReq(url, method, filePath){
