@@ -612,6 +612,21 @@ if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er)
 }
 
 function cmdlineProcess(argv,cwd,extra){
+  const stats = fs.fstatSync(0);//stdin
+  if(!stats.isCharacterDevice()){//with piped stdin
+    let url = 'data:text/html;charset=utf-8,';
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (chunk) => {
+      url += chunk;
+    });    
+    process.stdin.on('end', () => {
+      win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);
+    });
+
+    // Important: Resume stdin to start reading
+    process.stdin.resume();
+    return;
+  }
   let i1st = 2+extra; //index for the first query item
   if(argv.length>i1st){
     if(i1st+1==argv.length){//local file
