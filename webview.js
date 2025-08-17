@@ -10,8 +10,11 @@ const {
   session, protocol, dialog, ipcMain
 } = require('electron')
 let win;
+const fs = require('fs');
+const process = require('process')
+const noStdin = fs.fstatSync(0).isCharacterDevice();
 
-if(!app.requestSingleInstanceLock())
+if(noStdin && !app.requestSingleInstanceLock())
   app.quit()
 else {
   app.on('ready', createWindow);
@@ -28,7 +31,6 @@ else {
   })
 }
 Menu.setApplicationMenu(null);
-const fs = require('fs');
 const path = require('path')
 const https = require('https');
 const url = require('url');
@@ -44,7 +46,6 @@ var translateRes;
 
 var repositoryurl = "https://gitlab.com/jamesfengcao/uweb/-/raw/master/misc/ebrowser/";
 const readline = require('readline');
-const process = require('process')
 var gredirects = [];
 var gredirect;
 var redirects;
@@ -129,7 +130,10 @@ async function createWindow () {
     } catch (e){console.log(e)}
   });
 
-  cmdlineProcess(process.argv, process.cwd(), 0);
+  if(noStdin)
+    cmdlineProcess(process.argv, process.cwd(), 0);
+  else
+    handle_stdin();
   //app.commandLine.appendSwitch ('trace-warnings');
 
   fs.readFile(path.join(__dirname,'download.json'), 'utf8', (err, jsonStr) => {
@@ -612,21 +616,6 @@ if(e)e.blur();try{tabs.children[iTab].stopFindInPage('clearSelection')}catch(er)
 }
 
 function cmdlineProcess(argv,cwd,extra){
-  const stats = fs.fstatSync(0);//stdin
-  if(!stats.isCharacterDevice()){//with piped stdin
-    let url = 'data:text/html;charset=utf-8,';
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('data', (chunk) => {
-      url += chunk;
-    });    
-    process.stdin.on('end', () => {
-      win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);
-    });
-
-    // Important: Resume stdin to start reading
-    process.stdin.resume();
-    return;
-  }
   let i1st = 2+extra; //index for the first query item
   if(argv.length>i1st){
     if(i1st+1==argv.length){//local file
@@ -887,3 +876,17 @@ function bangcommand(q,offset){
   }
 }
 
+function handle_stdin(){
+  //with piped stdin
+  let url = 'data:text/html;charset=utf-8,';
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', (chunk) => {
+    url += chunk;
+  });
+  process.stdin.on('end', () => {
+    win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);
+  });
+
+  // Important: Resume stdin to start reading
+  process.stdin.resume();
+}
