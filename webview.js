@@ -130,10 +130,7 @@ async function createWindow () {
     } catch (e){console.log(e)}
   });
 
-  if(noStdin)
-    cmdlineProcess(process.argv, process.cwd(), 0);
-  else
-    handle_stdin(5000);
+  cmdlineProcess(process.argv, process.cwd(), 0);
   //app.commandLine.appendSwitch ('trace-warnings');
 
   fs.readFile(path.join(__dirname,'download.json'), 'utf8', (err, jsonStr) => {
@@ -630,7 +627,8 @@ function cmdlineProcess(argv,cwd,extra){
     let url=argv.slice(i1st).join(" ");
     win.webContents.executeJavaScript("{let v=`"+url+"`;document.forms[0].q.value=v;handleQuery(v)}",false);
     win.setTitle(url);
-  }
+  }else if(!noStdin)
+    handle_stdin(5000);
 }
 
 async function cbScheme_redir(req){
@@ -879,9 +877,12 @@ function bangcommand(q,offset){
 function handle_stdin(timeoutMs){
   let timeoutId;
   let isComplete = false;
-  let url = 'data:text/html;charset=utf-8,';
+  let url = '';
   const handler = ()=>{
-    win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);};
+    if(url.length<6 || (58!==url.charCodeAt(4) && 58!==url.charCodeAt(5)))
+      url = 'data:text/html;charset=utf-8,'+url;
+    win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);
+  };
   timeoutId = setTimeout(() => {
     if (!isComplete) {
       isComplete = true;
