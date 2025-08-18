@@ -133,7 +133,7 @@ async function createWindow () {
   if(noStdin)
     cmdlineProcess(process.argv, process.cwd(), 0);
   else
-    handle_stdin();
+    handle_stdin(5000);
   //app.commandLine.appendSwitch ('trace-warnings');
 
   fs.readFile(path.join(__dirname,'download.json'), 'utf8', (err, jsonStr) => {
@@ -876,17 +876,30 @@ function bangcommand(q,offset){
   }
 }
 
-function handle_stdin(){
-  //with piped stdin
+function handle_stdin(timeoutMs){
+  let timeoutId;
+  let isComplete = false;
   let url = 'data:text/html;charset=utf-8,';
+  const handler = ()=>{
+    win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);};
+  timeoutId = setTimeout(() => {
+    if (!isComplete) {
+      isComplete = true;
+      handler();
+    }
+  }, timeoutMs);
+  
   process.stdin.setEncoding('utf8');
   process.stdin.on('data', (chunk) => {
     url += chunk;
   });
   process.stdin.on('end', () => {
-    win.webContents.executeJavaScript("{let v=`"+url+"`;handleQuery(v)}",false);
+    if (!isComplete) {
+      isComplete = true;
+      clearTimeout(timeoutId);
+      handler();
+    }
   });
-
   // Important: Resume stdin to start reading
   process.stdin.resume();
 }
