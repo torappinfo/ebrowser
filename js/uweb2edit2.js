@@ -2,13 +2,27 @@
 if(i<2) return;
 let sleep=(ms)=>{return new Promise(resolve=>setTimeout(resolve,ms))};
 let u=t.substring(i+5);
-function setVal(u){const selection = window.getSelection();
-  if (selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(document.createTextNode(u));
-    const event = new Event('input', { bubbles: true });
-    range.startContainer.parentElement.dispatchEvent(event);}}
+function setVal(ta,u){const selection = window.getSelection();
+  const clearEvent = new InputEvent('input', {
+      bubbles: true,
+      cancelable: true,
+      inputType: 'deleteContentBackward'
+    });
+  ta.dispatchEvent(clearEvent);
+  document.execCommand('insertText',false,u);
+  const events = [
+      new Event('focus', { bubbles: true }),
+      new InputEvent('beforeinput', { bubbles: true, inputType: 'insertText', data: u }),
+      new InputEvent('input', { bubbles: true, inputType: 'insertText' }),
+      new Event('change', { bubbles: true })
+    ];
+  events.forEach(event => ta.dispatchEvent(event));
+  setTimeout(() => {
+      ta.blur();
+      setTimeout(() => ta.focus(), 10);
+    }, 10);
+  const event = new Event('input', { bubbles: true });
+  ta.dispatchEvent(event);}
 let s='[contenteditable="true"]';
 while(true){let ta=document.querySelector(s);
 if(ta){
@@ -19,10 +33,10 @@ if(args.length>0){
   const buts = ta.parentNode.querySelectorAll('button');
   if(buts.length>i){
     buts[i].click();
-    setTimeout(()=>{ta.focus();setVal(u)},10);
+    setTimeout(()=>{ta.focus();setVal(ta,u)},10);
     return;
   }
 }
-ta.focus();setVal(u);
+ta.focus();setVal(ta,u);
 return;}
 await sleep(400);}})()
