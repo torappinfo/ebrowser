@@ -1,7 +1,7 @@
 (async (...args)=>{let t=location.href;let i=t.indexOf('uweb=');
 if(i<2) return;
 let sleep=(ms)=>{return new Promise(resolve=>setTimeout(resolve,ms))};
-let u=t.substring(i+5);
+let u=decodeURI(t.substring(i+5));
 function setVal(ta,u){const selection = window.getSelection();
   const clearEvent = new InputEvent('input', {
       bubbles: true,
