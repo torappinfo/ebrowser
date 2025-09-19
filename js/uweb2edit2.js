@@ -9,7 +9,6 @@ function setVal(ta,u){const selection = window.getSelection();
       inputType: 'deleteContentBackward'
     });
   ta.dispatchEvent(clearEvent);
-  document.execCommand('insertText',false,u);
   const events = [
       new Event('focus', { bubbles: true }),
       new InputEvent('beforeinput', { bubbles: true, inputType: 'insertText', data: u }),
