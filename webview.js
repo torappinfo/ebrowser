@@ -25,7 +25,7 @@ else {
       }
       win.show()
       win.focus()
-      cmdlineProcess(args,cwd,1);
+      cmdlineProcess(args,cwd,2);
     }else
       createWindow();
   })
