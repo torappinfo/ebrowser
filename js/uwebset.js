@@ -6,7 +6,7 @@ function setVal(e,v){
   const nativeInputVSetter = Object.getOwnPropertyDescriptor(
     window.HTMLTextAreaElement.prototype,'value').set;
   nativeInputVSetter.call(e,v);
-  e.dispatchEvent(inputEvent);}
+  e.dispatchEvent(inputEvent);e.focus()}
 let bAppend = false;
 {let w=t.charCodeAt(i-1)-48;if(w>=0&&w<=9){w=w*100+(t.charCodeAt(i-2)-48)*1000;await sleep(w);
 if(65===t.charCodeAt(i-3))bAppend=true;}}
