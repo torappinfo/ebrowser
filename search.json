@@ -1,7 +1,8 @@
 {
   "b":"https://www.bing.com/search?q=%s",
   "xs":"https://www.xseari.com/search/?q=%s",
-  "db":"i:0/js/uwebset.js:https://www.doubao.com/chat/#10uweb=%s%0D",
+  "db":"i:0/js/uweb2ta.js:https://www.doubao.com/chat/#euweb=%3Cp%3E%s%3C/p%3E%0D",
+  "mm":"i:0/js/uweb2ta.js:https://agent.minimaxi.com/#euweb=%3Cp%3E%s%3C/p%3E",
   "md":"i:0/js/uweb2edit.js:https://www.miaoda.cn/?uweb=%s",
   "n":"https://www.n.cn/chathome?q=%s",
   "z":"https://chat.z.ai/?q=%s",
@@ -11,7 +12,7 @@
   "yd":"https://yandex.com/search/?text=%s",
   "ima":"i:0/js/uweb2edit.js:https://ima.qq.com/chat?uweb=%3Cp%3E%s%3C/p%3E",
   "bda":"i:0/js/uwebset.js:https://chat.baidu.com/search?word=%20&10uweb=%s",
-  "yy":"i:0/js/uweb2edit2.js:https://yiyan.baidu.com?uweb=%s",
+  "yy":"i:0/js/uwebset.js:https://wenxin.baidu.com/?enter_type=yiyan_site#uweb=%s%0D",
   "cv":"https://crowdview.ai/search?q=%s",
   "fs":"https://forumscout.app/search?q=%s",
   "bdic":"http://cn.bing.com/dict/search?q=%s",
@@ -19,7 +20,6 @@
   "hk":"i:0/js/uweb2ta.js:https://heck.ai/#10uweb=%s%0D",
   "xb":"i:0/js/uwebset.js:https://www.wenxiaobai.com/chat/200006?20uweb=%s%0D",
   "qw":"i:0/js/uweb2ta.js:https://chat.qwenlm.ai#uweb=%s",
-  "sl":"i:0/js/uwebset.js:https://www.solab.ai#uweb=%s",
   "ms":"https://metaso.cn?q=%s",
   "lf":"i:0/js/uwebset.js:https://chat.lify.vip/chat?uweb=%s",
   "gc":"i:0/js/uwebset.js:https://tianqi.gitcode.com/?uweb=%s%0D",
@@ -28,7 +28,6 @@
   "dba":"i:0/js/uweb2edit2.js:https://ai.dangbei.com/chat?uweb=%s",
   "df":"https://www.deepfind.co/?q=%s",
   "mo":"https://monica.im/home/chat/deepseek-r1/deepseek_reasoner?q=%s",
-  "yw":"i:0/js/uwebset.js:https://yuewen.cn/chats/new?uweb=%s",
   "zd":"https://zhida.zhihu.com/?q=%s",
   "zw":"i:0/js/uwebset.js:https://zaiwen.xueban.org.cn/chat/?uweb=%s",
   "exa":"https://exa.ai/search?c=all&q=%s",
@@ -49,7 +48,7 @@
   "bg":"https://bagoodex.io/search?q=%s",
   "bc":"i:0/js/uweb2ta.js:https://www.baichuan-ai.com/chat#uweb=%s",
   "am":"i:0/js/uweb2ta.js:https://www.askmanyai.cn/chat#uweb=%s",
-  "s1":"i:0/js/uweb2input.js:https://www.sou100.com#uweb=%s",
+  "s1":"i:0/js/uweb2ta.js:https://www.sou100.com#iuweb=%s",
   "xa":"https://www.xanswer.com/search?q=%s",
   "dw":"i:0/js/uweb2edit.js:https://beta.daiwu.cn#uweb=<p>%s</p>",
   "dev":"i:0/js/uweb2edit.js:https://devv.ai#uweb=<p>%s</p>",
@@ -58,5 +57,6 @@
   "wa":"https://www.wolframalpha.com/input?i=%s",
   "zdm":"http://search.smzdm.com/?c=youhui&s=%s",
   "android":"http://www.bing.com/search?q=site:developer.android.google.cn/reference/+%s",
-  "bd":"https://www.baidu.com/s?wd=%s"
+  "bd":"https://www.baidu.com/s?wd=%s",
+  "qs":"https://www.zhongchuangwl.com/s/%s/"
 }
