@@ -1,1 +1,0 @@
-../../uweb/assets/js/uweb2ta.js
