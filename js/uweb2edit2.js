@@ -3,12 +3,6 @@ if(i<2) return;
 let sleep=(ms)=>{return new Promise(resolve=>setTimeout(resolve,ms))};
 let u=decodeURI(t.substring(i+5));
 function setVal(ta,u){const selection = window.getSelection();
-  const clearEvent = new InputEvent('input', {
-      bubbles: true,
-      cancelable: true,
-      inputType: 'deleteContentBackward'
-    });
-  ta.dispatchEvent(clearEvent);
   const events = [
       new Event('focus', { bubbles: true }),
       new InputEvent('beforeinput', { bubbles: true, inputType: 'insertText', data: u }),
