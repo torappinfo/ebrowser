@@ -10,10 +10,7 @@ function setVal(ta,u){const selection = window.getSelection();
       new Event('change', { bubbles: true })
     ];
   events.forEach(event => ta.dispatchEvent(event));
-  setTimeout(() => {
-      ta.blur();
-      setTimeout(() => ta.focus(), 10);
-    }, 10);
+
   const event = new Event('input', { bubbles: true });
   ta.dispatchEvent(event);}
 let s='[contenteditable="true"]';
